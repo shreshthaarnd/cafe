@@ -27,4 +27,8 @@ urlpatterns = [
     path('elements/',elements),
     path('foodmenu/',foodmenu),
     path('singleblog/',singleblog),
+    path('adminlogin/',adminlogin),
+    path('adminindex/',adminindex),
+    path('adminlist/',adminlist),
+    path('adminaddcategory/',adminaddcategory),
 ]
