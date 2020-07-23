@@ -23,3 +23,7 @@ def adminlist(request):
 	return render(request,'adminpages/agentlist.html',{})
 def adminaddcategory(request):
 	return render(request,'adminpages/addcategory.html',{})
+def adminaddmenuitem(request):
+	return render(request,'adminpages/addmenuitem.html',{})
+def adminmenulist(request):
+	return render(request,'adminpages/menulist.html',{})

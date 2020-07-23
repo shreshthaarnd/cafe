@@ -31,4 +31,6 @@ urlpatterns = [
     path('adminindex/',adminindex),
     path('adminlist/',adminlist),
     path('adminaddcategory/',adminaddcategory),
+    path('adminaddmenuitem/',adminaddmenuitem),
+    path('adminmenulist/',adminmenulist),
 ]
