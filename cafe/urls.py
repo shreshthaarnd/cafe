@@ -28,6 +28,8 @@ urlpatterns = [
     path('foodmenu/',foodmenu),
     path('singleblog/',singleblog),
     path('adminlogin/',adminlogin),
+    path('adminlogincheck/',adminlogincheck),
+    path('adminlogout/',adminlogout),
     path('adminindex/',adminindex),
     path('adminlist/',adminlist),
     path('adminaddcategory/',adminaddcategory),
