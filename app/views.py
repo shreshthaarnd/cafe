@@ -54,3 +54,59 @@ def adminlogout(request):
 		return redirect('/adminlogin/')
 	except:
 		return redirect('/index/')
+def adminaddmenuitem(request):
+	try:
+		admin=request.session['admin']
+		return render(request,'adminpages/addmenuitem.html',{})
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def adminsavemenuitem(request):
+	if request.method=='POST':
+		name=request.POST.get('name')
+		category=request.POST.get('category')
+		price=request.POST.get('price')
+		m="M00"
+		x=1
+		mid=m+str(x)
+		while MenuData.objects.filter(Item_ID=mid).exists():
+			x=x+1
+			mid=m+str(x)
+		x=int(x)
+		obj=MenuData(
+			Item_ID=mid,
+			Item_Category=category,
+			Item_Name=name,
+			Item_Price=price
+			)
+		obj.save()
+		dic={'msg':'Item Saved'}
+		return render(request,'adminpages/addmenuitem.html',dic)
+	else:
+		return redirect('/index/')
+def admineditmenuitem(request):
+	try:
+		admin=request.session['admin']
+		name=request.GET.get('name')
+		price=request.GET.get('price')
+		itemid=request.GET.get('Id')
+		obj=MenuData.objects.filter(Item_ID=itemid)
+		obj.update(Item_Name=name, Item_Price=price)
+		return redirect('/adminmenulist/')
+	except:
+		return redirect('/index/')
+def admindeletemenuitem(request):
+	try:
+		admin=request.session['admin']
+		itemid=request.GET.get('Id')
+		obj=MenuData.objects.filter(Item_ID=itemid).delete()
+		return redirect('/adminmenulist/')
+	except:
+		return redirect('/index/')
+def adminmenulist(request):
+	try:
+		admin=request.session['admin']
+		dic={'data':MenuData.objects.all()}
+		return render(request,'adminpages/menulist.html',dic)
+	except:
+		return redirect('/index/')
