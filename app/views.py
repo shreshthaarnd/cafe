@@ -166,3 +166,9 @@ def admindeletemenucategory(request):
 		return redirect('/adminaddmenucategory/')
 	except:
 		return redirect('/index/')
+def adminadddiscountcoupon(request):
+	return render(request,'adminpages/adddiscountcoupon.html',{})
+def admindiscountcouponlist(request):
+	return render(request,'adminpages/discountcouponlist.html',{})
+def adminongoingorder(request):
+	return render(request,'adminpages/ongoingorder.html',{})
