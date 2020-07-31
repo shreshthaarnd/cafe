@@ -110,3 +110,5 @@ def adminmenulist(request):
 		return render(request,'adminpages/menulist.html',dic)
 	except:
 		return redirect('/index/')
+def adminaddmenucategory(request):
+	return render(request,'adminpages/addmenucategory.html',{})
