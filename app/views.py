@@ -95,6 +95,7 @@ def admineditmenuitem(request):
 		return redirect('/adminmenulist/')
 	except:
 		return redirect('/index/')
+
 def admindeletemenuitem(request):
 	try:
 		admin=request.session['admin']
@@ -103,6 +104,7 @@ def admindeletemenuitem(request):
 		return redirect('/adminmenulist/')
 	except:
 		return redirect('/index/')
+
 def adminmenulist(request):
 	try:
 		admin=request.session['admin']
@@ -111,4 +113,56 @@ def adminmenulist(request):
 	except:
 		return redirect('/index/')
 def adminaddmenucategory(request):
-	return render(request,'adminpages/addmenucategory.html',{})
+	try:
+		admin=request.session['admin']
+		dic={'data':MenuCategoryData.objects.all()}
+		return render(request,'adminpages/addmenucategory.html',dic)
+	except:
+		return redirect('/index/')
+
+@csrf_exempt
+def adminsavemenucategory(request):
+	if request.method=='POST':
+		name=request.POST.get('name')
+		m="C00"
+		x=1
+		mid=m+str(x)
+		while MenuCategoryData.objects.filter(Category_ID=mid).exists():
+			x=x+1
+			mid=m+str(x)
+		x=int(x)
+		obj=MenuCategoryData(
+			Category_ID=mid,
+			Category_Name=name
+		)
+		if MenuCategoryData.objects.filter(Category_Name=name).exists():
+			dic={'data':MenuCategoryData.objects.all(),
+				'msg':'Category Already Exists'}
+			return render(request,'adminpages/addmenucategory.html',dic)
+		else:
+			obj.save()
+			dic={'data':MenuCategoryData.objects.all(),
+				'msg':'Saved!'}
+			return render(request,'adminpages/addmenucategory.html',dic)
+	else:
+		return redirect('/index/')
+
+def admineditmenucategory(request):
+	try:
+		admin=request.session['admin']
+		name=request.GET.get('name')
+		itemid=request.GET.get('Id')
+		obj=MenuCategoryData.objects.filter(Category_ID=itemid)
+		obj.update(Category_Name=name)
+		return redirect('/adminaddmenucategory/')
+	except:
+		return redirect('/index/')
+
+def admindeletemenucategory(request):
+	try:
+		admin=request.session['admin']
+		itemid=request.GET.get('Id')
+		obj=MenuCategoryData.objects.filter(Category_ID=itemid).delete()
+		return redirect('/adminaddmenucategory/')
+	except:
+		return redirect('/index/')

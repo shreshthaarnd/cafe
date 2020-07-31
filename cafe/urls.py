@@ -39,4 +39,7 @@ urlpatterns = [
     path('admindeletemenuitem/',admindeletemenuitem),
     path('adminmenulist/',adminmenulist),
     path('adminaddmenucategory/',adminaddmenucategory),
+    path('adminsavemenucategory/',adminsavemenucategory),
+    path('admineditmenucategory/',admineditmenucategory),
+    path('admindeletemenucategory/',admindeletemenucategory),
 ]
