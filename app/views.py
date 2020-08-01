@@ -57,7 +57,8 @@ def adminlogout(request):
 def adminaddmenuitem(request):
 	try:
 		admin=request.session['admin']
-		return render(request,'adminpages/addmenuitem.html',{})
+		dic={'data':MenuCategoryData.objects.all()}
+		return render(request,'adminpages/addmenuitem.html',dic)
 	except:
 		return redirect('/index/')
 @csrf_exempt
@@ -80,7 +81,8 @@ def adminsavemenuitem(request):
 			Item_Price=price
 			)
 		obj.save()
-		dic={'msg':'Item Saved'}
+		dic={'data':MenuCategoryData.objects.all(),
+			'msg':'Item Saved'}
 		return render(request,'adminpages/addmenuitem.html',dic)
 	else:
 		return redirect('/index/')

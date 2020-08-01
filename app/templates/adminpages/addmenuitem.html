@@ -114,9 +114,9 @@
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Select Menu Item Category</label>
                                 <select name="category" id="select" class="form-control">
-                                    <option value="C001">Starter</option>
-                                    <option value="C002">Main Course</option>
-                                    <option value="C003">Salad</option>
+                                    {% for x in data %}
+                                    <option value="{{ x.Category_ID|safe }}">{{ x.Category_Name|safe }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
