@@ -29,6 +29,19 @@
     <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="apple-touch-icon" href="{% static 'adminpages/apple-icon.png' %}">
+    <link rel="shortcut icon" href="{% static 'adminpages/favicon.ico' %}">
+
+
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/themify-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/selectFX/css/cs-skin-elastic.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'adminpages/vendors/chosen/chosen.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
 </head>
 
 <body>
@@ -112,10 +125,10 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Multi Select with Groups</strong>
+                                <strong class="card-title">Create New Order</strong>
                             </div>
                             <div class="card-body">
-                                
+                                <label>Select Menu Item</label>
                                 <select data-placeholder="Your Favorite Football Team" multiple class="standardSelect" tabindex="5">
                                     <option value=""></option>
                                     <optgroup label="NFC EAST">
@@ -131,7 +144,10 @@
                                         <option>Minnesota Vikings</option>
                                     </optgroup>
                                 </select>
-                                
+                                <div>
+                                <input class="btn btn-primary" name="Proceed" value="proceed">
+                                </div>
+
                             </div>
                         </div>
                         <div class="card">
