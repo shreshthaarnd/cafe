@@ -1,6 +1,6 @@
 	/*
   	Flaticon icon font: Flaticon
-  	Creation date: 09/04/2019 10:10
+  	Creation date: 27/07/2019 08:27
   	*/
 
 @font-face {
@@ -18,17 +18,20 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "Flaticon";
-    src: url("./Flaticon.svg#Flaticon") format("svg");
+    src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
   }
 }
 
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
   font-family: Flaticon;
-        font-size: 30px;
-       font-style: normal;
-       color: #fff;
+font-style: normal;
 }
 
-.flaticon-growth:before { content: "\f100"; }
-.flaticon-wallet:before { content: "\f101"; }
+.flaticon-left-arrow:before { content: "\f100"; }
+.flaticon-right-arrow:before { content: "\f101"; }
+.flaticon-play-button:before { content: "\f102"; }
+.flaticon-quote:before { content: "\f103"; }
+.flaticon-clock:before { content: "\f104"; }
+.flaticon-world:before { content: "\f105"; }
+.flaticon-mail:before { content: "\f106"; }
