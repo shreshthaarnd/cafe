@@ -30,18 +30,9 @@
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="apple-touch-icon" href="{% static 'adminpages/apple-icon.png' %}">
-    <link rel="shortcut icon" href="{% static 'adminpages/favicon.ico' %}">
-
-
-    <link rel="stylesheet" href="{% static 'adminpages/vendors/bootstrap/dist/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'adminpages/vendors/font-awesome/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'adminpages/vendors/themify-icons/css/themify-icons.css' %}">
-    <link rel="stylesheet" href="{% static 'adminpages/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'adminpages/vendors/selectFX/css/cs-skin-elastic.css' %}">
-
 
     <link rel="stylesheet" href="{% static 'adminpages/vendors/chosen/chosen.min.css' %}">
-    <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
+
 </head>
 
 <body>
@@ -128,28 +119,146 @@
                                 <strong class="card-title">Create New Order</strong>
                             </div>
                             <div class="card-body">
-                                <label>Select Menu Item</label>
-                                <select data-placeholder="Your Favorite Football Team" multiple class="standardSelect" tabindex="5">
-                                    <option value=""></option>
-                                    <optgroup label="NFC EAST">
-                                        <option>Dallas Cowboys</option>
-                                        <option>New York Giants</option>
-                                        <option>Philadelphia Eagles</option>
-                                        <option>Washington Redskins</option>
-                                    </optgroup>
-                                    <optgroup label="NFC NORTH">
-                                        <option>Chicago Bears</option>
-                                        <option>Detroit Lions</option>
-                                        <option>Green Bay Packers</option>
-                                        <option>Minnesota Vikings</option>
-                                    </optgroup>
-                                </select>
-                                <div>
-                                <input class="btn btn-primary" name="Proceed" value="proceed">
-                                </div>
-
+                                <form action="/adminsavecategory/" method="POST">
+                                    <label>Select Menu Item</label>
+                                    <select data-placeholder="Select Here" multiple class="standardSelect" tabindex="5">
+                                        <option value=""></option>
+                                        <optgroup label="NFC EAST">
+                                            <option>Dallas Cowboys</option>
+                                            <option>New York Giants</option>
+                                            <option>Philadelphia Eagles</option>
+                                            <option>Washington Redskins</option>
+                                        </optgroup>
+                                        <optgroup label="NFC NORTH">
+                                            <option>Chicago Bears</option>
+                                            <option>Detroit Lions</option>
+                                            <option>Green Bay Packers</option>
+                                            <option>Minnesota Vikings</option>
+                                        </optgroup>
+                                    </select>
+                                    <div class="form-group" style="padding-top:10px;">
+                                        <input type="submit" value="Proceed" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
+                                        <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
+                                        <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mediumModal">
+                                        Medium
+                                    </button>
+                                </form>
                             </div>
                         </div>
+                        <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="mediumModalLabel"><span style="font-weight:bold;">OR001</span> Order Menu Detail</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="overflow-y:auto;height:376px;">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Item</th>
+                                                    <th scope="col">Category</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Idli Sambhar</th>
+                                                    <td>South Indian</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity()"><i class="fa fa-minus"></i></button>
+                                                        <input type="number" value="5" id="quantity" style="width:50px;float:left;height:30px;text-align:center;" class="form-control">
+                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity()"><i class="fa fa-plus"></i></button>
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Create Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="card">
                             <div class="card-header">
                                 <strong class="card-title">On Going Order</strong>
@@ -234,7 +343,19 @@
         });
     });
 </script>
-
+<script type="text/javascript">
+    function addquantity(){
+        var quantity = parseInt(document.getElementById('quantity').value, 10);
+        var newquantity = quantity + 1;
+        document.getElementById('quantity').value = newquantity;
+    }
+    function subquantity(){
+        var quantity = parseInt(document.getElementById('quantity').value, 10);
+        var newquantity = quantity - 1;
+        document.getElementById('quantity').value = newquantity;
+    }
+    document.getElementById('mediumModal').Toggle();
+</script>
 </body>
 
 </html>
