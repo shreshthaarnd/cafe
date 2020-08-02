@@ -170,3 +170,9 @@ def menu(request):
 	return render(request,'menu.html',{})
 def singleblog(request):
 	return render(request,'single-blog.html',{})
+def adminorderhistory(request):
+	return render(request,'adminpages/orderhistory.html',{})
+def adminproceedtopay(request):
+	return render(request,'adminpages/proceedtopay.html',{})
+def admincustomerlist(request):
+	return render(request,'adminpages/customerlist.html',{})
