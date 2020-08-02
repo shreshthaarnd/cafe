@@ -10,26 +10,6 @@ import csv
 from datetime import date
 from django.conf import settings
 # Create your views here.
-def index(request):
-	return render(request,'index.html',{})
-def about(request):
-	return render(request,'about.html',{})
-def chefs(request):
-	return render(request,'chefs.html',{})
-def contact(request):
-	return render(request,'contact.html',{})
-def elements(request):
-	return render(request,'elements.html',{})
-def foodmenu(request):
-	return render(request,'food_menu.html',{})
-def singleblog(request):
-	return render(request,'single-blog.html',{})
-def adminlogin(request):
-	return render(request,'adminpages/login.html',{})
-def adminlist(request):
-	return render(request,'adminpages/agentlist.html',{})
-def adminaddcategory(request):
-	return render(request,'adminpages/addcategory.html',{})
 @csrf_exempt
 def adminlogincheck(request):
 	if request.method=='POST':
@@ -174,3 +154,21 @@ def admindiscountcouponlist(request):
 	return render(request,'adminpages/discountcouponlist.html',{})
 def adminongoingorder(request):
 	return render(request,'adminpages/ongoingorder.html',{})
+def index(request):
+	return render(request,'index.html',{})
+def adminlogin(request):
+	return render(request,'adminpages/login.html',{})
+def adminlist(request):
+	return render(request,'adminpages/list.html',{})
+def about(request):
+	return render(request,'about.html',{})
+def blog(request):
+	return render(request,'blog.html',{})
+def contact(request):
+	return render(request,'contact.html',{})
+def elements(request):
+	return render(request,'elements.html',{})
+def menu(request):
+	return render(request,'menu.html',{})
+def singleblog(request):
+	return render(request,'single-blog.html',{})
