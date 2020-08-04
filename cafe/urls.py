@@ -44,4 +44,7 @@ urlpatterns = [
     path('menu/',menu),
     path('singleblog/',singleblog),
     path('admincreateorder/',admincreateorder),
+    path('adminorderhistory/',adminorderhistory),
+    path('adminproceedtopay/',adminproceedtopay),
+    path('admincustomerlist/',admincustomerlist),
 ]
