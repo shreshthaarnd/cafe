@@ -46,4 +46,5 @@ urlpatterns = [
     path('adminorderhistory/',adminorderhistory),
     path('adminproceedtopay/',adminproceedtopay),
     path('admincustomerlist/',admincustomerlist),
+    path('menucategory/',menucategory),
 ]

@@ -178,3 +178,5 @@ def adminproceedtopay(request):
 	return render(request,'adminpages/proceedtopay.html',{})
 def admincustomerlist(request):
 	return render(request,'adminpages/customerlist.html',{})
+def menucategory(request):
+	return render(request,'menucategory.html',{})
