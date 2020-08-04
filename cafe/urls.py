@@ -43,4 +43,5 @@ urlpatterns = [
     path('elements/',elements),
     path('menu/',menu),
     path('singleblog/',singleblog),
+    path('admincreateorder/',admincreateorder),
 ]
