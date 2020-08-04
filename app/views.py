@@ -153,7 +153,34 @@ def adminadddiscountcoupon(request):
 def admindiscountcouponlist(request):
 	return render(request,'adminpages/discountcouponlist.html',{})
 def adminongoingorder(request):
-	return render(request,'adminpages/ongoingorder.html',{})
+	try:
+		admin=request.session['admin']
+		dic={'ordermenudata':OrderMenuData.objects.all(),'items':MenuData.objects.all(), 'orderdata':OrderData.objects.all(), 'category':MenuCategoryData.objects.all()}
+		return render(request,'adminpages/ongoingorder.html',dic)
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def admincreateorder(request):
+	if request.method=='POST':
+		items=request.POST.getlist('items')
+		o="O00"
+		x=1
+		oid=o+str(x)
+		while OrderData.objects.filter(Order_ID=oid).exists():
+			x=x+1
+			oid=o+str(x)
+		x=int(x)
+		obj=OrderData(Order_ID=oid).save()
+		for x in items:
+			obj=OrderMenuData(Item_ID=x,Order_ID=oid).save()
+		dic={'items':MenuData.objects.all(),
+			 'category':MenuCategoryData.objects.all(),
+			 'orderdata':OrderData.objects.all(),
+			 'ordermenudata':OrderMenuData.objects.all(),
+			'msg':'Order Created Successfully and Added to the Below List'}
+		return render(request,'adminpages/ongoingorder.html',dic)
+	else:
+		return redirect('/index/')
 def index(request):
 	return render(request,'index.html',{})
 def adminlogin(request):
@@ -180,3 +207,13 @@ def admincustomerlist(request):
 	return render(request,'adminpages/customerlist.html',{})
 def menucategory(request):
 	return render(request,'menucategory.html',{})
+def adminblockedcustomer(request):
+	return render(request,'adminpages/blockedcustomer.html',{})
+def adminchangemanager(request):
+	return render(request,'adminpages/changemanager.html',{})
+def admindeactivemenu(request):
+	return render(request,'adminpages/deactivemenu.html',{})
+def admindiscountcouponhistory(request):
+	return render(request,'adminpages/discountcouponhistory.html',{})
+def adminpaymenthistory(request):
+	return render(request,'adminpages/paymenthistory.html',{})

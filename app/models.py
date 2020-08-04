@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import date
 from django.conf import settings
-# Create your models here.
 
 class MenuData(models.Model):
 	Add_Date=models.DateTimeField(auto_now=True)
@@ -18,3 +17,18 @@ class MenuCategoryData(models.Model):
 	Category_Name=models.CharField(max_length=50)
 	class Meta:
 		db_table="MenuCategoryData"
+
+class OrderData(models.Model):
+	Add_Date=models.DateTimeField(auto_now=True)
+	Order_ID=models.CharField(max_length=100, primary_key=True)
+	Customer_ID=models.CharField(max_length=50, default='Not Availiable')
+	Pay_ID=models.CharField(max_length=50, default='Not Availiable')
+	class Meta:
+		db_table="OrderData"
+
+class OrderMenuData(models.Model):
+	Item_ID=models.CharField(max_length=50)
+	Order_ID=models.CharField(max_length=100)
+	Quantity=models.CharField(max_length=50, default="1")
+	class Meta:
+		db_table="OrderMenuData"
