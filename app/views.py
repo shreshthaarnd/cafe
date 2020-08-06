@@ -155,7 +155,10 @@ def admindiscountcouponlist(request):
 def adminongoingorder(request):
 	try:
 		admin=request.session['admin']
-		dic={'ordermenudata':OrderMenuData.objects.all(),'items':MenuData.objects.all(), 'orderdata':OrderData.objects.all(), 'category':MenuCategoryData.objects.all()}
+		dic={'ordermenudata':OrderMenuData.objects.all(),
+			'items':MenuData.objects.all(),
+			'orderdata':OrderData.objects.all(),
+			'category':MenuCategoryData.objects.all()}
 		return render(request,'adminpages/ongoingorder.html',dic)
 	except:
 		return redirect('/index/')
@@ -179,6 +182,20 @@ def admincreateorder(request):
 			 'ordermenudata':OrderMenuData.objects.all(),
 			'msg':'Order Created Successfully and Added to the Below List'}
 		return render(request,'adminpages/ongoingorder.html',dic)
+	else:
+		return redirect('/index/')
+@csrf_exempt
+def adminsaveordermenu(request):
+	if request.method == 'POST':
+		orderid=request.POST.get('orderid')
+		for x in OrderMenuData.objects.filter(Order_ID=orderid):
+			obj=OrderMenuData.objects.filter(Order_ID=orderid, Item_ID=x.Item_ID)
+			quantity=request.POST.get(x.Item_ID+x.Order_ID)
+			if quantity == '0':
+				obj.delete()
+			else:
+				obj.update(Quantity=quantity)
+		return redirect('/adminongoingorder/')
 	else:
 		return redirect('/index/')
 def index(request):
