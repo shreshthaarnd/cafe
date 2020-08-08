@@ -32,3 +32,24 @@ class OrderMenuData(models.Model):
 	Quantity=models.CharField(max_length=50, default="1")
 	class Meta:
 		db_table="OrderMenuData"
+
+class CustomerData(models.Model):
+	Add_Date=models.DateTimeField(auto_now=True)
+	Customer_ID=models.CharField(max_length=50, primary_key=True)
+	Name=models.CharField(max_length=100)
+	Mobile=models.CharField(max_length=15)
+	Email=models.CharField(max_length=50)
+	Address=models.CharField(max_length=200, default='Not Availiable')
+	City=models.CharField(max_length=20, default='Not Availiable')
+	State=models.CharField(max_length=20, default='Not Availiable')
+	class Meta:
+		db_table="CustomerData"
+
+class PaymentData(models.Model):
+	Add_Date=models.DateTimeField(auto_now=True)
+	Pay_ID=models.CharField(max_length=50, primary_key=True)
+	Order_ID=models.CharField(max_length=100)
+	Customer_ID=models.CharField(max_length=15)
+	Amount=models.CharField(max_length=50)
+	class Meta:
+		db_table="PaymentData"

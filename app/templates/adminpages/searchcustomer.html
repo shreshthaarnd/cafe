@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cafe - On Going Order</title>
+    <title>Cafe - Search Customer</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -150,22 +150,15 @@
                                 <strong class="card-title">Create New Order</strong>
                             </div>
                             <div class="card-body">
-                                <form action="/admincreateorder/" method="POST">
-                                    <label>Select Menu Item</label>
-                                    <select data-placeholder="Select Here" multiple class="standardSelect" name="items" tabindex="5">
+                                <form action="/admincustomersearchresult/" method="GET" id="customersearch">
+                                    <label style="font-weight:bold;">If customer not found in the list then add customer detail below :</label>
+                                    <select data-placeholder="Search Customer By Mobile Number or Email ID or Name" class="standardSelect" tabindex="1" onchange="searchcustomer()" name="cid">
                                         <option value=""></option>
-                                        {% for y in category %}
-                                            <optgroup label="{{ y.Category_Name }}">
-                                              {% for x in items %}
-                                                {% if x.Item_Category == y.Category_ID %}
-                                                    <option value="{{ x.Item_ID|safe }}">{{ x.Item_Name|safe }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </optgroup>    
+                                        {% for x in customers %}
+                                        <option value="{{ x.Customer_ID|safe }}">{{ x.Name|safe }} ({{ x.Mobile|safe }}, {{ x.Email|safe }})</option>
                                         {% endfor %}
                                     </select>
                                     <div class="form-group" style="padding-top:10px;">
-                                        <input type="submit" value="Proceed" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
                                         <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
                                         <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
                                     </div>
@@ -173,122 +166,119 @@
                             </div>
                         </div>
                         
-
-
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">On Going Order</strong>
-                            </div>
-                            <div class="card-body">
-                                <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Date & Time</th>
-                                            <th>Order ID</th>
-                                            <th>Customer ID</th>
-                                            <th>Menu Detail</th>
-                                            <th>Pay Now</th>
-                                            <th>Cancel</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for x in orderdata %}
-                                        <tr>
-                                            <td>{{ x.Add_Date|safe }}</td>
-                                            <td>{{ x.Order_ID|safe }}</td>
-                                            <td>{{ x.Customer_ID|safe }}</td>
-                                            <td><a href="" data-toggle="modal" data-target="#{{ x.Order_ID|safe }}mediumModal" class="btn btn-primary">View Menu</a></td>
-                                            <td><a href="/adminsearchcustomer/?orderid={{ x.Order_ID|safe }}" class="btn btn-success">Pay</a></td>
-                                            <td><a href="/admincancelorder/?orderid={{ x.Order_ID|safe }}" class="btn btn-danger">Cancel</a></td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
-                    {% for x in orderdata %}
-                    <div class="modal fade" id="{{ x.Order_ID|safe }}mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="mediumModalLabel"><span style="font-weight:bold;">{{ x.Order_ID|safe }}</span> Order Menu Detail</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                    
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Proceed to pay</strong>
+                    </div>
+                    <div class="card-body">
+                    <!-- Credit Card -->
+                        <div id="pay-invoice">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h3 class="text-center">Pay Invoice <span style="font-weight:bold;">{{ orderid|safe }}</span></h3>
+                                </div>
+                                <hr>
+                                <form action="" method="post" novalidate="novalidate">
+                                    <div class="form-group text-center">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
+                                            <li class="list-inline-item"><i class="fa fa-cc-mastercard fa-2x"></i></li>
+                                            <li class="list-inline-item"><i class="fa fa-cc-amex fa-2x"></i></li>
+                                            <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
+                                        </ul>
                                     </div>
-                                    <div class="modal-body" style="overflow-y:auto;height:376px;">
-                                        <div class="row form-group">
-                                            <div class="col col-md-12">
-                                                <form action="/adminaddmoreitemstoorder/" method="POST">
-                                                <div class="input-group" style="width:90%;float:left;">
-                                                    <select data-placeholder="Add More Menu Items Here" multiple id="input2-group2" class="form-control standardSelect" name="items" tabindex="5">
-                                                        <option value=""></option>
-                                                        {% for y in category %}
-                                                            <optgroup label="{{ y.Category_Name }}">
-                                                              {% for q in items %}
-                                                                {% if q.Item_Category == y.Category_ID %}
-                                                                    <option value="{{ q.Item_ID|safe }}">{{ q.Item_Name|safe }}</option>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                            </optgroup>    
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                                <div class="input-group-btn" style="float:left;width:10%;">
-                                                    <input type="hidden" value="{{ x.Order_ID|safe }}" name="orderid">
-                                                    <input type="submit" style="width:100%;height:30px;text-align:center;padding:2px;" class="btn btn-primary" value="Add">
-                                                </div>
-                                                </form>
+                                    <div class="form-group">
+                                        <label for="cc-payment" class="control-label mb-1">Payment amount</label>
+                                        <input id="cc-pament" name="cc-payment" type="text" class="form-control" value="{{ totalamount|safe }}.00" disabled>
+                                    </div>
+                                    {% if result %}
+                                    {% for x in result %}
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Customer Name *</label>
+                                        <input id="cc-name" name="name" type="text" class="form-control" value="{{ x.Name|safe }}">
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Mobile Number *</label>
+                                        <input id="cc-name" name="mobile" type="text" class="form-control" value="{{ x.Mobile|safe }}">
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Email Address *</label>
+                                        <input id="cc-name" name="email" type="text" class="form-control" value="{{ x.Email|safe }}">
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Address</label>
+                                        <input id="cc-name" name="address" type="text" class="form-control" value="{{ x.Address|safe }}">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="cc-exp" class="control-label mb-1">State</label>
+                                                <input id="cc-exp" name="state" type="tel" class="form-control" value="{{ x.State|safe }}">
                                             </div>
                                         </div>
-                                        <form action="/adminsaveordermenu/" method="POST">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Item</th>
-                                                    <th scope="col">Category</th>
-                                                    <th scope="col">Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for w in ordermenudata %}
-                                                {% if x.Order_ID == w.Order_ID %}
-                                                <tr>
-                                                    {% for y in items %}
-                                                    {% if w.Item_ID == y.Item_ID %}
-                                                    <th scope="row">{{ y.Item_Name }}</th>
-                                                    <td>
-                                                        {% for z in category %}
-                                                        {% if y.Item_Category == z.Category_ID %}
-                                                        {{ z.Category_Name|safe }}
-                                                        {% endif %}
-                                                        {% endfor %}
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-sm" style="float:left;" onclick="subquantity({{ w.Item_ID|safe }}{{ x.Order_ID|safe }}quantity);"><i class="fa fa-minus"></i></button>
-                                                        <input type="number" value="{{ w.Quantity|safe }}" id="{{ w.Item_ID|safe }}{{ x.Order_ID|safe }}quantity" style="width:50px;float:left;height:30px;text-align:center;" name="{{ w.Item_ID|safe }}{{ x.Order_ID|safe }}" class="form-control">
-                                                        <button type="button" class="btn btn-success btn-sm" style="float:left;" onclick="addquantity({{ w.Item_ID|safe }}{{ x.Order_ID|safe }}quantity);"><i class="fa fa-plus"></i></button>
-                                                    </td>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                        <div class="col-6">
+                                            <label for="x_card_code" class="control-label mb-1">City</label>
+                                            <div class="input-group">
+                                                <input id="x_card_code" name="city" type="text" class="form-control" value="{{ x.City|safe }}">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% else %}
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Customer Name *</label>
+                                        <input id="cc-name" name="name" type="text" class="form-control" value="" required>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-                                        <input type="hidden" value="{{ x.Order_ID|safe }}" name="orderid">
-                                        <button type="submit" class="btn btn-primary">Apply Changes</button>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Mobile Number *</label>
+                                        <input id="cc-name" name="mobile" type="text" class="form-control" value="" required>
                                     </div>
-                                    </form>
-                                </div>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Email Address *</label>
+                                        <input id="cc-name" name="email" type="text" class="form-control" value="" required>
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label for="cc-name" class="control-label mb-1">Address</label>
+                                        <input id="cc-name" name="address" type="text" class="form-control" value="">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="cc-exp" class="control-label mb-1">State</label>
+                                                <input id="cc-exp" name="state" type="text" class="form-control" value="">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="x_card_code" class="control-label mb-1">City</label>
+                                            <div class="input-group">
+                                                <input id="x_card_code" name="city" type="text" class="form-control" value="">
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="form-group has-success" style="width:100%;padding:14px;">
+                                            <select data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" name="paymode">
+                                                <option value=""></option>
+                                                <option value="Cash">Pay By Cash</option>
+                                                <option value="Card">Pay By Card</option>
+                                                <option value="QR">Pay By QR Code</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                        <i class="fa fa-lock fa-lg"></i>&nbsp;
+                                        <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ totalamount|safe }}.00</span>
+                                        <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        {% endfor %}
 
+                    </div>
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
@@ -332,20 +322,9 @@
     });
 </script>
 <script type="text/javascript">
-    function addquantity(idd){
-        var quantity = parseInt(idd.value, 10);
-        var newquantity = quantity + 1;
-        idd.value = newquantity;
-    }
-    function subquantity(idd){
-        var quantity = parseInt(idd.value, 10);
-        var newquantity = quantity - 1;
-        if (newquantity < 0){
-            idd.value = 0;    
-        }
-        else{
-            idd.value = newquantity;
-        }
+    function searchcustomer(){
+        document.getElementById('process').style.display = 'block';
+        document.getElementById('customersearch').submit();
     }
 </script>
 </body>

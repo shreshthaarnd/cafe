@@ -10,6 +10,42 @@ import csv
 from datetime import date
 from django.conf import settings
 # Create your views here.
+def index(request):
+	return render(request,'index.html',{})
+def adminlogin(request):
+	return render(request,'adminpages/login.html',{})
+def adminlist(request):
+	return render(request,'adminpages/list.html',{})
+def about(request):
+	return render(request,'about.html',{})
+def blog(request):
+	return render(request,'blog.html',{})
+def contact(request):
+	return render(request,'contact.html',{})
+def elements(request):
+	return render(request,'elements.html',{})
+def menu(request):
+	return render(request,'menu.html',{})
+def singleblog(request):
+	return render(request,'single-blog.html',{})
+def adminorderhistory(request):
+	return render(request,'adminpages/orderhistory.html',{})
+def adminproceedtopay(request):
+	return render(request,'adminpages/proceedtopay.html',{})
+def admincustomerlist(request):
+	return render(request,'adminpages/customerlist.html',{})
+def menucategory(request):
+	return render(request,'menucategory.html',{})
+def adminblockedcustomer(request):
+	return render(request,'adminpages/blockedcustomer.html',{})
+def adminchangemanager(request):
+	return render(request,'adminpages/changemanager.html',{})
+def admindeactivemenu(request):
+	return render(request,'adminpages/deactivemenu.html',{})
+def admindiscountcouponhistory(request):
+	return render(request,'adminpages/discountcouponhistory.html',{})
+def adminpaymenthistory(request):
+	return render(request,'adminpages/paymenthistory.html',{})
 @csrf_exempt
 def adminlogincheck(request):
 	if request.method=='POST':
@@ -198,27 +234,64 @@ def adminsaveordermenu(request):
 		return redirect('/adminongoingorder/')
 	else:
 		return redirect('/index/')
-def index(request):
-	return render(request,'index.html',{})
-def adminlogin(request):
-	return render(request,'adminpages/login.html',{})
-def adminlist(request):
-	return render(request,'adminpages/list.html',{})
-def about(request):
-	return render(request,'about.html',{})
-def blog(request):
-	return render(request,'blog.html',{})
-def contact(request):
-	return render(request,'contact.html',{})
-def elements(request):
-	return render(request,'elements.html',{})
-def menu(request):
-	return render(request,'menu.html',{})
-def singleblog(request):
-	return render(request,'single-blog.html',{})
-def adminorderhistory(request):
-	return render(request,'adminpages/orderhistory.html',{})
-def adminproceedtopay(request):
-	return render(request,'adminpages/proceedtopay.html',{})
-def admincustomerlist(request):
-	return render(request,'adminpages/customerlist.html',{})
+@csrf_exempt
+def adminaddmoreitemstoorder(request):
+	if request.method=='POST':
+		items=request.POST.getlist('items')
+		oid=request.POST.get('orderid')
+		for x in items:
+			if OrderMenuData.objects.filter(Item_ID=x,Order_ID=oid).exists():
+				quantity=0
+				for x in OrderMenuData.objects.filter(Item_ID=x,Order_ID=oid):
+					quantity=int(x.Quantity)
+				OrderMenuData.objects.filter(Item_ID=x,Order_ID=oid).update(Quantity=str(quantity+1))
+			else:
+				obj=OrderMenuData(Item_ID=x,Order_ID=oid).save()
+		return redirect('/adminongoingorder/')
+	else:
+		return redirect('/index/')
+
+def admincancelorder(request):
+	if request.method=='GET':
+		oid=request.GET.get('orderid')
+		OrderData.objects.filter(Order_ID=oid).delete()
+		OrderMenuData.objects.filter(Order_ID=oid).delete()
+		return redirect('/adminongoingorder/')
+	else:
+		return redirect('/index/')
+
+def adminsearchcustomer(request):
+	try:
+		admin=request.session['admin']
+		oid=request.GET.get('orderid')
+		request.session['orderid'] = oid
+		total=0
+		for x in OrderMenuData.objects.filter(Order_ID=oid):
+			for y in MenuData.objects.filter(Item_ID=x.Item_ID):
+				price=int(y.Item_Price)
+				total=total+(price*int(x.Quantity))
+		dic={'customers':CustomerData.objects.all(),
+			'orderid':oid,
+			'totalamount':str(total)}
+		return render(request,'adminpages/searchcustomer.html',dic)
+	except:
+		return redirect('/index/')
+
+def admincustomersearchresult(request):
+	try:
+		admin=request.session['admin']
+		cid=request.GET.get('cid')
+		result=CustomerData.objects.filter(Customer_ID=cid)
+		oid=request.session['orderid']
+		total=0
+		for x in OrderMenuData.objects.filter(Order_ID=oid):
+			for y in MenuData.objects.filter(Item_ID=x.Item_ID):
+				price=int(y.Item_Price)
+				total=total+(price*int(x.Quantity))
+		dic={'customers':CustomerData.objects.all(),
+			'result':result,
+			'orderid':oid,
+			'totalamount':str(total)}
+		return render(request,'adminpages/searchcustomer.html',dic)
+	except:
+		return redirect('/index/')
