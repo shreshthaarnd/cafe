@@ -103,10 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-from django.utils import timezone
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = timezone.now()
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
