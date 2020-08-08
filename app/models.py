@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import date
 from django.conf import settings
 
 class MenuData(models.Model):

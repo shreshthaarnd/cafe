@@ -7,7 +7,6 @@ from django.http import HttpResponse
 import uuid
 #from app.myutil import *
 import csv
-from datetime import date
 from django.conf import settings
 # Create your views here.
 def index(request):
