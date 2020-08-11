@@ -151,13 +151,10 @@
                             </div>
                             <div class="card-body">
                                 <form action="/admincustomersearchresult/" method="GET" id="customersearch">
-                                    <label style="font-weight:bold;">If customer not found in the list then add customer detail below :</label>
-                                    <select data-placeholder="Search Customer By Mobile Number or Email ID or Name" class="standardSelect" tabindex="1" onchange="searchcustomer()" name="cid">
-                                        <option value=""></option>
-                                        {% for x in customers %}
-                                        <option value="{{ x.Customer_ID|safe }}">{{ x.Name|safe }} ({{ x.Mobile|safe }}, {{ x.Email|safe }})</option>
-                                        {% endfor %}
-                                    </select>
+                                    <label style="font-weight:bold;">Enter Customer Mobile Number and Press Enter</label>
+                                    <div class="form-group">
+                                        <input type="text" onchange="searchcustomer()" placeholder="Enter Customer's Mobile Number" name="cmobile" class="form-control">
+                                    </div>
                                     <div class="form-group" style="padding-top:10px;">
                                         <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
                                         <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
@@ -181,7 +178,7 @@
                                     <h3 class="text-center">Pay Invoice <span style="font-weight:bold;">{{ orderid|safe }}</span></h3>
                                 </div>
                                 <hr>
-                                <form action="" method="post" novalidate="novalidate">
+                                <form action="" method="POST">
                                     <div class="form-group text-center">
                                         <ul class="list-inline">
                                             <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>

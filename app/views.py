@@ -277,10 +277,10 @@ def adminsearchcustomer(request):
 		return redirect('/index/')
 
 def admincustomersearchresult(request):
-	try:
+#	try:
 		admin=request.session['admin']
-		cid=request.GET.get('cid')
-		result=CustomerData.objects.filter(Customer_ID=cid)
+		cmobile=request.GET.get('cmobile')
+		result=CustomerData.objects.filter(Mobile=cmobile)
 		oid=request.session['orderid']
 		total=0
 		for x in OrderMenuData.objects.filter(Order_ID=oid):
@@ -292,5 +292,5 @@ def admincustomersearchresult(request):
 			'orderid':oid,
 			'totalamount':str(total)}
 		return render(request,'adminpages/searchcustomer.html',dic)
-	except:
-		return redirect('/index/')
+#	except:
+#		return redirect('/index/')
