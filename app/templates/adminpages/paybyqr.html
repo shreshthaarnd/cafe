@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cafe - Add Menu Item</title>
+    <title>Cafe - Pay By QR</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="{% static 'adminpages/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}">
 
     <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'w3.css' %}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
@@ -95,7 +94,6 @@
         </nav>
     </aside><!-- /#left-panel -->
 
-
     <!-- Right Panel -->
 
     <div id="right-panel" class="right-panel">
@@ -137,80 +135,31 @@
             </div>
         </div>
 
-        <div style="padding:30px;">
+        <div class="content mt-3">
             <div class="card">
-                <div class="card-header"><strong>Add Menu Item</strong><small> Form</small></div>
+                <div class="card-header"><strong>Pay By QR</strong><small> Form</small></div>
                     <div class="card-body card-block">
-                        <form action="/adminsavemenuitem/" method="POST">
+                      <div>
+                        <h4>Total Amount To Pay</h4>
+                        <h1><i class="fa fa-inr">400.00</i></h1>
+                        <form style="padding-top:20px;"action="/adminsavemenucategory/" method="POST">
                             <div class="form-group">
-                                <label for="company" class=" form-control-label">Select Menu Item Category</label>
-                                <select name="category" id="select" class="form-control">
-                                    {% for x in data %}
-                                    <option value="{{ x.Category_ID|safe }}">{{ x.Category_Name|safe }}</option>
-                                    {% endfor %}
-                                </select>
+                                <label for="company" class=" form-control-label">Enter Transaction ID</label>
+                                <input type="text" placeholder="Enter Here" name="name" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="company" class=" form-control-label">Menu Item Name</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="company" class=" form-control-label">Menu Item Price</label>
-                                <input type="number" placeholder="Price Here" name="price" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
+                                <input type="submit" value="Submit" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
                                 <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
                                 <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
                             </div>
                         </form>
+                      </div>  
                     </div>
                 </div>
             </div>
-            <div class="content mt-3">
-            <div class="card">
-                <div class="card-header"><strong>Menu Items</strong><small> List</small>
-                </div>
-                    <div class="card-body card-block">
-                        <div>
-                            <h3>Menu Item Category</h3>
-                            <div style="padding:20px;"class="row">
-                                <div style="padding:10px;"class="column">
-                                    <div style="padding:10px;"class="w3-card-4 w3-light-blue">
-                                        <span style="color:black;font-size:18px;">Menu Item 1</span>
-                                    </div>
-                                    <a style="width:100%;"class="btn btn-danger fa fa-times"href=""></a>
-                                </div>
-                                <div style="padding:10px;"class="column">
-                                    <div style="padding:10px;"class="w3-card-4 w3-light-blue">
-                                        <span style="color:black;font-size:18px;">Menu Item 1</span>
-                                    </div>
-                                    <a style="width:100%;"class="btn btn-danger fa fa-times"href=""></a>
-                                </div>
-                                <div style="padding:10px;"class="column">
-                                    <div style="padding:10px;"class="w3-card-4 w3-light-blue">
-                                        <span style="color:black;font-size:18px;">Menu Item 1</span>
-                                    </div>
-                                    <a style="width:100%;"class="btn btn-danger fa fa-times"href=""></a>
-                                </div>
-                                <div style="padding:10px;"class="column">
-                                    <div style="padding:10px;"class="w3-card-4 w3-light-blue">
-                                        <span style="color:black;font-size:18px;">Menu Item 1</span>
-                                    </div>
-                                    <a style="width:100%;"class="btn btn-danger fa fa-times"href=""></a>
-                                </div>
-                                <div style="padding:10px;"class="column">
-                                    <div style="padding:10px;"class="w3-card-4 w3-light-blue">
-                                        <span style="color:black;font-size:18px;">Menu Item 1</span>
-                                    </div>
-                                    <a style="width:100%;"class="btn btn-danger fa fa-times"href=""></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            </div>
+            
     </div><!-- /#right-panel -->
+
 
     <!-- Right Panel -->
 

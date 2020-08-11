@@ -294,3 +294,9 @@ def admincustomersearchresult(request):
 		return render(request,'adminpages/searchcustomer.html',dic)
 #	except:
 #		return redirect('/index/')
+def adminpaybycard(request):
+	return render(request,'adminpages/paybycard.html',{})
+def adminpaybycash(request):
+	return render(request,'adminpages/paybycash.html',{})
+def adminpaybyqr(request):
+	return render(request,'adminpages/paybyqr.html',{})
