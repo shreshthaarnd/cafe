@@ -207,8 +207,15 @@
                             </div>
                         </div>
                     </div>
-                    {% for x in orderdata %}
-                    <div class="modal fade" id="{{ x.Order_ID|safe }}mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" style="z-index:99999;">
+
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+
+
+    </div><!-- /#right-panel -->
+    {% for x in orderdata %}
+                    <div class="modal fade" id="{{ x.Order_ID|safe }}mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" style="z-index:50000;">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -288,14 +295,6 @@
                             </div>
                         </div>
                         {% endfor %}
-
-                </div>
-            </div><!-- .animated -->
-        </div><!-- .content -->
-
-
-    </div><!-- /#right-panel -->
-
     <!-- Right Panel -->
 
 
