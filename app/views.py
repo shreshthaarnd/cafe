@@ -300,3 +300,5 @@ def adminpaybycash(request):
 	return render(request,'adminpages/paybycash.html',{})
 def adminpaybyqr(request):
 	return render(request,'adminpages/paybyqr.html',{})
+def adminbilinginvoice(request):
+	return render(request,'adminpages/bilinginvoice.html',{})
