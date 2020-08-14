@@ -72,7 +72,9 @@ def adminlogout(request):
 def adminaddmenuitem(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':MenuCategoryData.objects.all()}
+		menu=MenuData.objects.filter(Status='Active')
+		dic={'data':MenuCategoryData.objects.all(),
+			'menu':menu}	
 		return render(request,'adminpages/addmenuitem.html',dic)
 	except:
 		return redirect('/index/')
@@ -109,7 +111,7 @@ def admineditmenuitem(request):
 		itemid=request.GET.get('Id')
 		obj=MenuData.objects.filter(Item_ID=itemid)
 		obj.update(Item_Name=name, Item_Price=price)
-		return redirect('/adminmenulist/')
+		return redirect('/adminaddmenuitem/')
 	except:
 		return redirect('/index/')
 
@@ -117,8 +119,9 @@ def admindeletemenuitem(request):
 	try:
 		admin=request.session['admin']
 		itemid=request.GET.get('Id')
-		obj=MenuData.objects.filter(Item_ID=itemid).delete()
-		return redirect('/adminmenulist/')
+		print(itemid)
+		obj=MenuData.objects.filter(Item_ID=itemid).update(Status='Deactive')
+		return redirect('/adminaddmenuitem/')
 	except:
 		return redirect('/index/')
 
@@ -277,20 +280,97 @@ def adminsearchcustomer(request):
 		return redirect('/index/')
 
 def admincustomersearchresult(request):
-#	try:
+	try:
 		admin=request.session['admin']
 		cmobile=request.GET.get('cmobile')
 		result=CustomerData.objects.filter(Mobile=cmobile)
 		oid=request.session['orderid']
 		total=0
-		for x in OrderMenuData.objects.filter(Order_ID=oid):
-			for y in MenuData.objects.filter(Item_ID=x.Item_ID):
-				price=int(y.Item_Price)
-				total=total+(price*int(x.Quantity))
-		dic={'customers':CustomerData.objects.all(),
-			'result':result,
-			'orderid':oid,
-			'totalamount':str(total)}
-		return render(request,'adminpages/searchcustomer.html',dic)
-#	except:
-#		return redirect('/index/')
+		if CustomerData.objects.filter(Mobile=cmobile).exists():
+			for x in CustomerData.objects.filter(Mobile=cmobile):
+				OrderData.objects.filter(Order_ID=oid).update(Customer_ID=x.Customer_ID)
+			for x in OrderMenuData.objects.filter(Order_ID=oid):
+				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
+					price=int(y.Item_Price)
+					total=total+(price*int(x.Quantity))
+			dic={'customers':CustomerData.objects.all(),
+				'result':result,
+				'orderid':oid,
+				'totalamount':str(total)}
+			return render(request,'adminpages/searchcustomer.html',dic)
+		else:
+			for x in OrderMenuData.objects.filter(Order_ID=oid):
+				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
+					price=int(y.Item_Price)
+					total=total+(price*int(x.Quantity))
+			dic={'customers':CustomerData.objects.all(),
+				'cmobile':cmobile,
+				'orderid':oid,
+				'msg':'No Customer Record Found, Add Customer Detail Below.',
+				'totalamount':str(total)}
+			return render(request,'adminpages/searchcustomer.html',dic)
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def admincompletepayment(request):
+	if request.method=='POST':
+		paymode=request.POST.get('paymode')
+		oid=request.session['orderid']
+		amount=request.POST.get('amount')
+		name=request.POST.get('name')
+		mobile=request.POST.get('mobile')
+		email=request.POST.get('email')
+		address=request.POST.get('address')
+		state=request.POST.get('state')
+		city=request.POST.get('city')
+		if CustomerData.objects.filter(Mobile=mobile).exists():
+			if paymode=='Cash':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybycash.html',dic)
+			elif paymode=='Card':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybycard.html',dic)
+			elif paymode=='QR':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybyqr.html',dic)
+		else:
+			o="CUS00"
+			x=1
+			oid=o+str(x)
+			while CustomerData.objects.filter(Customer_ID=oid).exists():
+				x=x+1
+				oid=o+str(x)
+			x=int(x)
+			obj=CustomerData(
+				Customer_ID=oid,
+				Name=name,
+				Mobile=mobile,
+				Email=email,
+				Address=address,
+				City=city,
+				State=state
+				)
+			obj.save()
+			OrderData.objects.filter(Order_ID=oid).update(Customer_ID=oid)
+			if paymode=='Cash':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybycash.html',dic)
+			elif paymode=='Card':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybycard.html',dic)
+			elif paymode=='QR':
+				dic={'amount':amount,
+					'orderid':oid}
+				return render(request,'adminpages/paybyqr.html',dic)
+
+def adminpaybycard(request):
+	return render(request,'adminpages/paybycard.html',{})
+def adminpaybycash(request):
+	return render(request,'adminpages/paybycash.html',{})
+def adminpaybyqr(request):
+	return render(request,'adminpages/paybyqr.html',{})

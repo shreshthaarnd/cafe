@@ -7,6 +7,7 @@ class MenuData(models.Model):
 	Item_Category=models.CharField(max_length=20)
 	Item_Name=models.CharField(max_length=50)
 	Item_Price=models.CharField(max_length=10)
+	Status=models.CharField(max_length=10, default='Active')
 	class Meta:
 		db_table="MenuData"
 
@@ -49,6 +50,8 @@ class PaymentData(models.Model):
 	Pay_ID=models.CharField(max_length=50, primary_key=True)
 	Order_ID=models.CharField(max_length=100)
 	Customer_ID=models.CharField(max_length=15)
+	PayMode=models.CharField(max_length=10)
+	Receipt_Number=models.CharField(max_length=50, default='NA if Cash')
 	Amount=models.CharField(max_length=50)
 	class Meta:
 		db_table="PaymentData"

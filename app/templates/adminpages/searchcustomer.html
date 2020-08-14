@@ -178,7 +178,7 @@
                                     <h3 class="text-center">Pay Invoice <span style="font-weight:bold;">{{ orderid|safe }}</span></h3>
                                 </div>
                                 <hr>
-                                <form action="" method="POST">
+                                <form action="/admincompletepayment/" method="POST">
                                     <div class="form-group text-center">
                                         <ul class="list-inline">
                                             <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="cc-payment" class="control-label mb-1">Payment amount</label>
-                                        <input id="cc-pament" name="cc-payment" type="text" class="form-control" value="{{ totalamount|safe }}.00" disabled>
+                                        <input id="cc-pament" name="amount" type="text" class="form-control" value="{{ totalamount|safe }}.00">
                                     </div>
                                     {% if result %}
                                     {% for x in result %}
@@ -230,7 +230,7 @@
                                     </div>
                                     <div class="form-group has-success">
                                         <label for="cc-name" class="control-label mb-1">Mobile Number *</label>
-                                        <input id="cc-name" name="mobile" type="text" class="form-control" value="" required>
+                                        <input id="cc-name" name="mobile" type="text" class="form-control" value="{{ cmobile|safe }}" required>
                                     </div>
                                     <div class="form-group has-success">
                                         <label for="cc-name" class="control-label mb-1">Email Address *</label>
