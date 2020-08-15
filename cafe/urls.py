@@ -21,10 +21,6 @@ urlpatterns = [
     path('adminadddiscountcoupon/',adminadddiscountcoupon),
     path('admindiscountcouponlist/',admindiscountcouponlist),
     path('adminongoingorder/',adminongoingorder),
-    path('adminpaybycard/',adminpaybycard),
-    path('adminpaybycash/',adminpaybycash),
-    path('adminpaybyqr/',adminpaybyqr),
-    path('adminbilinginvoice/',adminbilinginvoice),
     path('index/',index),
     path('about/',about),
     path('blog/',blog),
@@ -49,4 +45,5 @@ urlpatterns = [
     path('admincustomersearchresult/',admincustomersearchresult),
     path('admincompletepayment/',admincompletepayment),
     path('admingeneratebill/',admingeneratebill),
+    path('admintax/',admintax),
 ]

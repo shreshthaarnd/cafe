@@ -5,7 +5,7 @@ from django.core.paginator import *
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
 import uuid
-#from app.myutil import *
+from app.myutil import *
 import csv
 from django.conf import settings
 import datetime
@@ -28,12 +28,8 @@ def menu(request):
 	return render(request,'menu.html',{})
 def singleblog(request):
 	return render(request,'single-blog.html',{})
-def adminorderhistory(request):
-	return render(request,'adminpages/orderhistory.html',{})
 def adminproceedtopay(request):
 	return render(request,'adminpages/proceedtopay.html',{})
-def admincustomerlist(request):
-	return render(request,'adminpages/customerlist.html',{})
 def menucategory(request):
 	return render(request,'menucategory.html',{})
 def adminblockedcustomer(request):
@@ -44,8 +40,6 @@ def admindeactivemenu(request):
 	return render(request,'adminpages/deactivemenu.html',{})
 def admindiscountcouponhistory(request):
 	return render(request,'adminpages/discountcouponhistory.html',{})
-def adminpaymenthistory(request):
-	return render(request,'adminpages/paymenthistory.html',{})
 @csrf_exempt
 def adminlogincheck(request):
 	if request.method=='POST':
@@ -196,7 +190,7 @@ def adminongoingorder(request):
 		admin=request.session['admin']
 		dic={'ordermenudata':OrderMenuData.objects.all(),
 			'items':MenuData.objects.all(),
-			'orderdata':OrderData.objects.all(),
+			'orderdata':OrderData.objects.filter(Status='Active'),
 			'category':MenuCategoryData.objects.all()}
 		return render(request,'adminpages/ongoingorder.html',dic)
 	except:
@@ -204,7 +198,6 @@ def adminongoingorder(request):
 @csrf_exempt
 def admincreateorder(request):
 	if request.method=='POST':
-		items=request.POST.getlist('items')
 		o="O00"
 		x=1
 		oid=o+str(x)
@@ -213,13 +206,14 @@ def admincreateorder(request):
 			oid=o+str(x)
 		x=int(x)
 		obj=OrderData(Order_ID=oid).save()
-		for x in items:
-			obj=OrderMenuData(Item_ID=x,Order_ID=oid).save()
+		for x in MenuData.objects.all():
+			if not request.POST.get(x.Item_ID) == None:
+				obj=OrderMenuData(Item_ID=request.POST.get(x.Item_ID),Order_ID=oid).save()
 		dic={'items':MenuData.objects.all(),
 			 'category':MenuCategoryData.objects.all(),
-			 'orderdata':OrderData.objects.all(),
+			 'orderdata':OrderData.objects.filter(Status='Active'),
 			 'ordermenudata':OrderMenuData.objects.all(),
-			'msg':'Order Created Successfully and Added to the Below List'}
+			'msg':'Order '+oid+' Created Successfully and Added to the Below List'}
 		return render(request,'adminpages/ongoingorder.html',dic)
 	else:
 		return redirect('/index/')
@@ -324,19 +318,27 @@ def admincompletepayment(request):
 		address=request.POST.get('address')
 		state=request.POST.get('state')
 		city=request.POST.get('city')
+		tax=''
+		for x in TaxData.objects.all():
+			tax=x.Tax
+		taxamount=(int(amount[0:len(amount)-3])/100)*int(tax)
+		amountwithtax=taxamount+int(amount[0:len(amount)-3])
 		if CustomerData.objects.filter(Mobile=mobile).exists():
 			if paymode=='Cash':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'Cash',
 					'orderid':oid}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'Card',
 					'orderid':oid}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'QR',
 					'orderid':oid}
 				return render(request,'adminpages/paybyqr.html',dic)
@@ -361,16 +363,19 @@ def admincompletepayment(request):
 			OrderData.objects.filter(Order_ID=oid).update(Customer_ID=oid)
 			if paymode=='Cash':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'Cash',
 					'orderid':oid}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'Card',
 					'orderid':oid}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
+					'taxamount':amountwithtax,
 					'mode':'QR',
 					'orderid':oid}
 				return render(request,'adminpages/paybyqr.html',dic)
@@ -383,37 +388,74 @@ def admingeneratebill(request):
 		o="PAY00"
 		x=1
 		oid=o+str(x)
-		PaymentData.objects.all().delete()
 		while PaymentData.objects.filter(Pay_ID=oid).exists():
 			x=x+1
 			oid=o+str(x)
 		x=int(x)
 		cusid=''
+		tax=''
+		for x in TaxData.objects.all():
+			tax=x.Tax
+		taxamount=(int(amount[0:len(amount)-3])/100)*int(tax)
+		amountwithtax=taxamount+int(amount[0:len(amount)-3])
 		for x in OrderData.objects.filter(Order_ID=orderid):
 			cusid=x.Customer_ID
-			obj=PaymentData(
-				Pay_ID=oid,
-				Order_ID=orderid,
-				Customer_ID=x.Customer_ID,
-				PayMode=mode,
-				Amount=amount
-			)
-			obj.save()
+			if not mode=='Cash':
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Receipt_Number=request.POST.get('reciept'),
+					Amount=amount,
+					AmountwithTax=amountwithtax
+				)
+				obj.save()
+				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
+			else:
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Amount=amount,
+					AmountwithTax=amountwithtax
+				)
+				obj.save()
+				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
 		dic={'orderid':orderid,
+			'gst':taxamount/2,
+			'tax':int(tax)/2,
 			'date':datetime.date.today(),
 			'amount':amount,
+			'taxamount':amountwithtax,
 			'payid':oid,
 			'paymode':mode,
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
-			'items':MenuData.objects.all(),
+			'items':GetOrderMenuList(orderid),
 			'customerdata':CustomerData.objects.filter(Customer_ID=cusid)}
 		return render(request,'adminpages/bilinginvoice.html',dic)
+def adminorderhistory(request):
+	try:
+		admin=request.session['admin']
+		dic={'data':OrderData.objects.filter(Status='Paid')}
+		return render(request,'adminpages/orderhistory.html',dic)
+	except:
+		return redirect('/index/')
+def adminpaymenthistory(request):
+	try:
+		admin=request.session['admin']
+		dic={'data':PaymentData.objects.all()}
+		return render(request,'adminpages/paymenthistory.html',dic)
+	except:
+		return redirect('/index/')
+def admincustomerlist(request):
+	try:
+		admin=request.session['admin']
+		dic={'data':CustomerData.objects.all()}
+		return render(request,'adminpages/customerlist.html',dic)
+	except:
+		return redirect('/index/')
 
-def adminpaybycard(request):
-	return render(request,'adminpages/paybycard.html',{})
-def adminpaybycash(request):
-	return render(request,'adminpages/paybycash.html',{})
-def adminpaybyqr(request):
-	return render(request,'adminpages/paybyqr.html',{})
-def adminbilinginvoice(request):
-	return render(request,'adminpages/bilinginvoice.html',{})
+def admintax(request):
+	return render(request,'adminpages/tax.html',{})

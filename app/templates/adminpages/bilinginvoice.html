@@ -48,7 +48,7 @@
                </div> 
                <div style="padding-right:20px;padding-left:20px;"class="row">
                     <div style="padding:20px;width:50%;"class="column">
-                        <p>
+                        <p style="color:black;">
                             {% for x in customerdata %}
                             <span style="font-size:25px;font-weight:bold;">{{ x.Name|safe }}</span><br>
                             <span style="font-size:18px;">{{ x.Email|safe }}, +91-{{ x.Mobile|safe }}</span><br><span style="font-size:18px;">{{ x.Address|safe }}</span><br>
@@ -89,13 +89,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for x in items %}
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>Chole Bhature</td>
-                                            <td>5</td>
-                                            <td><i class="fa fa-inr"></i>150</td>
-                                            <td><i class="fa fa-inr"></i>750</td>
+                                            <th scope="row">{{ x.sr|safe }}</th>
+                                            <td>{{ x.name|safe }}</td>
+                                            <td>{{ x.quantity|safe }}</td>
+                                            <td><i class="fa fa-inr"></i>{{ x.rate|safe }}</td>
+                                            <td><i class="fa fa-inr"></i>{{ x.total|safe }}</td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                </div>
@@ -107,16 +109,16 @@
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amount|safe }}</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:bold;">CGST 9%</td>
-                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>50</td>
+                                <td style="font-weight:bold;">CGST {{ tax|safe }}%</td>
+                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ gst|safe }}</td>
                             </tr>
                             <tr>
-                                <td style="font-weight:bold;">SGST  9%</td>
-                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>50</td>
+                                <td style="font-weight:bold;">SGST {{ tax|safe }}%</td>
+                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ gst|safe }}</td>
                             </tr>
-                            <tr>
+                            <tr style="font-size:25px;">
                                 <td style="font-weight:bold;">TOTAL TO PAY</td>
-                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>850</td>
+                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ taxamount|safe }}</td>
                             </tr>
                         </table>
                     </div>

@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cafe Liant - Change Manager</title>
+    <title>Cafe - Tax</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -90,8 +90,7 @@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
-    </aside>
-    <!-- Left Panel -->
+    </aside><!-- /#left-panel -->
 
     <!-- Right Panel -->
 
@@ -136,20 +135,14 @@
 
         <div class="content mt-3">
             <div class="card">
-                <div class="card-header"><strong>Change Manager</strong><small> Form</small></div>
+                <div class="card-header"><strong>Tax</strong><small> Form</small></div>
                     <div class="card-body card-block">
                         <form action="/adminsavemenucategory/" method="POST">
+                            <h2 style="margin-bottom:10px;">Current Tax % : <span style="font-weight:bold;">18%</span></h2>
+                            <h3 style="margin-bottom:10px;">Total Tax Amount Collected This Year : <span style="font-weight:bold;"><i class="fa fa-inr"></i>100:00</span></h3>
                             <div class="form-group">
-                                <label for="company" class=" form-control-label">Old Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="company" class=" form-control-label">New Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="company" class=" form-control-label">Admin Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
+                                <label for="company" class=" form-control-label">New Tax %</label>
+                                <input type="text" placeholder="Enter Here" name="name" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
@@ -161,6 +154,7 @@
                 </div>
             </div>
             
+    </div><!-- /#right-panel -->
 
 
     <!-- Right Panel -->

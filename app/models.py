@@ -18,6 +18,11 @@ class MenuCategoryData(models.Model):
 	class Meta:
 		db_table="MenuCategoryData"
 
+class TaxData(models.Model):
+	Tax=models.CharField(max_length=5)
+	class Meta:
+		db_table="TaxData"
+
 class OrderData(models.Model):
 	Add_Date=models.DateTimeField(auto_now=True)
 	Order_ID=models.CharField(max_length=100, primary_key=True)
@@ -54,5 +59,6 @@ class PaymentData(models.Model):
 	PayMode=models.CharField(max_length=10)
 	Receipt_Number=models.CharField(max_length=50, default='NA if Cash')
 	Amount=models.CharField(max_length=50)
+	AmountwithTax=models.CharField(max_length=50)
 	class Meta:
 		db_table="PaymentData"

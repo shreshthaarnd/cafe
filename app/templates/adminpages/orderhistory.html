@@ -56,37 +56,35 @@
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Add Menu Category</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminaddmenuitem/">Add Menu Items</a></li>
-                            <li><i class="fa fa-users"></i><a href="/adminmenulist/">Menu Item List</a></li>
-                            <li><i class="fa fa-users"></i><a href="/adminmenulist/">Deactive Menu Item List</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Discount Coupon</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Add Discount Coupon</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Discount Coupon List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Discount Coupon History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponhistory/">Discount Coupon History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Order Desk</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">On Going Orders</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Order History</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Payment History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminongoingorder/">On Going Orders</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminorderhistory/">Order History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminpaymenthistory/">Payment History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Customer Desk</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Customers List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Blocked Customers</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admincustomerlist/">Customers List</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminblockedcustomer/">Blocked Customers</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Settings</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Change Manager Password</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminchangemanager/">Change Manager Password</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -152,17 +150,21 @@
                                         <tr>
                                             <th>Date&Time</th>
                                             <th>Order ID</th>
+                                            <th>Pay ID</th>
                                             <th>Customer ID</th>
                                             <th>Reciept</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for x in data %}
                                         <tr>
-                                           <td>09/05/2020&04:00</td>
-                                           <td>TYU78</td>
-                                           <td>YUIO89</td>
-                                           <td><a class="btn btn-primary"href="">Print</a></td> 
+                                           <td>{{ x.Add_Date|safe }}</td>
+                                           <td>{{ x.Order_ID|safe }}</td>
+                                           <td>{{ x.Pay_ID|safe }}</td>
+                                           <td>{{ x.Customer_ID|safe }}</td>
+                                           <td><a class="btn btn-primary"href="">Print</a></td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

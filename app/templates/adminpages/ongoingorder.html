@@ -27,12 +27,19 @@
     <link rel="stylesheet" href="{% static 'adminpages/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}">
 
     <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'w3.css' %}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="apple-touch-icon" href="{% static 'adminpages/apple-icon.png' %}">
 
     <link rel="stylesheet" href="{% static 'adminpages/vendors/chosen/chosen.min.css' %}">
-
+<style type="text/css">
+        input[type=checkbox]:checked + div {
+           border: 2px solid red;
+           border-radius:10px;
+           box-shadow:2px 2px 5px;
+         }
+</style>
 </head>
 
 <body>
@@ -60,37 +67,35 @@
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Add Menu Category</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminaddmenuitem/">Add Menu Items</a></li>
-                            <li><i class="fa fa-users"></i><a href="/adminmenulist/">Menu Item List</a></li>
-                            <li><i class="fa fa-users"></i><a href="/adminmenulist/">Deactive Menu Item List</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Discount Coupon</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Add Discount Coupon</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Discount Coupon List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Discount Coupon History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponhistory/">Discount Coupon History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Order Desk</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">On Going Orders</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Order History</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Payment History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminongoingorder/">On Going Orders</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminorderhistory/">Order History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminpaymenthistory/">Payment History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Customer Desk</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Customers List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Blocked Customers</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admincustomerlist/">Customers List</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminblockedcustomer/">Blocked Customers</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Settings</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Change Manager Password</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminchangemanager/">Change Manager Password</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -151,19 +156,17 @@
                             </div>
                             <div class="card-body">
                                 <form action="/admincreateorder/" method="POST">
-                                    <label>Select Menu Item</label>
-                                    <select data-placeholder="Select Here" multiple class="standardSelect" name="items" tabindex="5">
-                                        <option value=""></option>
-                                        {% for y in category %}
-                                            <optgroup label="{{ y.Category_Name }}">
-                                              {% for x in items %}
-                                                {% if x.Item_Category == y.Category_ID %}
-                                                    <option value="{{ x.Item_ID|safe }}">{{ x.Item_Name|safe }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </optgroup>    
-                                        {% endfor %}
-                                    </select>
+                                    {% for x in category %}
+                                    <label style="font-size:25px;font-weight:bold;">{{ x.Category_Name|safe }}</label><br>
+                                    {% for y in items %}
+                                    {% if x.Category_ID == y.Item_Category %}
+                                    <label>
+                                        <input type="checkbox" name="{{ y.Item_ID|safe }}" style="position:absolute;opacity:0;height:0;width:0;cursor:pointer;" value="{{ y.Item_ID|safe }}">
+                                        <div style="padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card w3-yellow">{{ y.Item_Name|safe }}</div>
+                                    </label>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
                                     <div class="form-group" style="padding-top:10px;">
                                         <input type="submit" value="Proceed" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
                                         <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
@@ -308,17 +311,11 @@
     <script src="{% static 'adminpages/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/pdfmake/build/vfs_fonts.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
     <script src="{% static 'adminpages/assets/js/init-scripts/data-table/datatables-init.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/jquery/dist/jquery.min.js' %}"></script>
-<script src="{% static 'adminpages/vendors/popper.js/dist/umd/popper.min.js' %}"></script>
-<script src="{% static 'adminpages/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'adminpages/assets/js/main.js' %}"></script>
 <script src="{% static 'adminpages/vendors/chosen/chosen.jquery.min.js' %}"></script>
 
 <script>

@@ -140,16 +140,20 @@
                 <div class="card-header"><strong>Pay By Card</strong><small> for {{ orderid|safe }}</small></div>
                     <div class="card-body card-block">
                       <div>
-                        <h4>Total Amount To Pay</h4>
-                        <h1><i class="fa fa-inr"> {{ amount|safe }}</i></h1>
-                        <form style="padding-top:20px;"action="/adminsavemenucategory/" method="POST">
+                        <h4>Total Amount To Pay Including Tax</h4>
+                        <h1><i class="fa fa-inr"> {{ taxamount|safe }}</i></h1>
+                        <form style="padding-top:20px;"action="/admingeneratebill/" method="POST" target="_blank">
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Enter Reciept Number</label>
-                                <input type="text" placeholder="Enter Here" name="name" class="form-control">
+                                <input type="text" placeholder="Enter Here" name="reciept" class="form-control" required>
+                                <input type="hidden" value="{{ orderid|safe }}" name="orderid">
+                                <input type="hidden" value="{{ amount|safe }}" name="amount">
+                                <input type="hidden" value="{{ mode|safe }}" name="mode">
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Submit" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
-                                <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
+                                <input type="submit" value="Generate Invoice" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';">
+                                <a href="/adminongoingorder/" style="margin-left:10px;" class="btn btn-primary">Back to Order Desk</a><br>
+                                <label id="process" style="display:none;color:green;font-weight:bold;">Invoice has been generated to another tab.</label>
                                 <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
                             </div>
                         </form>

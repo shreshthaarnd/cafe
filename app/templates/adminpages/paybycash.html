@@ -140,8 +140,8 @@
                 <div class="card-header"><strong>Pay By Cash</strong><small> for {{ orderid|safe }}</small></div>
                     <div class="card-body card-block">
                       <div>
-                        <h4>Total Amount To Pay</h4>
-                        <h1><i class="fa fa-inr"> {{ amount|safe }}</i></h1>
+                        <h4>Total Amount To Pay Including Tax</h4>
+                        <h1><i class="fa fa-inr"> {{ taxamount|safe }}</i></h1>
                             
                             <div class="form-group" style="margin-top:20px;">
                                 <label for="company" class=" form-control-label">Enter Received Amount</label>
@@ -156,7 +156,8 @@
                                     <input type="hidden" value="{{ orderid|safe }}" name="orderid">
                                     <input type="hidden" value="{{ amount|safe }}" name="amount">
                                     <input type="hidden" value="{{ mode|safe }}" name="mode">
-                                    <input type="submit" value="Generate Invoice" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
+                                    <input type="submit" value="Generate Invoice" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';">
+                                    <a href="/adminongoingorder/" style="margin-left:10px;" class="btn btn-primary">Back to Order Desk</a><br>
                                     <label id="process" style="display:none;color:green;font-weight:bold;">Invoice has been generated to another tab.</label>
                                     <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
                                 </form>
@@ -194,7 +195,7 @@
     <script type="text/javascript">
         function GetPayBack(){
             var ramount=parseInt(document.getElementById('ramount').value);
-            document.getElementById('bamount').value=ramount-parseInt({{ amount|safe }});
+            document.getElementById('bamount').value=ramount-parseInt({{ taxamount|safe }});
         }
     </script>
 </body>
