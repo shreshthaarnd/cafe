@@ -23,6 +23,7 @@ class OrderData(models.Model):
 	Order_ID=models.CharField(max_length=100, primary_key=True)
 	Customer_ID=models.CharField(max_length=50, default='Not Availiable')
 	Pay_ID=models.CharField(max_length=50, default='Not Availiable')
+	Status=models.CharField(max_length=50, default='Active')
 	class Meta:
 		db_table="OrderData"
 
@@ -46,7 +47,7 @@ class CustomerData(models.Model):
 		db_table="CustomerData"
 
 class PaymentData(models.Model):
-	Add_Date=models.DateTimeField(auto_now=True)
+	Add_Date=models.DateField(auto_now=True)
 	Pay_ID=models.CharField(max_length=50, primary_key=True)
 	Order_ID=models.CharField(max_length=100)
 	Customer_ID=models.CharField(max_length=15)

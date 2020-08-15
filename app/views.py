@@ -8,6 +8,7 @@ import uuid
 #from app.myutil import *
 import csv
 from django.conf import settings
+import datetime
 # Create your views here.
 def index(request):
 	return render(request,'index.html',{})
@@ -326,14 +327,17 @@ def admincompletepayment(request):
 		if CustomerData.objects.filter(Mobile=mobile).exists():
 			if paymode=='Cash':
 				dic={'amount':amount,
+					'mode':'Cash',
 					'orderid':oid}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
+					'mode':'Card',
 					'orderid':oid}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
+					'mode':'QR',
 					'orderid':oid}
 				return render(request,'adminpages/paybyqr.html',dic)
 		else:
@@ -357,16 +361,53 @@ def admincompletepayment(request):
 			OrderData.objects.filter(Order_ID=oid).update(Customer_ID=oid)
 			if paymode=='Cash':
 				dic={'amount':amount,
+					'mode':'Cash',
 					'orderid':oid}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
+					'mode':'Card',
 					'orderid':oid}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
+					'mode':'QR',
 					'orderid':oid}
 				return render(request,'adminpages/paybyqr.html',dic)
+@csrf_exempt
+def admingeneratebill(request):
+	if request.method=='POST':
+		orderid=request.POST.get('orderid')
+		amount=request.POST.get('amount')
+		mode=request.POST.get('mode')
+		o="PAY00"
+		x=1
+		oid=o+str(x)
+		PaymentData.objects.all().delete()
+		while PaymentData.objects.filter(Pay_ID=oid).exists():
+			x=x+1
+			oid=o+str(x)
+		x=int(x)
+		cusid=''
+		for x in OrderData.objects.filter(Order_ID=orderid):
+			cusid=x.Customer_ID
+			obj=PaymentData(
+				Pay_ID=oid,
+				Order_ID=orderid,
+				Customer_ID=x.Customer_ID,
+				PayMode=mode,
+				Amount=amount
+			)
+			obj.save()
+		dic={'orderid':orderid,
+			'date':datetime.date.today(),
+			'amount':amount,
+			'payid':oid,
+			'paymode':mode,
+			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
+			'items':MenuData.objects.all(),
+			'customerdata':CustomerData.objects.filter(Customer_ID=cusid)}
+		return render(request,'adminpages/bilinginvoice.html',dic)
 
 def adminpaybycard(request):
 	return render(request,'adminpages/paybycard.html',{})
@@ -374,3 +415,5 @@ def adminpaybycash(request):
 	return render(request,'adminpages/paybycash.html',{})
 def adminpaybyqr(request):
 	return render(request,'adminpages/paybyqr.html',{})
+def adminbilinginvoice(request):
+	return render(request,'adminpages/bilinginvoice.html',{})

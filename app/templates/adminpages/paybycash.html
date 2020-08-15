@@ -152,9 +152,14 @@
                                 <input type="text" placeholder="Enter Here" name="bamount" class="form-control" id="bamount">
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Submit" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
-                                <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
-                                <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
+                                <form action="/admingeneratebill/" target="_blank" method="POST">
+                                    <input type="hidden" value="{{ orderid|safe }}" name="orderid">
+                                    <input type="hidden" value="{{ amount|safe }}" name="amount">
+                                    <input type="hidden" value="{{ mode|safe }}" name="mode">
+                                    <input type="submit" value="Generate Invoice" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
+                                    <label id="process" style="display:none;color:green;font-weight:bold;">Invoice has been generated to another tab.</label>
+                                    <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
+                                </form>
                             </div>
 
                       </div>  
