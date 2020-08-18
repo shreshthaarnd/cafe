@@ -137,12 +137,11 @@
             <div class="card">
                 <div class="card-header"><strong>Tax</strong><small> Form</small></div>
                     <div class="card-body card-block">
-                        <form action="/adminsavemenucategory/" method="POST">
-                            <h2 style="margin-bottom:10px;">Current Tax % : <span style="font-weight:bold;">18%</span></h2>
-                            <h3 style="margin-bottom:10px;">Total Tax Amount Collected This Year : <span style="font-weight:bold;"><i class="fa fa-inr"></i>100:00</span></h3>
+                        <form action="/adminupdatetax/" method="POST">
+                            <h2 style="margin-bottom:10px;">Current Tax % : <span style="font-weight:bold;">{% for x in data %}{{ x.Tax|safe }}{% endfor %}%</span></h2>
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">New Tax %</label>
-                                <input type="text" placeholder="Enter Here" name="name" class="form-control">
+                                <input type="number" placeholder="Enter Here" name="tax" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>

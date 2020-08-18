@@ -458,4 +458,15 @@ def admincustomerlist(request):
 		return redirect('/index/')
 
 def admintax(request):
-	return render(request,'adminpages/tax.html',{})
+	try:
+		admin=request.session['admin']
+		dic={'data':TaxData.objects.all()}
+		return render(request,'adminpages/tax.html',dic)
+	except:
+		return redirect('/index/')
+
+@csrf_exempt
+def adminupdatetax(request):
+	if request.method=='POST':
+		TaxData.objects.all().update(Tax=request.POST.get('tax'))
+		return redirect('/admintax/')
