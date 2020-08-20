@@ -93,8 +93,10 @@ def adminsavemenuitem(request):
 			Item_Price=price
 			)
 		obj.save()
+		menu=MenuData.objects.filter(Status='Active')
 		dic={'data':MenuCategoryData.objects.all(),
-			'msg':'Item Saved'}
+			'msg':'Item Saved',
+			'menu':menu}
 		return render(request,'adminpages/addmenuitem.html',dic)
 	else:
 		return redirect('/index/')

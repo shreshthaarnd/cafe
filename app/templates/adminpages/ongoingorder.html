@@ -154,15 +154,19 @@
                             <div class="card-body">
                                 <form action="/admincreateorder/" method="POST">
                                     {% for x in category %}
-                                    <label style="font-size:25px;font-weight:bold;">{{ x.Category_Name|safe }}</label><br>
+                                    <br><a href="#" onclick="document.getElementById('cat{{ x.Category_Name|safe }}').style.display='block';"style="font-size:25px;font-weight:bold;">{{ x.Category_Name|safe }}</a><br>
+                                    <div class="w3-animate-top" id="cat{{ x.Category_Name|safe }}"style="display:none;">
                                     {% for y in items %}
                                     {% if x.Category_ID == y.Item_Category %}
+                                    
                                     <label>
                                         <input type="checkbox" name="{{ y.Item_ID|safe }}" style="position:absolute;opacity:0;height:0;width:0;cursor:pointer;" value="{{ y.Item_ID|safe }}">
                                         <div style="padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card w3-yellow">{{ y.Item_Name|safe }}</div>
                                     </label>
+                                    
                                     {% endif %}
                                     {% endfor %}
+                                    </div>
                                     {% endfor %}
                                     <div class="form-group" style="padding-top:10px;">
                                         <input type="submit" value="Proceed" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
