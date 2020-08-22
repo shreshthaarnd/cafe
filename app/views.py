@@ -269,9 +269,15 @@ def adminsearchcustomer(request):
 			for y in MenuData.objects.filter(Item_ID=x.Item_ID):
 				price=int(y.Item_Price)
 				total=total+(price*int(x.Quantity))
+		tax=''
+		for x in TaxData.objects.all():
+			tax=x.Tax
+		taxamount=(int(total)/100)*int(tax)
+		amountwithtax=taxamount+int(total)
 		dic={'customers':CustomerData.objects.all(),
 			'orderid':oid,
-			'totalamount':str(total)}
+			'totalamount':str(total),
+			'taxamount':amountwithtax}
 		return render(request,'adminpages/searchcustomer.html',dic)
 	except:
 		return redirect('/index/')
@@ -290,9 +296,15 @@ def admincustomersearchresult(request):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
 					price=int(y.Item_Price)
 					total=total+(price*int(x.Quantity))
+			tax=''
+			for x in TaxData.objects.all():
+				tax=x.Tax
+			taxamount=(int(total)/100)*int(tax)
+			amountwithtax=taxamount+int(total)
 			dic={'customers':CustomerData.objects.all(),
 				'result':result,
 				'orderid':oid,
+				'taxamount':amountwithtax,
 				'totalamount':str(total)}
 			return render(request,'adminpages/searchcustomer.html',dic)
 		else:
@@ -300,9 +312,15 @@ def admincustomersearchresult(request):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
 					price=int(y.Item_Price)
 					total=total+(price*int(x.Quantity))
+			tax=''
+			for x in TaxData.objects.all():
+				tax=x.Tax
+			taxamount=(int(total)/100)*int(tax)
+			amountwithtax=taxamount+int(total)
 			dic={'customers':CustomerData.objects.all(),
 				'cmobile':cmobile,
 				'orderid':oid,
+				'taxamount':amountwithtax,
 				'msg':'No Customer Record Found, Add Customer Detail Below.',
 				'totalamount':str(total)}
 			return render(request,'adminpages/searchcustomer.html',dic)

@@ -198,7 +198,7 @@
                                     <tbody>
                                         {% for x in orderdata %}
                                         <tr>
-                                            <td>{{ x.Add_Date|safe }}</td>
+                                            <td>{{ x.Add_Date.date|safe }}</td>
                                             <td>{{ x.Order_ID|safe }}</td>
                                             <td>{{ x.Customer_ID|safe }}</td>
                                             <td><a href="" data-toggle="modal" data-target="#{{ x.Order_ID|safe }}mediumModal" class="btn btn-primary">View Menu</a></td>
