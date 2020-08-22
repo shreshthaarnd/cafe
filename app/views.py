@@ -490,3 +490,9 @@ def adminupdatetax(request):
 	if request.method=='POST':
 		TaxData.objects.all().update(Tax=request.POST.get('tax'))
 		return redirect('/admintax/')
+def admincoincount(request):
+	return render(request,'adminpages/coinscount.html',{})
+def adminitemdiscount(request):
+	return render(request,'adminpages/itemdiscount.html',{})
+def adminmailbill(request):
+	return render(request,'adminpages/mailbill.html',{})

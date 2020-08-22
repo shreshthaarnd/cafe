@@ -152,9 +152,14 @@
                                 <strong class="card-title">Create New Order</strong>
                             </div>
                             <div class="card-body">
+                                <h2>Select Menu Item To Create Order</h2>
                                 <form action="/admincreateorder/" method="POST">
                                     {% for x in category %}
-                                    <br><a href="#" onclick="document.getElementById('cat{{ x.Category_Name|safe }}').style.display='block';"style="font-size:25px;font-weight:bold;">{{ x.Category_Name|safe }}</a><br>
+                                    <br>
+                                    <div class="card-header">
+                                    <a style="color:black;"href="#" onclick="document.getElementById('cat{{ x.Category_Name|safe }}').style.display='block';">{{ x.Category_Name|safe }}</a>
+                                    </div>
+                                    <br>
                                     <div class="w3-animate-top" id="cat{{ x.Category_Name|safe }}"style="display:none;">
                                     {% for y in items %}
                                     {% if x.Category_ID == y.Item_Category %}
