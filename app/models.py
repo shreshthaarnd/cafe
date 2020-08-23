@@ -23,6 +23,11 @@ class TaxData(models.Model):
 	class Meta:
 		db_table="TaxData"
 
+class CoinsData(models.Model):
+	Coins_Count=models.CharField(max_length=5)
+	class Meta:
+		db_table="CoinsData"
+
 class OrderData(models.Model):
 	Add_Date=models.DateTimeField(auto_now=True)
 	Order_ID=models.CharField(max_length=100, primary_key=True)
@@ -48,6 +53,7 @@ class CustomerData(models.Model):
 	Address=models.CharField(max_length=200, default='Not Availiable')
 	City=models.CharField(max_length=20, default='Not Availiable')
 	State=models.CharField(max_length=20, default='Not Availiable')
+	Coins_Wallet=models.CharField(max_length=10, default='0')
 	class Meta:
 		db_table="CustomerData"
 
