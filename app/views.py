@@ -508,6 +508,19 @@ def adminupdatecoincount(request):
 		CoinsData.objects.all().update(Coins_Count=request.POST.get('count'))
 		return redirect('/admincoincount/')
 def adminitemdiscount(request):
-	return render(request,'adminpages/itemdiscount.html',{})
+	try:
+		admin=request.session['admin']
+		dic={'data':MenuData.objects.filter(Status='Active')}
+		return render(request,'adminpages/itemdiscount.html',dic)
+	except:
+		return redirect('/index/')
+def adminsaveitemdiscount(request):
+	try:
+		admin=request.session['admin']
+		dic={'data':MenuData.objects.filter(Status='Active')}
+		return render(request,'adminpages/itemdiscount.html',dic)
+	except:
+		return redirect('/index/')
+
 def adminmailbill(request):
 	return render(request,'adminpages/mailbill.html',{})

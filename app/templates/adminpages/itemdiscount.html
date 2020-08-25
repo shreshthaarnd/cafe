@@ -141,13 +141,13 @@
                                 <label for="company" class=" form-control-label">Select Menu Item</label>
                                 <select name="category" id="select" class="form-control">
                                     {% for x in data %}
-                                    <option value="{{ x.Category_ID|safe }}">{{ x.Category_Name|safe }}</option>
+                                    <option value="{{ x.Item_Category|safe }}">{{ x.Item_Name|safe }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Discount %</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
+                                <input type="text" placeholder="Enter Here" name="name" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
