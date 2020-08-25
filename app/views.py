@@ -9,6 +9,7 @@ from app.myutil import *
 import csv
 from django.conf import settings
 import datetime
+from app.mailutil import *
 # Create your views here.
 def index(request):
 	return render(request,'index.html',{})
@@ -443,6 +444,10 @@ def admingeneratebill(request):
 				)
 				obj.save()
 				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
+		CustomerData.objects.filter(Customer_ID=cusid).update(Coins_Wallet=(str(int(CustomerData.objects.filter(Customer_ID=cusid)[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))
+		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
+		totalcoins=(str(int(CustomerData.objects.filter(Customer_ID=cusid)[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
+		sendbillemail(CustomerData.objects.filter(Customer_ID=cusid), orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
 		dic={'orderid':orderid,
 			'gst':taxamount/2,
 			'tax':int(tax)/2,
@@ -491,7 +496,17 @@ def adminupdatetax(request):
 		TaxData.objects.all().update(Tax=request.POST.get('tax'))
 		return redirect('/admintax/')
 def admincoincount(request):
-	return render(request,'adminpages/coinscount.html',{})
+	try:
+		admin=request.session['admin']
+		dic={'data':CoinsData.objects.all()}
+		return render(request,'adminpages/coinscount.html',dic)
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def adminupdatecoincount(request):
+	if request.method=='POST':
+		CoinsData.objects.all().update(Coins_Count=request.POST.get('count'))
+		return redirect('/admincoincount/')
 def adminitemdiscount(request):
 	return render(request,'adminpages/itemdiscount.html',{})
 def adminmailbill(request):

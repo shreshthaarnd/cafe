@@ -134,11 +134,11 @@
             <div class="card">
                 <div class="card-header"><strong>Coins Count</strong><small> Form</small></div>
                     <div class="card-body card-block">
-                        <form action="/adminupdatetax/" method="POST">
-                            <h2 style="margin-bottom:10px;">Current Coints Count Per <i class="fa fa-inr"></i>100 : <span style="font-weight:bold;">{% for x in data %}{{ x.Tax|safe }}{% endfor %}%</span></h2>
+                        <form action="/adminupdatecoincount/" method="POST">
+                            <h2 style="margin-bottom:10px;">Current Coints Count Per <i class="fa fa-inr"></i> 100 : <span style="font-weight:bold;">{% for x in data %}{{ x.Coins_Count|safe }}{% endfor %} Coins</span></h2>
                             <div class="form-group">
-                                <label for="company" class=" form-control-label">New Coins Count Per <i class="fa fa-inr"></i>100</label>
-                                <input type="number" placeholder="Enter Here" name="tax" class="form-control" required>
+                                <label for="company" class=" form-control-label">New Coins Count Per <i class="fa fa-inr"></i> 100</label>
+                                <input type="number" placeholder="Enter Here" name="count" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
