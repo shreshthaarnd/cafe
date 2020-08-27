@@ -268,8 +268,9 @@ def adminsearchcustomer(request):
 		total=0
 		for x in OrderMenuData.objects.filter(Order_ID=oid):
 			for y in MenuData.objects.filter(Item_ID=x.Item_ID):
-				price=int(y.Item_Price)
+				price=applyitemdiscount(y.Item_ID)
 				total=total+(price*int(x.Quantity))
+		
 		tax=''
 		for x in TaxData.objects.all():
 			tax=x.Tax
@@ -295,7 +296,7 @@ def admincustomersearchresult(request):
 				OrderData.objects.filter(Order_ID=oid).update(Customer_ID=x.Customer_ID)
 			for x in OrderMenuData.objects.filter(Order_ID=oid):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
-					price=int(y.Item_Price)
+					price=applyitemdiscount(y.Item_ID)
 					total=total+(price*int(x.Quantity))
 			tax=''
 			for x in TaxData.objects.all():
@@ -311,7 +312,7 @@ def admincustomersearchresult(request):
 		else:
 			for x in OrderMenuData.objects.filter(Order_ID=oid):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
-					price=int(y.Item_Price)
+					price=applyitemdiscount(y.Item_ID)
 					total=total+(price*int(x.Quantity))
 			tax=''
 			for x in TaxData.objects.all():
@@ -514,12 +515,13 @@ def adminitemdiscount(request):
 		return render(request,'adminpages/itemdiscount.html',dic)
 	except:
 		return redirect('/index/')
+@csrf_exempt
 def adminsaveitemdiscount(request):
-	try:
+	if request.method=='POST':
 		admin=request.session['admin']
-		dic={'data':MenuData.objects.filter(Status='Active')}
-		return render(request,'adminpages/itemdiscount.html',dic)
-	except:
+		MenuData.objects.filter(Item_ID=request.POST.get('itemid')).update(Discount=request.POST.get('discount'))
+		return redirect('/adminitemdiscount/')
+	else:
 		return redirect('/index/')
 
 def adminmailbill(request):

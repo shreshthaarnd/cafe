@@ -7,6 +7,7 @@ class MenuData(models.Model):
 	Item_Category=models.CharField(max_length=20)
 	Item_Name=models.CharField(max_length=50)
 	Item_Price=models.CharField(max_length=10)
+	Discount=models.CharField(max_length=10, default='0')
 	Status=models.CharField(max_length=10, default='Active')
 	class Meta:
 		db_table="MenuData"
