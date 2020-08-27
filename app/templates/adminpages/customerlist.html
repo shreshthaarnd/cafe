@@ -160,10 +160,10 @@
                                     <tbody>
                                         {% for x in data %}
                                         <tr>
-                                          <td>{{ x.Add_Date|safe }}</td> 
+                                          <td>{{ x.Add_Date.date|safe }}</td> 
                                           <td>{{ x.Customer_ID|safe }}</td>
                                           <td>{{ x.Coins_Wallet|safe }} Coins</td>
-                                          <td>{{ x.Customer_Name|safe }}</td>
+                                          <td>{{ x.Name|safe }}</td>
                                           <td>{{ x.Mobile|safe }}</td>
                                           <td>{{ x.Email|safe }}</td>
                                           <td>{{ x.Address|safe }}</td> 

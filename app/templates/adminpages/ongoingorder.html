@@ -195,6 +195,7 @@
                                         <tr>
                                             <th>Date & Time</th>
                                             <th>Order ID</th>
+                                            <th>Table No.</th>
                                             <th>Customer ID</th>
                                             <th>Menu Detail</th>
                                             <th>Pay Now</th>
@@ -206,6 +207,7 @@
                                         <tr>
                                             <td>{{ x.Add_Date.date|safe }}</td>
                                             <td>{{ x.Order_ID|safe }}</td>
+                                            <td>{% if x.Table_No == 'Not Assigned' %}<a class="btn btn-primary"href="">Assigned Table</a>{% else %}{{ x.Table_No|safe }}{% endif %}</td>
                                             <td>{{ x.Customer_ID|safe }}</td>
                                             <td><a href="" data-toggle="modal" data-target="#{{ x.Order_ID|safe }}mediumModal" class="btn btn-primary">View Menu</a></td>
                                             <td><a href="/adminsearchcustomer/?orderid={{ x.Order_ID|safe }}" class="btn btn-success">Pay</a></td>

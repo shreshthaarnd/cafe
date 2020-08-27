@@ -31,6 +31,7 @@ urlpatterns = [
     path('elements/',elements),
     path('menu/',menu),
     path('singleblog/',singleblog),
+    path('dashboard/',dashboard),
     path('admincreateorder/',admincreateorder),
     path('adminorderhistory/',adminorderhistory),
     path('adminproceedtopay/',adminproceedtopay),

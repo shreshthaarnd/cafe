@@ -256,7 +256,7 @@
                                         </div>
                                         {% endif %}
                                         <div class="form-group has-success" style="width:100%;padding:14px;">
-                                            <select data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" name="paymode">
+                                            <select onchange="document.getElementById('payment-button').disabled=false;"data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" name="paymode">
                                                 <option value=""></option>
                                                 <option value="Cash">Pay By Cash</option>
                                                 <option value="Card">Pay By Card</option>
@@ -266,9 +266,9 @@
 
                                     </div>
                                     <div>
-                                        <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                        <button disabled id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
                                         <i class="fa fa-lock fa-lg"></i>&nbsp;
-                                        <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ totalamount|safe }}.00</span>
+                                        <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ taxamount|safe }}0</span>
                                         <span id="payment-button-sending" style="display:none;">Sending…</span>
                                         </button>
                                     </div>
