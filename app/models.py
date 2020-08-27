@@ -32,6 +32,7 @@ class CoinsData(models.Model):
 class OrderData(models.Model):
 	Add_Date=models.DateTimeField(auto_now=True)
 	Order_ID=models.CharField(max_length=100, primary_key=True)
+	Table_No=models.CharField(max_length=50, default='Not Assigned')
 	Customer_ID=models.CharField(max_length=50, default='Not Availiable')
 	Pay_ID=models.CharField(max_length=50, default='Not Availiable')
 	Status=models.CharField(max_length=50, default='Active')

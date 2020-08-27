@@ -526,3 +526,5 @@ def adminsaveitemdiscount(request):
 
 def adminmailbill(request):
 	return render(request,'adminpages/mailbill.html',{})
+def dashboard(request):
+	return render(request,'dashboard.html',{})
