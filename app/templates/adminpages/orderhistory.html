@@ -161,7 +161,7 @@
                                            <td>{{ x.Order_ID|safe }}</td>
                                            <td>{{ x.Pay_ID|safe }}</td>
                                            <td>{{ x.Customer_ID|safe }}</td>
-                                           <td><a class="btn btn-primary"href="">Print</a></td>
+                                           <td><a class="btn btn-primary"href="/printinvoice/?orderid={{ x.Order_ID|safe }}">Print</a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

@@ -70,3 +70,16 @@ class PaymentData(models.Model):
 	AmountwithTax=models.CharField(max_length=50)
 	class Meta:
 		db_table="PaymentData"
+
+class InvoiceData(models.Model):
+	Order_ID=models.CharField(max_length=100)
+	Customer_ID=models.CharField(max_length=15)
+	TaxAmount=models.CharField(max_length=10)
+	Tax=models.CharField(max_length=10)
+	Date=models.CharField(max_length=10)
+	AmountwithTax=models.CharField(max_length=10)
+	Amount=models.CharField(max_length=10)
+	Pay_ID=models.CharField(max_length=10)
+	PayMode=models.CharField(max_length=10)
+	class Meta:
+		db_table="InvoiceData"

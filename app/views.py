@@ -449,6 +449,17 @@ def admingeneratebill(request):
 		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
 		totalcoins=(str(int(CustomerData.objects.filter(Customer_ID=cusid)[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
 		sendbillemail(CustomerData.objects.filter(Customer_ID=cusid), orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
+		InvoiceData(
+			Order_ID=orderid,
+			Customer_ID=cusid,
+			TaxAmount=str(taxamount/2),
+			Tax=str(int(tax)/2),
+			Date=datetime.date.today(),
+			AmountwithTax=amountwithtax,
+			Amount=amount,
+			Pay_ID=oid,
+			PayMode=mode
+		).save()
 		dic={'orderid':orderid,
 			'gst':taxamount/2,
 			'tax':int(tax)/2,
@@ -523,7 +534,25 @@ def adminsaveitemdiscount(request):
 		return redirect('/adminitemdiscount/')
 	else:
 		return redirect('/index/')
-
+def printinvoice(request):
+	try:
+		admin=request.session['admin']
+		orderid=request.GET.get('orderid')
+		orderdata=InvoiceData.objects.filter(Order_ID=orderid)[0]
+		dic={'orderid':orderid,
+			'gst':orderdata.TaxAmount,
+			'tax':orderdata.Tax,
+			'date':orderdata.Date,
+			'amount':orderdata.Amount,
+			'taxamount':orderdata.AmountwithTax,
+			'payid':orderdata.Pay_ID,
+			'paymode':orderdata.PayMode,
+			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
+			'items':GetOrderMenuList(orderid),
+			'customerdata':CustomerData.objects.filter(Customer_ID=orderdata.Customer_ID)}
+		return render(request,'adminpages/bilinginvoice.html',dic)
+	except:
+		return redirect('/index/')
 def adminmailbill(request):
 	return render(request,'adminpages/mailbill.html',{})
 def dashboard(request):
