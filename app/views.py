@@ -189,15 +189,15 @@ def adminadddiscountcoupon(request):
 def admindiscountcouponlist(request):
 	return render(request,'adminpages/discountcouponlist.html',{})
 def adminongoingorder(request):
-	try:
+	#try:
 		admin=request.session['admin']
 		dic={'ordermenudata':OrderMenuData.objects.all(),
 			'items':MenuData.objects.all(),
 			'orderdata':OrderData.objects.filter(Status='Active'),
 			'category':MenuCategoryData.objects.all()}
 		return render(request,'adminpages/ongoingorder.html',dic)
-	except:
-		return redirect('/index/')
+	#except:
+		#return redirect('/index/')
 @csrf_exempt
 def admincreateorder(request):
 	if request.method=='POST':
@@ -553,6 +553,16 @@ def printinvoice(request):
 		return render(request,'adminpages/bilinginvoice.html',dic)
 	except:
 		return redirect('/index/')
+@csrf_exempt
+def adminsettable(request):
+	if request.method=='POST':
+		orderid=request.POST.get('orderid')
+		table=request.POST.get('table')
+		OrderData.objects.filter(Order_ID=orderid).update(Table_No=table)
+		return redirect('/adminongoingorder/')
+	else:
+		return redirect('/index/')
+
 def adminmailbill(request):
 	return render(request,'adminpages/mailbill.html',{})
 def dashboard(request):
