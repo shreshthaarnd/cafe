@@ -146,6 +146,10 @@
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Enter Transaction ID</label>
                                 <input type="text" placeholder="Enter Here" name="reciept" class="form-control" required>
+                            <div class="form-group">
+                                <label for="company" class=" form-control-label">Apply Promocode (If Any)</label>
+                                <input type="text" placeholder="Enter Promocode" name="promo" class="form-control">
+                            </div>
                                 <input type="hidden" value="{{ orderid|safe }}" name="orderid">
                                 <input type="hidden" value="{{ amount|safe }}" name="amount">
                                 <input type="hidden" value="{{ mode|safe }}" name="mode">

@@ -136,18 +136,18 @@
             <div class="card">
                 <div class="card-header"><strong>Add Discount Coupon</strong><small> Form</small></div>
                     <div class="card-body card-block">
-                        <form action="/adminsavemenuitem/" method="POST">
+                        <form action="/savecoupon/" method="POST">
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Coupon Name</label>
                                 <input type="text" placeholder="Name Here" name="name" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Coupon Code</label>
-                                <input type="number" placeholder="Price Here" name="price" class="form-control">
+                                <input type="text" placeholder="Code Here" name="code" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="company" class=" form-control-label">Discount Percentage</label>
-                                <input type="number" placeholder="Price Here" name="price" class="form-control">
+                                <label for="company" class=" form-control-label">Discount %</label>
+                                <input type="text" placeholder="Percentage Here" name="percent" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>

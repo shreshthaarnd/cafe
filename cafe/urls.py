@@ -55,4 +55,6 @@ urlpatterns = [
     path('adminsaveitemdiscount/',adminsaveitemdiscount),
     path('printinvoice/',printinvoice),
     path('adminsettable/',adminsettable),
+    path('savecoupon/',savecoupon),
+    path('admindeletecoupon/',admindeletecoupon),
 ]

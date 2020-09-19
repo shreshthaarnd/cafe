@@ -147,18 +147,22 @@
                                     <thead>
                                         <tr>
                                             <th>Coupon ID</th>
+                                            <th>Coupon Name</th>
                                             <th>Coupon Code</th>
                                             <th>Discount %</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for x in data %}
                                         <tr>
-                                            <td>GHT56</td>
-                                            <td>56789</td>
-                                            <td>50%</td>
-                                            <td><a class="btn btn-danger"href="">Delete</a></td>
+                                            <td>{{ x.Coupon_ID|safe }}</td>
+                                            <td>{{ x.Coupon_Name|safe }}</td>
+                                            <td>{{ x.Coupon_Code|safe }}</td>
+                                            <td>{{ x.Discount_Percentage|safe }}%</td>
+                                            <td><a class="btn btn-danger" href="/admindeletecoupon/?cid={{ x.Coupon_ID|safe }}">Delete</a></td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

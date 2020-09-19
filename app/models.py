@@ -67,7 +67,9 @@ class PaymentData(models.Model):
 	PayMode=models.CharField(max_length=10)
 	Receipt_Number=models.CharField(max_length=50, default='NA if Cash')
 	Amount=models.CharField(max_length=50)
+	Promocode=models.CharField(max_length=50, default='Not Applied')
 	AmountwithTax=models.CharField(max_length=50)
+	AmountPaid=models.CharField(max_length=50, default='0')
 	class Meta:
 		db_table="PaymentData"
 
@@ -79,7 +81,19 @@ class InvoiceData(models.Model):
 	Date=models.CharField(max_length=10)
 	AmountwithTax=models.CharField(max_length=10)
 	Amount=models.CharField(max_length=10)
+	Promocode=models.CharField(max_length=50, default='Not Applied')
+	AmountPaid=models.CharField(max_length=50, default='0')
 	Pay_ID=models.CharField(max_length=10)
 	PayMode=models.CharField(max_length=10)
 	class Meta:
 		db_table="InvoiceData"
+
+class DiscountCouponData(models.Model):
+	Coupon_ID=models.CharField(max_length=50, primary_key=True)
+	Coupon_Name=models.CharField(max_length=50)
+	Coupon_Code=models.CharField(max_length=50)
+	Discount_Percentage=models.CharField(max_length=50)
+	Used=models.CharField(max_length=10, default='0')
+	Status=models.CharField(max_length=10, default='Active')
+	class Meta:
+		db_table="DiscountCouponData"

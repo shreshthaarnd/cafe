@@ -150,9 +150,13 @@
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Amount To Pay Back</label>
                                 <input type="text" placeholder="Enter Here" name="bamount" class="form-control" id="bamount">
+                                <form action="/admingeneratebill/" target="_blank" method="POST">
                             </div>
                             <div class="form-group">
-                                <form action="/admingeneratebill/" target="_blank" method="POST">
+                                <label for="company" class=" form-control-label">Apply Promocode</label>
+                                <input type="text" placeholder="Enter Promocode (If Any)" name="promo" class="form-control">
+                            </div>
+                            <div class="form-group">
                                     <input type="hidden" value="{{ orderid|safe }}" name="orderid">
                                     <input type="hidden" value="{{ amount|safe }}" name="amount">
                                     <input type="hidden" value="{{ mode|safe }}" name="mode">
