@@ -115,10 +115,10 @@
     </div>
     <!-- bradcam_area_end -->
             <div style="padding-top:20px;padding-left:20px;">
-                <a style="border-radius:50px;"class="w3-large w3-button w3-black w3-hover-red" href="">Order History</a>
-                <a style="border-radius:50px;"class="w3-large w3-button w3-black w3-hover-red" href="">My Profile</a>
+                <a style="border-radius:50px;"class="w3-large w3-button w3-black w3-hover-red" href="#history" onclick="document.getElementById('history').style.display='block';document.getElementById('profile').style.display='none';">Order History</a>
+                <a style="border-radius:50px;"class="w3-large w3-button w3-black w3-hover-red" href="#profile" onclick="document.getElementById('profile').style.display='block';document.getElementById('history').style.display='none';">My Profile</a>
             </div>
-           <div style="padding:20px;">
+           <div id="history" style="padding:20px;" class="w3-animate-top">
             <table class="w3-table-all">
                 <tr class="w3-red">
                     <th>Date</th>
@@ -131,111 +131,109 @@
                     <td>02/09/2020</td>
                     <td>GHJ78</td>
                     <td>PTY67</td>
-                    <td><i class="faa fa-inr"></i>50</td>
+                    <td><i class="fa fa-inr"></i>50</td>
                     <td><a style="border-radius:50px;"class="w3-button w3-yellow w3-hover-white"href="">Print</a></td>
                 </tr>   
             </table>
            </div>
-           <div style="margin:20px;padding:20px;border-radius:10px;"class="w3-card">
-            <table style="width:50%;">
-                <tr>
-                    <td>Name</td>
-                    <td>Sonali</td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>Sonkul@gmail.comi</td>
-                </tr>
-            </table>
+           <div id="profile" style="margin-top:20px;display:none;width:100%;padding:20px;"class="w3-light-grey w3-animate-top">
+                <div style="width:100%;border-radius:10px;padding:20px;"class="w3-white">
+                    <h2>Sonali Kulshreshtha</h2>
+                    <p style="line-height:45px;">
+                        <span style="font-size:20px;"><i style="margin-right:10px;border-radius:50px;padding:10px;color:white;"class="w3-orange fa fa-phone"></i> +91-5678909878</span><br>
+                        <span style="font-size:20px;"><i style="margin-right:10px;border-radius:50px;padding:10px;color:white;"class="w3-orange fa fa-envelope"></i> sonaliku4@gmail.com</span><br>
+                        <span style="font-size:20px;"><i style="margin-right:10px;border-radius:50px;padding:10px;color:white;"class="w3-orange fa fa-location-arrow"></i> Saraswat Colony Tundla</span><br>
+                    </p>
+                </div>
            </div>
     
     <!-- footer_start  -->
-    <footer class="footer">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget text-center ">
-                            <h3 class="footer_title pos_margin">
-                                    New York
-                            </h3>
-                            <p>5th flora, 700/D kings road, <br> 
-                                    green lane New York-1782 <br>
-                                    <a href="#">info@burger.com</a></p>
-                            <a class="number" href="#">+10 378 483 6782</a>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget text-center ">
-                            <h3 class="footer_title pos_margin">
-                                California
-                            </h3>
-                            <p>5th flora, 700/D kings road, <br> 
-                                    green lane New York-1782 <br>
-                                    <a href="#">info@burger.com</a></p>
-                            <a class="number" href="#">+10 378 483 6782</a>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-12 col-lg-4">
-                            <div class="footer_widget">
-                                    <h3 class="footer_title">
-                                            Stay Connected
-                                    </h3>
-                                    <form action="#" class="newsletter_form">
-                                        <input type="text" placeholder="Enter your mail">
-                                        <button type="submit">Sign Up</button>
-                                    </form>
-                                    <p class="newsletter_text">Stay connect with us to get exclusive offer!</p>
-                                </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-4">
-                        <div class="socail_links text-center">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-twitter-alt"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-google-plus"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+    <footer class="w3-black footer">
+            <div class="footer_top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget text-center ">
+                                <h3 style="color:white;"class="footer_title pos_margin">
+                                        About Us
+                                </h3>
+                                <p style="color:white;">5th flora, 700/D kings road, <br> 
+                                        green lane New York-1782 <br>
+                                        <a style="color:white;"href="#">info@burger.com</a></p>
+                                <a style="font-weight:bold;"class="number" href="#">+10 378 483 6782</a>
+    
                             </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget text-center ">
+                                <h3 style="color:white;"class="footer_title pos_margin">
+                                    Contact Us
+                                </h3>
+                                <p style="color:white;">5th flora, 700/D kings road, <br> 
+                                        green lane New York-1782 <br>
+                                        <a style="color:white;"href="#">info@burger.com</a></p>
+                                <a style="font-weight:bold;"class="number" href="#">+10 378 483 6782</a>
+    
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-12 col-lg-4">
+                                <div class="footer_widget">
+                                        <h3 style="color:white;"class="footer_title">
+                                                Stay Connected
+                                        </h3>
+                                        <form action="#" class="newsletter_form">
+                                            <input type="text" placeholder="Enter your mail">
+                                            <button type="submit">Sign Up</button>
+                                        </form>
+                                        <p style="color:white;"class="newsletter_text">Stay connect with us to get exclusive offer!</p>
+                                    </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4">
+                            <div class="socail_links text-center">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <i class="ti-instagram"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="ti-twitter-alt"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="ti-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-google-plus"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="copy-right_text">
-            <div class="container">
-                <div class="footer_border"></div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <p class="copy_right text-center">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+            <div class="copy-right_text">
+                <div class="container">
+                    <div class="footer_border"></div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <p style="color:white;"class="copy_right text-center">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved @ <a style="color:white;"href="/index/" target="_blank">Cafe Liant</a> | Website Designed & Developed By <a style="color:white;"href="https://www.srd.mobi/">Shreshtha Research & Development</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </p>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
     <!-- footer_end  -->
     
         <!-- JS here -->
