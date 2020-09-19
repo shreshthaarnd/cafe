@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="{% static 'adminpages/apple-icon.png' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/orange logo.jpg' %}">
 
 
     <link rel="stylesheet" href="{% static 'adminpages/vendors/bootstrap/dist/css/bootstrap.min.css' %}">
@@ -41,8 +41,8 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img style="width:200px;"src="{% static 'White Bazaarrs.png' %}" alt="Logo" style="width:100px;"></a>
-                <a class="navbar-brand hidden" href="./"><img style="width:200px;"src="{% static 'favicon.png' %}" alt="Logo"></a>
+                <a class="navbar-brand" href="./"><img style="width:75px;border-radius:10px;"src="{% static 'img/orange logo.jpg' %}" alt="Logo" style="width:100px;"></a>
+                <a class="navbar-brand hidden" href="./"><img style="width:75px;border-radius:10px;"src="{% static 'img/orange logo.jpg' %}" alt="Logo"></a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -120,7 +120,6 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Dashboard</h1>
                     </div>
                 </div>
             </div>
@@ -150,9 +149,13 @@
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Amount To Pay Back</label>
                                 <input type="text" placeholder="Enter Here" name="bamount" class="form-control" id="bamount">
+                                <form action="/admingeneratebill/" target="_blank" method="POST">
                             </div>
                             <div class="form-group">
-                                <form action="/admingeneratebill/" target="_blank" method="POST">
+                                <label for="company" class=" form-control-label">Apply Promocode</label>
+                                <input type="text" placeholder="Enter Promocode (If Any)" name="promo" class="form-control">
+                            </div>
+                            <div class="form-group">
                                     <input type="hidden" value="{{ orderid|safe }}" name="orderid">
                                     <input type="hidden" value="{{ amount|safe }}" name="amount">
                                     <input type="hidden" value="{{ mode|safe }}" name="mode">

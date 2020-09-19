@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="{% static 'adminpages/apple-icon.png' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/orange logo.jpg' %}">
 
 
     <link rel="stylesheet" href="{% static 'adminpages/vendors/bootstrap/dist/css/bootstrap.min.css' %}">
@@ -40,7 +40,7 @@
             </div>
             <div class="card-body card-block">
                <div style="padding:20px;"class="row">
-                <div style="padding:20px;width:50%;"class="column"><img src="{% static 'img/logo.png' %}">
+                <div style="padding:20px;width:50%;"class="column"><img src="{% static 'img/orange logo.jpg' %}">
                 </div>
                 <div style="width:50%;padding:20px;"class="column">
                     <h1 style="float:right;font-weight:bold;">INVOICE</h1>
@@ -92,7 +92,9 @@
                                         {% for x in items %}
                                         <tr>
                                             <th scope="row">{{ x.sr|safe }}</th>
-                                            <td>{{ x.name|safe }}</td>
+                                            <td>{{ x.name|safe }} 
+                                                with {{ x.discount|safe }}% Discount
+                                            </td>
                                             <td>{{ x.quantity|safe }}</td>
                                             <td><i class="fa fa-inr"></i>{{ x.rate|safe }}</td>
                                             <td><i class="fa fa-inr"></i>{{ x.total|safe }}</td>
@@ -103,7 +105,7 @@
                </div>
                <div style="padding:20px;"class="row">
                     <div style="width:100%;"class="column">
-                        <table style="margin-right:10px;width:300px;font-size:18px;float:right;">
+                        <table style="margin-right:10px;width:500px;font-size:18px;float:right;">
                             <tr>
                                 <td style="font-weight:bold;">TOTAL</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amount|safe }}</td>
@@ -116,10 +118,24 @@
                                 <td style="font-weight:bold;">SGST {{ tax|safe }}%</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ gst|safe }}</td>
                             </tr>
-                            <tr style="font-size:25px;">
-                                <td style="font-weight:bold;">TOTAL TO PAY</td>
+                            {% if not promo == 'None' %}
+                            <tr style="font-size:20px;">
+                                <td style="font-weight:bold;">TOTAL AMOUNT WITH TAX</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ taxamount|safe }}</td>
                             </tr>
+                            <tr style="font-size:25px;">
+                                <td style="font-weight:bold;">TOTAL AMOUNT TO PAY</td>
+                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amountpaid|safe }}</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-size:15px;">{{ promo|safe }} PROMOCODE APPLIED</span></td>
+                            </tr>
+                            {% else %}
+                            <tr style="font-size:25px;">
+                                <td style="font-weight:bold;">TOTAL AMOUNT</td>
+                                <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ taxamount|safe }}</td>
+                            </tr>
+                            {% endif %}
                         </table>
                     </div>
                </div>

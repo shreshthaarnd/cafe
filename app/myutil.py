@@ -11,7 +11,8 @@ def GetOrderMenuList(orderid):
 				'name':y.Item_Name,
 				'rate':str(applyitemdiscount(y.Item_ID)),
 				'quantity':x.Quantity,
-				'total':int(x.Quantity)*int(y.Item_Price)}
+				'discount':y.Discount,
+				'total':int(x.Quantity)*int(applyitemdiscount(y.Item_ID))}
 		lt.append(dic)
 	return lt
 def applyitemdiscount(itemid):
@@ -20,3 +21,10 @@ def applyitemdiscount(itemid):
 	discountpercent=int(item.Discount)
 	discount=(price/100)*discountpercent
 	return int(price-discount)
+def applypromocode(code, amount):
+	if DiscountCouponData.objects.filter(Coupon_Code=code).exists():
+		discount=DiscountCouponData.objects.filter(Coupon_Code=code)[0].Discount_Percentage
+		disamount=(int(amount)/100)*int(discount)
+		return int(amount)-disamount
+	else:
+		return amount

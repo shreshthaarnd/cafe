@@ -185,19 +185,28 @@ def admindeletemenucategory(request):
 	except:
 		return redirect('/index/')
 def adminadddiscountcoupon(request):
-	return render(request,'adminpages/adddiscountcoupon.html',{})
+	try:
+		admin=request.session['admin']
+		return render(request,'adminpages/adddiscountcoupon.html',{})
+	except:
+		return redirect('/index/')
 def admindiscountcouponlist(request):
-	return render(request,'adminpages/discountcouponlist.html',{})
+	try:
+		admin=request.session['admin']
+		data=DiscountCouponData.objects.all()
+		return render(request,'adminpages/discountcouponlist.html',{'data':data})
+	except:
+		return redirect('/index/')
 def adminongoingorder(request):
-	#try:
+	try:
 		admin=request.session['admin']
 		dic={'ordermenudata':OrderMenuData.objects.all(),
 			'items':MenuData.objects.all(),
 			'orderdata':OrderData.objects.filter(Status='Active'),
 			'category':MenuCategoryData.objects.all()}
 		return render(request,'adminpages/ongoingorder.html',dic)
-	#except:
-		#return redirect('/index/')
+	except:
+		return redirect('/index/')
 @csrf_exempt
 def admincreateorder(request):
 	if request.method=='POST':
@@ -407,6 +416,7 @@ def admingeneratebill(request):
 		orderid=request.POST.get('orderid')
 		amount=request.POST.get('amount')
 		mode=request.POST.get('mode')
+		promo=request.POST.get('promo').upper()
 		o="PAY00"
 		x=1
 		oid=o+str(x)
@@ -423,6 +433,7 @@ def admingeneratebill(request):
 		for x in OrderData.objects.filter(Order_ID=orderid):
 			cusid=x.Customer_ID
 			if not mode=='Cash':
+				amountwithpromo=applypromocode(promo, amountwithtax)
 				obj=PaymentData(
 					Pay_ID=oid,
 					Order_ID=orderid,
@@ -430,18 +441,23 @@ def admingeneratebill(request):
 					PayMode=mode,
 					Receipt_Number=request.POST.get('reciept'),
 					Amount=amount,
-					AmountwithTax=amountwithtax
+					Promocode=promo,
+					AmountwithTax=amountwithtax,
+					AmountPaid=amountwithpromo
 				)
 				obj.save()
 				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
 			else:
+				amountwithpromo=applypromocode(promo, amountwithtax)
 				obj=PaymentData(
 					Pay_ID=oid,
 					Order_ID=orderid,
 					Customer_ID=x.Customer_ID,
 					PayMode=mode,
 					Amount=amount,
-					AmountwithTax=amountwithtax
+					Promocode=promo,
+					AmountwithTax=amountwithtax,
+					AmountPaid=amountwithpromo
 				)
 				obj.save()
 				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
@@ -457,6 +473,8 @@ def admingeneratebill(request):
 			Date=datetime.date.today(),
 			AmountwithTax=amountwithtax,
 			Amount=amount,
+			Promocode=promo,
+			AmountPaid=amountwithpromo,
 			Pay_ID=oid,
 			PayMode=mode
 		).save()
@@ -466,6 +484,8 @@ def admingeneratebill(request):
 			'date':datetime.date.today(),
 			'amount':amount,
 			'taxamount':amountwithtax,
+			'amountpaid':amountwithpromo,
+			'promo':promo,
 			'payid':oid,
 			'paymode':mode,
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
@@ -546,6 +566,8 @@ def printinvoice(request):
 			'amount':orderdata.Amount,
 			'taxamount':orderdata.AmountwithTax,
 			'payid':orderdata.Pay_ID,
+			'promo':orderdata.Promocode,
+			'amountpaid':orderdata.AmountPaid,
 			'paymode':orderdata.PayMode,
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
 			'items':GetOrderMenuList(orderid),
@@ -567,3 +589,31 @@ def adminmailbill(request):
 	return render(request,'adminpages/mailbill.html',{})
 def dashboard(request):
 	return render(request,'dashboard.html',{})
+@csrf_exempt
+def savecoupon(request):
+	if request.method=='POST':
+		name=request.POST.get('name')
+		code=request.POST.get('code')
+		percent=request.POST.get('percent')
+		o="DIS00"
+		x=1
+		oid=o+str(x)
+		while DiscountCouponData.objects.filter(Coupon_ID=oid).exists():
+			x=x+1
+			oid=o+str(x)
+		x=int(x)
+		DiscountCouponData(Coupon_ID=oid,
+							Coupon_Name=name,
+							Coupon_Code=code,
+							Discount_Percentage=percent).save()
+		dic={'msg':'Saved Successfully'}
+		return render(request,'adminpages/adddiscountcoupon.html',dic)
+@csrf_exempt
+def admindeletecoupon(request):
+	try:
+		admin=request.session['admin']
+		cid=request.GET.get('cid')
+		DiscountCouponData.objects.filter(Coupon_ID=cid).delete()
+		return redirect('/admindiscountcouponlist/')
+	except:
+		return redirect('/index/')
