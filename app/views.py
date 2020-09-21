@@ -26,7 +26,9 @@ def contact(request):
 def elements(request):
 	return render(request,'elements.html',{})
 def menu(request):
-	return render(request,'menu.html',{})
+	dic={'menu':MenuData.objects.filter(Status='Active'),
+		'category':MenuCategoryData.objects.all()}
+	return render(request,'menu.html',dic)
 def singleblog(request):
 	return render(request,'single-blog.html',{})
 def adminproceedtopay(request):
@@ -80,6 +82,8 @@ def adminsavemenuitem(request):
 		name=request.POST.get('name')
 		category=request.POST.get('category')
 		price=request.POST.get('price')
+		thumb=request.FILES['image']
+		print(thumb)
 		m="M00"
 		x=1
 		mid=m+str(x)
@@ -91,7 +95,8 @@ def adminsavemenuitem(request):
 			Item_ID=mid,
 			Item_Category=category,
 			Item_Name=name,
-			Item_Price=price
+			Item_Price=price,
+			Item_Thumb=thumb
 			)
 		obj.save()
 		menu=MenuData.objects.filter(Status='Active')
@@ -201,7 +206,7 @@ def adminongoingorder(request):
 	try:
 		admin=request.session['admin']
 		dic={'ordermenudata':OrderMenuData.objects.all(),
-			'items':MenuData.objects.all(),
+			'items':MenuData.objects.filter(Status='Active'),
 			'orderdata':OrderData.objects.filter(Status='Active'),
 			'category':MenuCategoryData.objects.all()}
 		return render(request,'adminpages/ongoingorder.html',dic)
