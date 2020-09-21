@@ -66,7 +66,6 @@
                             <li><i class="fa fa-building"></i><a href="/adminitemdiscount/">Item Discount</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
                             <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponhistory/">Discount Coupon History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
@@ -176,11 +175,11 @@
                                 {% if x.Category_ID == y.Item_Category %}
                                 <div style="padding:10px;width:200px;"class="column">
                                     <form action="/admineditmenuitem/" method="GET">
-                                    <div style="padding:10px;"class="w3-card-4 w3-yellow">
+                                    <div style="background-size:100% auto;background-image:url({% static 'img/food.jpg' %});padding:10px;"class="w3-card-4">
 
-                                        <input type="text" name="name" id="{{ y.Item_ID|safe }}name" value="{{ y.Item_Name|safe }}" style="font-size:18px;border:none;width:100%;" disabled class="w3-yellow">
+                                        <input type="text" name="name" id="{{ y.Item_ID|safe }}name" value="{{ y.Item_Name|safe }}" style="font-weight:bold;font-size:18px;border:none;width:100%;" disabled>
 
-                                        <i class="fa fa-inr"></i> <input type="text" name="price" id="{{ y.Item_ID|safe }}price" value="{{ y.Item_Price|safe }}" style="border:none;width:80%;" disabled class="w3-yellow">
+                                        <i class="fa fa-inr"></i> <input type="text" name="price" id="{{ y.Item_ID|safe }}price" value="{{ y.Item_Price|safe }}" style="font-weight:bold;border:none;width:80%;" disabled>
 
                                     </div>
                                     <a style="width:50%;height:38px;padding-top:8px;"class="btn btn-danger fa fa-times"href="/admindeletemenuitem/?Id={{ y.Item_ID|safe }}"></a>

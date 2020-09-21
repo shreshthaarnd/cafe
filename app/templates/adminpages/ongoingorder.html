@@ -76,7 +76,6 @@
                             <li><i class="fa fa-building"></i><a href="/adminitemdiscount/">Item Discount</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
                             <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
-                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponhistory/">Discount Coupon History</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
@@ -166,7 +165,7 @@
                                     
                                     <label>
                                         <input type="checkbox" name="{{ y.Item_ID|safe }}" style="position:absolute;opacity:0;height:0;width:0;cursor:pointer;" value="{{ y.Item_ID|safe }}" onclick="document.getElementById('createbutton').disabled=false;">
-                                        <div style="padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card w3-yellow">{{ y.Item_Name|safe }}</div>
+                                        <div style="background-size:100% auto;background-image:url({% static 'img/food.jpg' %});font-weight:bold;padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card">{{ y.Item_Name|safe }}</div>
                                     </label>
                                     
                                     {% endif %}
