@@ -43,8 +43,8 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="active" href="index.html">home</a></li>
-                                        <li><a href="/menu/">Menu</a></li>
+                                        <li><a href="/index/">home</a></li>
+                                        <li><a class="active" href="/menu/">Menu</a></li>
                                         <li><a href="/about/">About</a></li>
                                         <li><a href="/contact/">Contact</a></li>
                                     </ul>
@@ -126,7 +126,7 @@
                 <div class="col-xl-6 col-md-6 col-lg-6">
                     <div class="single_delicious d-flex align-items-center">
                         <div class="thumb">
-                            <img src="{% static 'img/burger/1.png' %}" alt="">
+                            <img style="width:150px;height:150px;" src="{{ y.Item_Thumb.url|safe }}" alt="">
                         </div>
                         <div class="info">
                             <h3>{{ y.Item_Name|safe }}</h3>
