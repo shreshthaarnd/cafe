@@ -42,7 +42,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="./"><img style="width:75px;border-radius:10px;"src="{% static 'img/orange logo.jpg' %}" alt="Logo" style="width:100px;"></a>
-                <a class="navbar-brand hidden" href="./"><img style="width:75px;border-radius:10px;"src="{% static 'img/orange logo.jpg' %}" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="./"><img style="width:75pxborder-radius:10px;;"src="{% static 'img/orange logo.jpg' %}" alt="Logo"></a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -51,20 +51,49 @@
                         <a href="/adminindex/"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <!-- /.menu-title -->
+                    {% if checklogin == 'admin' %}
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Menu</a>
                         <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-building"></i><a href="/adminaddmenucategory/">Add Menu Category</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminaddmenuitem/">Add Menu Items</a></li>
-                            <li><i class="fa fa-users"></i><a href="/adminmenulist/">Menu List</a></li>
                         </ul>
                     </li>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Discount Desk</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-building"></i><a href="/admincoincount/">Coins Count</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminitemdiscount/">Item Discount</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Order Desk</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-building"></i><a href="/adminongoingorder/">On Going Orders</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminorderhistory/">Order History</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminpaymenthistory/">Payment History</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/admincustomerlist/"><i class="menu-icon fa fa-dashboard"></i>Customers List</a>
+                    </li>
+                    {% if checklogin == 'admin' %}
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Settings</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-building"></i><a href="/adminchangeadmin/">Admin Password</a></li>
+                            <li><i class="fa fa-building"></i><a href="/adminchangemanager/">Manager Password</a></li>
+                            <li><i class="fa fa-building"></i><a href="/admintax/">Tax Management</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside><!-- /#left-panel -->
-
-    <!-- Left Panel -->
-
     <!-- Right Panel -->
 
     <div id="right-panel" class="right-panel">

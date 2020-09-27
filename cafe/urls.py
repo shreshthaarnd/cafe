@@ -59,6 +59,7 @@ urlpatterns = [
     path('savecoupon/',savecoupon),
     path('admindeletecoupon/',admindeletecoupon),
     path('adminsavemanagerpassword/',adminsavemanagerpassword),
+    path('adminchangeadmin/',adminchangeadmin),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

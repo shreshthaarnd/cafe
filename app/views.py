@@ -660,3 +660,5 @@ def adminsavemanagerpassword(request):
 			return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'msg':'Incorrect Admin Password'})
 	except:
 		return redirect('/index/')
+def adminchangeadmin(request):
+	return render(request,'adminpages/changeadmin.html',{})
