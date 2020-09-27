@@ -483,7 +483,7 @@ def admingeneratebill(request):
 		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
 		totalcoins=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
 		sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
-		sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
+		#sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
 		InvoiceData(
 			Order_ID=orderid,
 			Customer_ID=cusid,
