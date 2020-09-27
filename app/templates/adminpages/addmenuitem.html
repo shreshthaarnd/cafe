@@ -177,13 +177,16 @@
                             <div style="padding:20px;"class="row">
                                 {% for y in menu %}
                                 {% if x.Category_ID == y.Item_Category %}
-                                <div style="padding:10px;width:200px;"class="column">
+                                <div style="padding:10px;width:400px;"class="column">
                                     <form action="/admineditmenuitem/" method="GET">
-                                    <div style="background-size:100% auto;background-image:url({{ y.Item_Thumb.url|safe }});padding:10px;"class="w3-card-4">
+                                    <div style="height:250px;background-size:100% auto;background-image:url({{ y.Item_Thumb.url|safe }});padding:10px;"class="w3-card-4">
 
-                                        <input type="text" name="name" id="{{ y.Item_ID|safe }}name" value="{{ y.Item_Name|safe }}" style="font-weight:bold;font-size:18px;border:none;width:100%;" disabled>
+                                        <div class="w3-black" style="border-radius:10px;padding:10px;">
+                                        <input class="w3-black"type="text" name="name" id="{{ y.Item_ID|safe }}name" value="{{ y.Item_Name|safe }}" style="border-radius:50px;text-align:center;padding:5px;font-weight:bold;font-size:18px;border:none;width:100%;" disabled>
 
-                                        <i class="fa fa-inr"></i> <input type="text" name="price" id="{{ y.Item_ID|safe }}price" value="{{ y.Item_Price|safe }}" style="font-weight:bold;border:none;width:80%;" disabled>
+
+                                        <i class="fa fa-inr"></i> <input type="text" class="w3-black"name="price" id="{{ y.Item_ID|safe }}price" value="{{ y.Item_Price|safe }}" style="font-weight:bold;border:none;width:80%;" disabled>
+                                        </div>
 
                                     </div>
                                     <a style="width:50%;height:38px;padding-top:8px;"class="btn btn-danger fa fa-times"href="/admindeletemenuitem/?Id={{ y.Item_ID|safe }}"></a>

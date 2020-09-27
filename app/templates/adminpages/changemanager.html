@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cafe Liant - Change Manager</title>
+    <title>Cafe Liant - Manager Password</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,6 +28,7 @@
 
     <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
 
+    <link rel="stylesheet" href="{% static 'w3.css' %}">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 </head>
 
@@ -133,23 +134,20 @@
 
         <div class="content mt-3">
             <div class="card">
-                <div class="card-header"><strong>Change Manager</strong><small> Form</small></div>
+                <div class="card-header"><strong>Manager Password Settings</strong><small> Form</small></div>
                     <div class="card-body card-block">
-                        <form action="/adminsavemenucategory/" method="POST">
-                            <div class="form-group">
-                                <label for="company" class=" form-control-label">Old Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
-                            </div>
+                        <h4 class="w3-button w3-black w3-hover-red" style="margin-bottom:20px;border-radius:50px;">Current Manager Password : {{ password|safe }}</h4>
+                        <form action="/adminsavemanagerpassword/" method="POST">
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">New Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
+                                <input type="text" placeholder="Enter New Manager Password" name="newpassword" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="company" class=" form-control-label">Admin Password</label>
-                                <input type="text" placeholder="Name Here" name="name" class="form-control">
+                                <input type="text" placeholder="Enter Admin Password" name="adminpassword" class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Save" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
+                                <input type="submit" value="Change Password" class="btn btn-success" onclick="document.getElementById('process').style.display='block';document.getElementById('msg').style.display='none';"><br>
                                 <label id="process" style="display:none;color:green;font-weight:bold;">Processing Please Wait...</label>
                                 <label id="msg" style="color:green;font-weight:bold;">{{ msg|safe }}</label>
                             </div>

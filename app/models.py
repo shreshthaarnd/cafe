@@ -98,3 +98,8 @@ class DiscountCouponData(models.Model):
 	Status=models.CharField(max_length=10, default='Active')
 	class Meta:
 		db_table="DiscountCouponData"
+
+class ManagerData(models.Model):
+	Manager_Password=models.CharField(max_length=50)
+	class Meta:
+		db_table="ManagerData"

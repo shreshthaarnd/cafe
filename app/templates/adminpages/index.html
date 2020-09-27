@@ -54,6 +54,7 @@
                         <a href="/adminindex/"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <!-- /.menu-title -->
+                    {% if checklogin == 'admin' %}
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Menu</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -70,6 +71,7 @@
                             <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
                         </ul>
                     </li>
+                    {% endif %}
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Order Desk</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -81,6 +83,7 @@
                     <li>
                         <a href="/admincustomerlist/"><i class="menu-icon fa fa-dashboard"></i>Customers List</a>
                     </li>
+                    {% if checklogin == 'admin' %}
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Settings</a>
                         <ul class="sub-menu children dropdown-menu">
@@ -88,6 +91,7 @@
                             <li><i class="fa fa-building"></i><a href="/admintax/">Tax Management</a></li>
                         </ul>
                     </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

@@ -27,12 +27,12 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 </head>
 <body>
 	<div style="text-align:center;">
-		<img src="http://srd.pythonanywhere.com/static/img/favicon.png">
+		<img style="width:100px;" src="http://srd.pythonanywhere.com/static/img/orange%20logo.jpg">
 		<h1>Billing Invoice</h1>
 	</div>
 	<div style="width:100%;padding:10px;float:left;">
-		<p style="font-size:20px;">
-			<span style="font-weight:bold;font-size:25px;">'''+customerobj[0].Name+'''</span><br>
+		<p style="font-size:15px;">
+			<span style="font-weight:bold;font-size:20px;">'''+customerobj[0].Name+'''</span><br>
 			<span>'''+customerobj[0].Address+'''</span><br>
 			<span>'''+customerobj[0].City+''', '''+customerobj[0].State+'''</span><br>
 			<span>+91-'''+customerobj[0].Mobile+''', '''+customerobj[0].Email+'''</span>
@@ -40,10 +40,10 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 		</p>
 	</div>
 	<div style="text-align:center;padding:10px;">
-		<span style="text-align:center;font-size:20px;">Date : <span style="font-weight:bold;">'''+date+'''</span> | Order ID : <span style="font-weight:bold;">'''+orderid+'''</span> | Payment ID : <span style="font-weight:bold;">'''+payid+'''</span> | Payment Mode : <span style="font-weight:bold;">By '''+paymode+'''</span></span>
+		<span style="text-align:center;font-size:15px;">Date : <span style="font-weight:bold;">'''+date+'''</span> | Order ID : <span style="font-weight:bold;">'''+orderid+'''</span> | Payment ID : <span style="font-weight:bold;">'''+payid+'''</span> | Payment Mode : <span style="font-weight:bold;">By '''+paymode+'''</span></span>
 	</div>
 	<div style="width:100%;padding:10px;">
-		<table style="width:100%;text-align:center;font-size:20px;">
+		<table style="width:100%;text-align:center;font-size:15px;">
 			<tr style="background-color:black;color:white;">
 				<th>Sr No.</th>
 				<th>Item Name</th>
@@ -55,7 +55,7 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 		</table>
 	</div>
 	<div style="padding:10px;">
-		<table style="float:right;font-size:20px;font-weight:bold;">
+		<table style="float:right;font-size:15px;font-weight:bold;">
 			<tr>
 				<td>Total : </td>
 				<td><i class="fa fa-inr"></i>'''+amount+'''</td>
@@ -75,8 +75,8 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 		</table>
 	</div>
 	<div>
-		<span style="font-size:20px;font-weight:bold;">You received '''+coins+''' Coins</span><br>
-		<span style="font-size:25px;font-weight:bold;">Total Coins in Your Wallet '''+totalcoins+''' Coins</span>
+		<span style="font-size:15px;font-weight:bold;">You received '''+coins+''' Coins</span><br>
+		<span style="font-size:20px;font-weight:bold;">Total '''+totalcoins+''' Coins in Your Wallet.</span>
 	</div>
 </body>
 </html>'''

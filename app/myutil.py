@@ -28,3 +28,11 @@ def applypromocode(code, amount):
 		return int(amount)-disamount
 	else:
 		return amount
+
+def checklogin(id):
+	if id=='admin@cafeliant.com':
+		return 'admin'
+	elif id=='manager@cafeliant.com':
+		return 'manager'
+	else:
+		return 'none'

@@ -10,6 +10,7 @@ import csv
 from django.conf import settings
 import datetime
 from app.mailutil import *
+from app.sms import *
 # Create your views here.
 def index(request):
 	return render(request,'index.html',{})
@@ -37,8 +38,6 @@ def menucategory(request):
 	return render(request,'menucategory.html',{})
 def adminblockedcustomer(request):
 	return render(request,'adminpages/blockedcustomer.html',{})
-def adminchangemanager(request):
-	return render(request,'adminpages/changemanager.html',{})
 def admindeactivemenu(request):
 	return render(request,'adminpages/deactivemenu.html',{})
 def admindiscountcouponhistory(request):
@@ -51,6 +50,9 @@ def adminlogincheck(request):
 		if email == 'admin@cafeliant.com' and password == '1234':
 			request.session['admin'] = email
 			return redirect('/adminindex/')
+		elif email == 'manager@cafeliant.com' and password == ManagerData.objects.all()[0].Manager_Password:
+			request.session['admin'] = email
+			return redirect('/adminindex/')
 		else:
 			return HttpResponse("<script>alert('Incorrect Credentials'); window.location.replace('/adminlogin/')</script>")
 	else:
@@ -58,7 +60,7 @@ def adminlogincheck(request):
 def adminindex(request):
 	try:
 		admin=request.session['admin']
-		return render(request,'adminpages/index.html',{})
+		return render(request,'adminpages/index.html',{'checklogin':checklogin(admin)})
 	except:
 		return redirect('/index/')
 def adminlogout(request):
@@ -72,7 +74,8 @@ def adminaddmenuitem(request):
 		admin=request.session['admin']
 		menu=MenuData.objects.filter(Status='Active')
 		dic={'data':MenuCategoryData.objects.all(),
-			'menu':menu}	
+			'menu':menu,
+			'checklogin':checklogin(admin)}	
 		return render(request,'adminpages/addmenuitem.html',dic)
 	except:
 		return redirect('/index/')
@@ -83,7 +86,6 @@ def adminsavemenuitem(request):
 		category=request.POST.get('category')
 		price=request.POST.get('price')
 		thumb=request.FILES['image']
-		print(thumb)
 		m="M00"
 		x=1
 		mid=m+str(x)
@@ -102,7 +104,8 @@ def adminsavemenuitem(request):
 		menu=MenuData.objects.filter(Status='Active')
 		dic={'data':MenuCategoryData.objects.all(),
 			'msg':'Item Saved',
-			'menu':menu}
+			'menu':menu,
+			'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/addmenuitem.html',dic)
 	else:
 		return redirect('/index/')
@@ -122,7 +125,6 @@ def admindeletemenuitem(request):
 	try:
 		admin=request.session['admin']
 		itemid=request.GET.get('Id')
-		print(itemid)
 		obj=MenuData.objects.filter(Item_ID=itemid).update(Status='Deactive')
 		return redirect('/adminaddmenuitem/')
 	except:
@@ -131,7 +133,7 @@ def admindeletemenuitem(request):
 def adminmenulist(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':MenuData.objects.all()}
+		dic={'data':MenuData.objects.all(),'checklogin':checklogin(admin)}
 		return render(request,'adminpages/menulist.html',dic)
 	except:
 		return redirect('/index/')
@@ -160,12 +162,12 @@ def adminsavemenucategory(request):
 		)
 		if MenuCategoryData.objects.filter(Category_Name=name).exists():
 			dic={'data':MenuCategoryData.objects.all(),
-				'msg':'Category Already Exists'}
+				'msg':'Category Already Exists','checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/addmenucategory.html',dic)
 		else:
 			obj.save()
 			dic={'data':MenuCategoryData.objects.all(),
-				'msg':'Saved!'}
+				'msg':'Saved!','checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/addmenucategory.html',dic)
 	else:
 		return redirect('/index/')
@@ -192,14 +194,14 @@ def admindeletemenucategory(request):
 def adminadddiscountcoupon(request):
 	try:
 		admin=request.session['admin']
-		return render(request,'adminpages/adddiscountcoupon.html',{})
+		return render(request,'adminpages/adddiscountcoupon.html',{'checklogin':checklogin(request.session['admin'])})
 	except:
 		return redirect('/index/')
 def admindiscountcouponlist(request):
 	try:
 		admin=request.session['admin']
 		data=DiscountCouponData.objects.all()
-		return render(request,'adminpages/discountcouponlist.html',{'data':data})
+		return render(request,'adminpages/discountcouponlist.html',{'data':data,'checklogin':checklogin(request.session['admin'])})
 	except:
 		return redirect('/index/')
 def adminongoingorder(request):
@@ -208,7 +210,8 @@ def adminongoingorder(request):
 		dic={'ordermenudata':OrderMenuData.objects.all(),
 			'items':MenuData.objects.filter(Status='Active'),
 			'orderdata':OrderData.objects.filter(Status='Active'),
-			'category':MenuCategoryData.objects.all()}
+			'category':MenuCategoryData.objects.all(),
+			'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/ongoingorder.html',dic)
 	except:
 		return redirect('/index/')
@@ -230,6 +233,7 @@ def admincreateorder(request):
 			 'category':MenuCategoryData.objects.all(),
 			 'orderdata':OrderData.objects.filter(Status='Active'),
 			 'ordermenudata':OrderMenuData.objects.all(),
+			 'checklogin':checklogin(request.session['admin']),
 			'msg':'Order '+oid+' Created Successfully and Added to the Below List'}
 		return render(request,'adminpages/ongoingorder.html',dic)
 	else:
@@ -293,7 +297,7 @@ def adminsearchcustomer(request):
 		dic={'customers':CustomerData.objects.all(),
 			'orderid':oid,
 			'totalamount':str(total),
-			'taxamount':amountwithtax}
+			'taxamount':amountwithtax,'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/searchcustomer.html',dic)
 	except:
 		return redirect('/index/')
@@ -321,7 +325,8 @@ def admincustomersearchresult(request):
 				'result':result,
 				'orderid':oid,
 				'taxamount':amountwithtax,
-				'totalamount':str(total)}
+				'totalamount':str(total),
+				'checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/searchcustomer.html',dic)
 		else:
 			for x in OrderMenuData.objects.filter(Order_ID=oid):
@@ -338,7 +343,8 @@ def admincustomersearchresult(request):
 				'orderid':oid,
 				'taxamount':amountwithtax,
 				'msg':'No Customer Record Found, Add Customer Detail Below.',
-				'totalamount':str(total)}
+				'totalamount':str(total),
+				'checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/searchcustomer.html',dic)
 	except:
 		return redirect('/index/')
@@ -364,19 +370,22 @@ def admincompletepayment(request):
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'Cash',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'Card',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'QR',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybyqr.html',dic)
 		else:
 			o="CUS00"
@@ -401,19 +410,22 @@ def admincompletepayment(request):
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'Cash',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybycash.html',dic)
 			elif paymode=='Card':
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'Card',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybycard.html',dic)
 			elif paymode=='QR':
 				dic={'amount':amount,
 					'taxamount':amountwithtax,
 					'mode':'QR',
-					'orderid':oid}
+					'orderid':oid,
+					'checklogin':checklogin(request.session['admin'])}
 				return render(request,'adminpages/paybyqr.html',dic)
 @csrf_exempt
 def admingeneratebill(request):
@@ -466,10 +478,12 @@ def admingeneratebill(request):
 				)
 				obj.save()
 				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
-		CustomerData.objects.filter(Customer_ID=cusid).update(Coins_Wallet=(str(int(CustomerData.objects.filter(Customer_ID=cusid)[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))
+		customer=CustomerData.objects.filter(Customer_ID=cusid)
+		customer.update(Coins_Wallet=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))
 		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
-		totalcoins=(str(int(CustomerData.objects.filter(Customer_ID=cusid)[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
-		sendbillemail(CustomerData.objects.filter(Customer_ID=cusid), orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
+		totalcoins=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
+		sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
+		sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
 		InvoiceData(
 			Order_ID=orderid,
 			Customer_ID=cusid,
@@ -493,6 +507,7 @@ def admingeneratebill(request):
 			'promo':promo,
 			'payid':oid,
 			'paymode':mode,
+			'checklogin':checklogin(request.session['admin']),
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
 			'items':GetOrderMenuList(orderid),
 			'customerdata':CustomerData.objects.filter(Customer_ID=cusid)}
@@ -500,21 +515,21 @@ def admingeneratebill(request):
 def adminorderhistory(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':OrderData.objects.filter(Status='Paid')}
+		dic={'data':OrderData.objects.filter(Status='Paid'),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/orderhistory.html',dic)
 	except:
 		return redirect('/index/')
 def adminpaymenthistory(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':PaymentData.objects.all()}
+		dic={'checklogin':checklogin(request.session['admin']),'data':PaymentData.objects.all()}
 		return render(request,'adminpages/paymenthistory.html',dic)
 	except:
 		return redirect('/index/')
 def admincustomerlist(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':CustomerData.objects.all()}
+		dic={'data':CustomerData.objects.all(),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/customerlist.html',dic)
 	except:
 		return redirect('/index/')
@@ -522,7 +537,7 @@ def admincustomerlist(request):
 def admintax(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':TaxData.objects.all()}
+		dic={'data':TaxData.objects.all(),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/tax.html',dic)
 	except:
 		return redirect('/index/')
@@ -535,7 +550,7 @@ def adminupdatetax(request):
 def admincoincount(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':CoinsData.objects.all()}
+		dic={'data':CoinsData.objects.all(),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/coinscount.html',dic)
 	except:
 		return redirect('/index/')
@@ -547,7 +562,7 @@ def adminupdatecoincount(request):
 def adminitemdiscount(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':MenuData.objects.filter(Status='Active')}
+		dic={'data':MenuData.objects.filter(Status='Active'),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/itemdiscount.html',dic)
 	except:
 		return redirect('/index/')
@@ -576,6 +591,7 @@ def printinvoice(request):
 			'paymode':orderdata.PayMode,
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
 			'items':GetOrderMenuList(orderid),
+			'checklogin':checklogin(request.session['admin']),
 			'customerdata':CustomerData.objects.filter(Customer_ID=orderdata.Customer_ID)}
 		return render(request,'adminpages/bilinginvoice.html',dic)
 	except:
@@ -611,7 +627,7 @@ def savecoupon(request):
 							Coupon_Name=name,
 							Coupon_Code=code,
 							Discount_Percentage=percent).save()
-		dic={'msg':'Saved Successfully'}
+		dic={'msg':'Saved Successfully','checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/adddiscountcoupon.html',dic)
 @csrf_exempt
 def admindeletecoupon(request):
@@ -620,5 +636,27 @@ def admindeletecoupon(request):
 		cid=request.GET.get('cid')
 		DiscountCouponData.objects.filter(Coupon_ID=cid).delete()
 		return redirect('/admindiscountcouponlist/')
+	except:
+		return redirect('/index/')
+def adminchangemanager(request):
+	try:
+		admin=request.session['admin']
+		password=ManagerData.objects.all()[0].Manager_Password
+		return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'password':password})
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def adminsavemanagerpassword(request):
+	try:
+		admin=request.session['admin']
+		newpassword=request.POST.get('newpassword')
+		adminpassword=request.POST.get('adminpassword')
+		if adminpassword=='1234':
+			ManagerData.objects.all().delete()
+			ManagerData(Manager_Password=newpassword).save()
+			password=ManagerData.objects.all()[0].Manager_Password
+			return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'msg':'Changed Successfully','password':password})
+		else:
+			return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'msg':'Incorrect Admin Password'})
 	except:
 		return redirect('/index/')

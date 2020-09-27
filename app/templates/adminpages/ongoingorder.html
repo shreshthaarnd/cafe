@@ -165,7 +165,9 @@
                                     
                                     <label>
                                         <input type="checkbox" name="{{ y.Item_ID|safe }}" style="position:absolute;opacity:0;height:0;width:0;cursor:pointer;" value="{{ y.Item_ID|safe }}" onclick="document.getElementById('createbutton').disabled=false;">
-                                        <div style="background-size:100% auto;background-image:url({{ y.Item_Thumb.url|safe }});font-weight:bold;padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card">{{ y.Item_Name|safe }}</div>
+                                        <div style="background-size:100% auto;background-image:url({{ y.Item_Thumb.url|safe }});font-weight:bold;padding:20px;margin:5px;font-size:18px;border-radius:10px;"class="w3-card">
+                                            <div style="padding:5px;border-radius:10px;"class="w3-black">{{ y.Item_Name|safe }}</div>
+                                        </div>
                                     </label>
                                     
                                     {% endif %}
