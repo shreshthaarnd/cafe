@@ -5,7 +5,7 @@ from twilio.rest import Client
 # Your Account Sid and Auth Token from twilio.com/console
 # DANGER! This is insecure. See http://twil.io/secure
 account_sid = 'ACf3a2e9573dd9b2e6a490307861cf0bb3'
-auth_token = '2ca15d26918becf33890f05b75de7ba3'
+auth_token = '26ca8b47a52cd70681acfce958230255'
 client = Client(account_sid, auth_token)
 
 def sendBillSMS(number, amount, orderid, paymentid, coin_earned):

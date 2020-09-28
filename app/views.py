@@ -47,7 +47,7 @@ def adminlogincheck(request):
 	if request.method=='POST':
 		email=request.POST.get('email')
 		password=request.POST.get('password')
-		if email == 'admin@cafeliant.com' and password == '1234':
+		if email == 'admin@cafeliant.com' and password == AdminData.objects.all()[0].Admin_Password:
 			request.session['admin'] = email
 			return redirect('/adminindex/')
 		elif email == 'manager@cafeliant.com' and password == ManagerData.objects.all()[0].Manager_Password:
@@ -140,7 +140,7 @@ def adminmenulist(request):
 def adminaddmenucategory(request):
 	try:
 		admin=request.session['admin']
-		dic={'data':MenuCategoryData.objects.all()}
+		dic={'data':MenuCategoryData.objects.all(),'checklogin':checklogin(admin)}
 		return render(request,'adminpages/addmenucategory.html',dic)
 	except:
 		return redirect('/index/')
@@ -483,7 +483,7 @@ def admingeneratebill(request):
 		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
 		totalcoins=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
 		sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
-		#sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
+		sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
 		InvoiceData(
 			Order_ID=orderid,
 			Customer_ID=cusid,
@@ -497,6 +497,10 @@ def admingeneratebill(request):
 			Pay_ID=oid,
 			PayMode=mode
 		).save()
+		
+		if promo=='':
+			promo=None
+
 		dic={'orderid':orderid,
 			'gst':taxamount/2,
 			'tax':int(tax)/2,
@@ -651,12 +655,32 @@ def adminsavemanagerpassword(request):
 		admin=request.session['admin']
 		newpassword=request.POST.get('newpassword')
 		adminpassword=request.POST.get('adminpassword')
-		if adminpassword=='1234':
+		if adminpassword==AdminData.objects.all()[0].Admin_Password:
 			ManagerData.objects.all().delete()
 			ManagerData(Manager_Password=newpassword).save()
 			password=ManagerData.objects.all()[0].Manager_Password
 			return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'msg':'Changed Successfully','password':password})
 		else:
 			return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'msg':'Incorrect Admin Password'})
+	except:
+		return redirect('/index/')
+def adminchangeadmin(request):
+	try:
+		admin=request.session['admin']
+		return render(request,'adminpages/changeadmin.html',{'checklogin':checklogin(admin)})
+	except:
+		return redirect('/index/')
+@csrf_exempt
+def adminsaveadmin(request):
+	try:
+		admin=request.session['admin']
+		old=request.POST.get('oldpassword')
+		new=request.POST.get('newpassword')
+		if old==AdminData.objects.all()[0].Admin_Password:
+			AdminData.objects.all()
+			AdminData(Admin_Password=new).save()
+			return render(request,'adminpages/changeadmin.html',{'msg':'Password Changed Successfully','checklogin':checklogin(admin)})
+		else:
+			return render(request,'adminpages/changeadmin.html',{'msg':'Incorrect Old Password','checklogin':checklogin(admin)})
 	except:
 		return redirect('/index/')

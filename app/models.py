@@ -103,3 +103,8 @@ class ManagerData(models.Model):
 	Manager_Password=models.CharField(max_length=50)
 	class Meta:
 		db_table="ManagerData"
+
+class AdminData(models.Model):
+	Admin_Password=models.CharField(max_length=50)
+	class Meta:
+		db_table="AdminData"

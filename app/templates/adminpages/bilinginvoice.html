@@ -93,8 +93,12 @@
                                         {% for x in items %}
                                         <tr>
                                             <th scope="row">{{ x.sr|safe }}</th>
-                                            <td>{{ x.name|safe }} 
+                                            <td>{% if not x.discount == '0' %}
+                                                {{ x.name|safe }} 
                                                 with {{ x.discount|safe }}% Discount
+                                                {% else %}
+                                                {{ x.name|safe }}
+                                                {% endif %}
                                             </td>
                                             <td>{{ x.quantity|safe }}</td>
                                             <td><i class="fa fa-inr"></i>{{ x.rate|safe }}</td>
