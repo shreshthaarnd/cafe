@@ -64,7 +64,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Discount Desk</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-building"></i><a href="/admincoincount/">Coins Count</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminitemdiscount/">Item Discount</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
                             <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
                         </ul>
@@ -191,11 +190,14 @@
 
 
                                         <i class="fa fa-inr"></i> <input type="text" class="w3-black"name="price" id="{{ y.Item_ID|safe }}price" value="{{ y.Item_Price|safe }}" style="font-weight:bold;border:none;width:80%;" disabled>
+
+                                        <label style="font-weight:bold;color:white;">Discount</label>
+                                        <input type="text" class="w3-black"name="discount" id="{{ y.Item_ID|safe }}discount" value="{{ y.Discount|safe }}" style="font-weight:bold;border:none;width:40px;text-align:center;" disabled>%
                                         </div>
 
                                     </div>
                                     <a style="width:50%;height:38px;padding-top:8px;"class="btn btn-danger fa fa-times"href="/admindeletemenuitem/?Id={{ y.Item_ID|safe }}"></a>
-                                    <a style="width:50%;float:left;"class="btn btn-success" href="#{{ y.Item_ID|safe }}name" onclick="document.getElementById('{{ y.Item_ID|safe }}name').disabled = false;document.getElementById('{{ y.Item_ID|safe }}price').disabled = false;document.getElementById('{{ y.Item_ID|safe }}save').style.display = 'block';document.getElementById('{{ y.Item_ID|safe }}edit').style.display = 'none';" id="{{ y.Item_ID|safe }}edit"><i class="fa fa-pencil"></i></a>
+                                    <a style="width:50%;float:left;"class="btn btn-success" href="#{{ y.Item_ID|safe }}name" onclick="document.getElementById('{{ y.Item_ID|safe }}name').disabled = false;document.getElementById('{{ y.Item_ID|safe }}price').disabled = false;document.getElementById('{{ y.Item_ID|safe }}discount').disabled = false;document.getElementById('{{ y.Item_ID|safe }}save').style.display = 'block';document.getElementById('{{ y.Item_ID|safe }}edit').style.display = 'none';" id="{{ y.Item_ID|safe }}edit"><i class="fa fa-pencil"></i></a>
                                     <input type="hidden" value="{{ y.Item_ID|safe }}" name="Id">
                                     <button style="display:none;width:50%;float:left;"class="btn btn-primary" type="submit" id="{{ y.Item_ID|safe }}save"><i class="fa fa-check"></i></button>
                                     </form>

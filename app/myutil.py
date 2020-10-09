@@ -1,4 +1,7 @@
 from app.models import *
+from app.mailutil import *
+from app.sms import *
+import datetime
 
 def GetOrderMenuList(orderid):
 	dic={}
@@ -36,3 +39,78 @@ def checklogin(id):
 		return 'manager'
 	else:
 		return 'none'
+
+def SavePayData(request, orderid, tax, amount, amountwithtax, taxamount, amountpaid, transid, mode, promo):
+	amount = str(amount)
+	o="PAY00"
+	x=1
+	oid=o+str(x)
+	while PaymentData.objects.filter(Pay_ID=oid).exists():
+		x=x+1
+		oid=o+str(x)
+	x=int(x)
+	cusid=''
+	for x in OrderData.objects.filter(Order_ID=orderid):
+		cusid=x.Customer_ID
+		if not mode=='Cash':
+			obj=PaymentData(
+				Pay_ID=oid,
+				Order_ID=orderid,
+				Customer_ID=x.Customer_ID,
+				PayMode=mode,
+				Receipt_Number=transid,
+				Amount=amount,
+				AmountwithTax=amountwithtax,
+				AmountPaid=amountpaid
+			)
+			obj.save()
+			OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
+		else:
+			obj=PaymentData(
+				Pay_ID=oid,
+				Order_ID=orderid,
+				Customer_ID=x.Customer_ID,
+				PayMode=mode,
+				Amount=amount,
+				AmountwithTax=amountwithtax,
+				AmountPaid=amountpaid
+			)
+			obj.save()
+			OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
+	customer = CustomerData.objects.filter(Customer_ID=cusid)
+	customer.update(Coins_Wallet=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))
+	coins = str(round(float(amountpaid)/100)*int(CoinsData.objects.all()[0].Coins_Count))
+	totalcoins = (str(int(customer[0].Coins_Wallet)+round(float(amountpaid)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
+	sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountpaid, coins, str(totalcoins))
+	#sendBillSMS(customer[0].Mobile, str(amountpaid), orderid, oid, coins)
+	InvoiceData(
+		Order_ID=orderid,
+		Customer_ID=cusid,
+		TaxAmount=str(taxamount/2),
+		Tax=str(int(tax)/2),
+		Date=datetime.date.today(),
+		AmountwithTax=amountwithtax,
+		Amount=amount,
+		Promocode=promo,
+		AmountPaid=amountpaid,
+		Pay_ID=oid,
+		PayMode=mode
+	).save()
+	
+	if promo=='':
+		promo=None
+	dic={'orderid':orderid,
+			'gst':taxamount/2,
+			'tax':int(tax)/2,
+			'date':datetime.date.today(),
+			'amount':amount,
+			'taxamount':amountwithtax,
+			'amountpaid':amountpaid,
+			'promo':promo,
+			'payid':oid,
+			'paymode':mode,
+			'checklogin':checklogin(request.session['admin']),
+			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
+			'items':GetOrderMenuList(orderid),
+			'customerdata':CustomerData.objects.filter(Customer_ID=cusid)}
+	return dic

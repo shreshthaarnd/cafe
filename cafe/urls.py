@@ -49,7 +49,7 @@ urlpatterns = [
     path('adminsearchcustomer/',adminsearchcustomer),
     path('admincustomersearchresult/',admincustomersearchresult),
     path('admincompletepayment/',admincompletepayment),
-    path('admingeneratebill/',admingeneratebill),
+    #path('admingeneratebill/',admingeneratebill),
     path('admintax/',admintax),
     path('adminupdatetax/',adminupdatetax),
     path('adminupdatecoincount/',adminupdatecoincount),
@@ -61,6 +61,7 @@ urlpatterns = [
     path('adminsavemanagerpassword/',adminsavemanagerpassword),
     path('adminchangeadmin/',adminchangeadmin),
     path('adminsaveadmin/',adminsaveadmin),
+    path('applypromocode/',Apply_Promocode),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

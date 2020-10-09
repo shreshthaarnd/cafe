@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cafe - Search Customer</title>
+    <title>Cafe - Search Customer & Pay</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -67,7 +67,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Discount Desk</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-building"></i><a href="/admincoincount/">Coins Count</a></li>
-                            <li><i class="fa fa-building"></i><a href="/adminitemdiscount/">Item Discount</a></li>
                             <li><i class="fa fa-building"></i><a href="/adminadddiscountcoupon/">Add Discount Coupon</a></li>
                             <li><i class="fa fa-building"></i><a href="/admindiscountcouponlist/">Discount Coupon List</a></li>
                         </ul>
@@ -187,7 +186,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="cc-payment" class="control-label mb-1">Payment amount</label>
-                                        <input id="cc-pament" name="taxamount" type="text" class="form-control" value="{{ taxamount|safe }}0">
+                                        <input id="amounttopay" name="finalamount" type="text" class="form-control" value="{{ taxamount|safe }}0">
                                         <input id="cc-pament" name="amount" type="hidden" class="form-control" value="{{ totalamount|safe }}.00">
                                     </div>
                                     {% if result %}
@@ -253,13 +252,22 @@
                                             </div>
                                         </div>
                                         {% endif %}
+                                        <div class="form-group has-success">
+                                            <input id="promocode" name="promo" type="text" class="form-control" style="float:left;width:50%;"placeholder="Enter Promocode">
+                                            <a class="btn btn-success" style="float:right;width:50%;cursor:pointer;" onclick="applypromo();" id="applypromobutton">Apply Promocode</a>
+                                        </div>
                                         <div class="form-group has-success" style="width:100%;padding:14px;">
-                                            <select onchange="document.getElementById('payment-button').disabled=false;"data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" name="paymode">
+                                            <select onchange="document.getElementById('payment-button').disabled=false;acttransid();"data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" id="paymode" name="paymode">
                                                 <option value=""></option>
                                                 <option value="Cash">Pay By Cash</option>
                                                 <option value="Card">Pay By Card</option>
                                                 <option value="QR">Pay By QR Code</option>
                                             </select>
+                                        </div>
+
+                                        <div class="form-group has-success" style="display:none;" id="actpaymode">
+                                            <label for="cc-name" class="control-label mb-1">Enter Transaction ID or Reciept Number</label>
+                                            <input id="cc-name" name="transid" type="text" class="form-control" placeholder="Optional in case of Cash" onchange="">
                                         </div>
 
                                     </div>
@@ -295,19 +303,40 @@
     <script src="{% static 'adminpages/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/jszip/dist/jszip.min.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/pdfmake/build/pdfmake.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/pdfmake/build/vfs_fonts.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
     <script src="{% static 'adminpages/vendors/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
     <script src="{% static 'adminpages/assets/js/init-scripts/data-table/datatables-init.js' %}"></script>
-    <script src="{% static 'adminpages/vendors/jquery/dist/jquery.min.js' %}"></script>
-<script src="{% static 'adminpages/vendors/popper.js/dist/umd/popper.min.js' %}"></script>
-<script src="{% static 'adminpages/vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'adminpages/assets/js/main.js' %}"></script>
 <script src="{% static 'adminpages/vendors/chosen/chosen.jquery.min.js' %}"></script>
+<script type="text/javascript">
+    function acttransid(){
+        var paymode = document.getElementById('paymode').value;
+        if (paymode == 'Card' || paymode == 'QR'){
+            document.getElementById('actpaymode').style.display = 'block';
+        }
+    }
 
+    function applypromo(){
+        var promo = document.getElementById('promocode').value;
+        var amount = {{ taxamount|safe }};
+        var url = 'http://127.0.0.1:8000/applypromocode/?amount=';
+        var url = url.concat(amount);
+        var finalurl = url.concat('&promo=');
+        //alert();
+
+        async function apply(finalurl){
+            const response = await fetch(finalurl);
+            var data = await response.json();
+            document.getElementById('amounttopay').value = data.amount;
+            var str = 'Pay ';
+            document.getElementById('payment-button-amount').innerHTML = str.concat(data.amount);
+            document.getElementById('applypromobutton').innerHTML = 'Applied!';
+            //alert(data);
+        }
+        apply(finalurl.concat(promo));
+    }
+</script>
 <script>
     jQuery(document).ready(function() {
         jQuery(".standardSelect").chosen({
