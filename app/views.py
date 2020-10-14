@@ -41,7 +41,7 @@ def elements(request):
 def menu(request):
 	dic={'menu':MenuData.objects.filter(Status='Active'),
 		'category':MenuCategoryData.objects.all()}
-	return render(request,'menu.html',dic)
+	return render(request,'Menu.html',dic)
 def singleblog(request):
 	return render(request,'single-blog.html',{})
 def adminproceedtopay(request):
@@ -378,12 +378,14 @@ def admincompletepayment(request):
 		oid=request.session['orderid']
 		amount=request.POST.get('amount')
 		amountpaid=request.POST.get('finalamount')
-		name=request.POST.get('name')
+		
 		mobile=request.POST.get('mobile')
+		name=request.POST.get('name')
 		email=request.POST.get('email')
 		address=request.POST.get('address')
 		state=request.POST.get('state')
 		city=request.POST.get('city')
+		
 		promo=request.POST.get('promo')
 		transid=request.POST.get('transid')
 		
@@ -398,21 +400,28 @@ def admincompletepayment(request):
 		else:
 			c="CUS00"
 			x=1
-			cid=o+str(x)
+			cid=c+str(x)
 			while CustomerData.objects.filter(Customer_ID=cid).exists():
 				x=x+1
-				cid=o+str(x)
+				cid=c+str(x)
 			x=int(x)
-			obj=CustomerData(
-				Customer_ID=cid,
-				Name=name,
-				Mobile=mobile,
-				Email=email,
-				Address=address,
-				City=city,
-				State=state
-				)
-			obj.save()
+			if not name == '' and email == '' and address == '' and city == '' and state == '':
+				obj=CustomerData(
+					Customer_ID=cid,
+					Name=name,
+					Mobile=mobile,
+					Email=email,
+					Address=address,
+					City=city,
+					State=state
+					)
+				obj.save()
+			else:
+				obj=CustomerData(
+					Customer_ID=cid,
+					Mobile=mobile
+					)
+				obj.save()
 			OrderData.objects.filter(Order_ID=oid).update(Customer_ID=cid)
 			dic=SavePayData(request, oid, tax, amount, amountwithtax, taxamount, amountpaid, transid, paymode, promo)
 			dic.update({'checklogin':checklogin(request.session['admin'])})
@@ -587,94 +596,24 @@ def adminsaveadmin(request):
 	except:
 		return redirect('/index/')
 
-
-'''@csrf_exempt
-def admingeneratebill(request):
+@csrf_exempt
+def sendcontachform(request):
 	if request.method=='POST':
-		orderid=request.POST.get('orderid')
-		amount=request.POST.get('amount')
-		mode=request.POST.get('mode')
-		promo=request.POST.get('promo').upper()
-		o="PAY00"
-		x=1
-		oid=o+str(x)
-		while PaymentData.objects.filter(Pay_ID=oid).exists():
-			x=x+1
-			oid=o+str(x)
-		x=int(x)
-		cusid=''
-		tax=''
-		for x in TaxData.objects.all():
-			tax=x.Tax
-		taxamount=(int(amount[0:len(amount)-3])/100)*int(tax)
-		amountwithtax=taxamount+int(amount[0:len(amount)-3])
-		for x in OrderData.objects.filter(Order_ID=orderid):
-			cusid=x.Customer_ID
-			if not mode=='Cash':
-				amountwithpromo=applypromocode(promo, amountwithtax)
-				obj=PaymentData(
-					Pay_ID=oid,
-					Order_ID=orderid,
-					Customer_ID=x.Customer_ID,
-					PayMode=mode,
-					Receipt_Number=request.POST.get('reciept'),
-					Amount=amount,
-					Promocode=promo,
-					AmountwithTax=amountwithtax,
-					AmountPaid=amountwithpromo
-				)
-				obj.save()
-				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
-			else:
-				amountwithpromo=applypromocode(promo, amountwithtax)
-				obj=PaymentData(
-					Pay_ID=oid,
-					Order_ID=orderid,
-					Customer_ID=x.Customer_ID,
-					PayMode=mode,
-					Amount=amount,
-					Promocode=promo,
-					AmountwithTax=amountwithtax,
-					AmountPaid=amountwithpromo
-				)
-				obj.save()
-				OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
-		customer=CustomerData.objects.filter(Customer_ID=cusid)
-		customer.update(Coins_Wallet=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))
-		coins=str(round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))
-		totalcoins=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
-		sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountwithtax, coins, str(totalcoins))
-		sendBillSMS(customer[0].Mobile, str(amountwithpromo), orderid, oid, coins)
-		InvoiceData(
-			Order_ID=orderid,
-			Customer_ID=cusid,
-			TaxAmount=str(taxamount/2),
-			Tax=str(int(tax)/2),
-			Date=datetime.date.today(),
-			AmountwithTax=amountwithtax,
-			Amount=amount,
-			Promocode=promo,
-			AmountPaid=amountwithpromo,
-			Pay_ID=oid,
-			PayMode=mode
-		).save()
-		
-		if promo=='':
-			promo=None
-
-		dic={'orderid':orderid,
-			'gst':taxamount/2,
-			'tax':int(tax)/2,
-			'date':datetime.date.today(),
-			'amount':amount,
-			'taxamount':amountwithtax,
-			'amountpaid':amountwithpromo,
-			'promo':promo,
-			'payid':oid,
-			'paymode':mode,
-			'checklogin':checklogin(request.session['admin']),
-			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
-			'items':GetOrderMenuList(orderid),
-			'customerdata':CustomerData.objects.filter(Customer_ID=cusid)}
-		return render(request,'adminpages/bilinginvoice.html',dic)
-'''
+		msg = request.POST.get('message')
+		name = request.POST.get('name')
+		email = request.POST.get('email')
+		subject = request.POST.get('subject')
+		print(email)
+		msg = '''Query By : '''+name+'''('''+email+'''),
+'''+msg
+		email=EmailMessage(subject,msg,to=['liantcafe@gmail.com'])
+		email.send()
+		msg = '''Hi there!
+We got your message, we will contact you soon!'''
+		subject = 'Cafe Liant - Message Received'
+		email = request.POST.get('email')
+		email=EmailMessage(subject,msg,to=[email])
+		email.send()
+		return redirect('/index/')
+	else:
+		return redirect('/index/')
