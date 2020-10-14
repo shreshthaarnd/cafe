@@ -26,6 +26,7 @@ urlpatterns = [
     path('adminitemdiscount/',adminitemdiscount),
     path('adminmailbill/',adminmailbill),
     path('index/',index),
+    path('',index),
     path('about/',about),
     path('blog/',blog),
     path('contact/',contact),
