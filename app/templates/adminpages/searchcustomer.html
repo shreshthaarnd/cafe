@@ -175,7 +175,8 @@
                                     <h3 class="text-center">Pay Invoice <span style="font-weight:bold;">{{ orderid|safe }}</span></h3>
                                 </div>
                                 <hr>
-                                <form action="/admincompletepayment/" method="POST">
+                                <div id="payform">
+                                <form action="/admincompletepayment/" method="POST" target="_blank">
                                     <div class="form-group text-center">
                                         <ul class="list-inline">
                                             <li class="list-inline-item"><i class="text-muted fa fa-cc-visa fa-2x"></i></li>
@@ -192,7 +193,7 @@
                                     {% if result %}
                                     {% for x in result %}
                                     <div class="form-group has-success">
-                                        <label for="cc-name" class="control-label mb-1">Customer Name *</label>
+                                        <label for="cc-name" class="control-label mb-1">Customer Name</label>
                                         <input id="cc-name" name="name" type="text" class="form-control" value="{{ x.Name|safe }}">
                                     </div>
                                     <div class="form-group has-success">
@@ -200,7 +201,7 @@
                                         <input id="cc-name" name="mobile" type="text" class="form-control" value="{{ x.Mobile|safe }}">
                                     </div>
                                     <div class="form-group has-success">
-                                        <label for="cc-name" class="control-label mb-1">Email Address *</label>
+                                        <label for="cc-name" class="control-label mb-1">Email Address</label>
                                         <input id="cc-name" name="email" type="text" class="form-control" value="{{ x.Email|safe }}">
                                     </div>
                                     <div class="form-group has-success">
@@ -223,7 +224,7 @@
                                         {% endfor %}
                                         {% else %}
                                     <div class="form-group has-success">
-                                        <label for="cc-name" class="control-label mb-1">Customer Name *</label>
+                                        <label for="cc-name" class="control-label mb-1">Customer Name</label>
                                         <input id="cc-name" name="name" type="text" class="form-control" value="">
                                     </div>
                                     <div class="form-group has-success">
@@ -231,7 +232,7 @@
                                         <input id="cc-name" name="mobile" type="text" class="form-control" value="{{ cmobile|safe }}" required>
                                     </div>
                                     <div class="form-group has-success">
-                                        <label for="cc-name" class="control-label mb-1">Email Address *</label>
+                                        <label for="cc-name" class="control-label mb-1">Email Address</label>
                                         <input id="cc-name" name="email" type="text" class="form-control" value="">
                                     </div>
                                     <div class="form-group has-success">
@@ -272,13 +273,16 @@
 
                                     </div>
                                     <div>
-                                        <button disabled id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                        <button disabled id="payment-button" type="submit" class="btn btn-lg btn-info btn-block" onclick="activeback();">
                                         <i class="fa fa-lock fa-lg"></i>&nbsp;
                                         <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ taxamount|safe }}0</span>
                                         <span id="payment-button-sending" style="display:none;">Sending…</span>
                                         </button>
+                                        
                                     </div>
                                 </form>
+                                </div>
+                                <a href="/adminongoingorder/" style="display:none;" id="backbutton" class="btn btn-lg btn-danger btn-block">Back to Order Page</a>
                             </div>
                         </div>
 
@@ -310,6 +314,12 @@
     <script src="{% static 'adminpages/assets/js/init-scripts/data-table/datatables-init.js' %}"></script>
 <script src="{% static 'adminpages/vendors/chosen/chosen.jquery.min.js' %}"></script>   
 <script type="text/javascript">
+    function activeback(){
+        document.getElementById('payment-button').style.display='none';
+        document.getElementById('backbutton').style.display='block';
+        document.getElementById('payform').style.display='none';
+    }
+
     function acttransid(){
         var paymode = document.getElementById('paymode').value;
         if (paymode == 'Card' || paymode == 'QR'){

@@ -27,8 +27,8 @@ def applyitemdiscount(itemid):
 def applypromocode(code, amount):
 	if DiscountCouponData.objects.filter(Coupon_Code=code).exists():
 		discount=DiscountCouponData.objects.filter(Coupon_Code=code)[0].Discount_Percentage
-		disamount=(int(amount)/100)*int(discount)
-		return int(amount)-disamount
+		disamount=(float(amount)/100)*int(discount)
+		return float(amount)-disamount
 	else:
 		return amount
 

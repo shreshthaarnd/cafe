@@ -110,6 +110,8 @@
     <div class="best_burgers_area">
         <div class="container">
             {% for x in category %}
+            {% for a in display %}
+            {% if x.Category_ID == a %}
             <div class="row">
                 
                 <div class="col-lg-12">
@@ -143,6 +145,8 @@
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endfor %}
     {% endfor %}
     <!-- best_burgers_area_end  -->
 

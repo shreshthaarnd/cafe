@@ -39,8 +39,13 @@ def contact(request):
 def elements(request):
 	return render(request,'elements.html',{})
 def menu(request):
+	display = []
+	for x in MenuCategoryData.objects.all():
+		if MenuData.objects.filter(Status='Active', Item_Category=x.Category_ID).exists():
+			display.append(x.Category_ID)
 	dic={'menu':MenuData.objects.filter(Status='Active'),
-		'category':MenuCategoryData.objects.all()}
+		'category':MenuCategoryData.objects.all(),
+		'display':display}
 	return render(request,'Menu.html',dic)
 def singleblog(request):
 	return render(request,'single-blog.html',{})
@@ -366,6 +371,7 @@ def admincustomersearchresult(request):
 def Apply_Promocode(request):
 	amount=request.GET.get('amount')
 	promo=request.GET.get('promo')
+	amount=float(amount)
 	applied_amount = applypromocode(promo, amount)
 	dic = {'Response':'Success','amount':applied_amount, 'promo':promo}
 	response_ = Response(dic)
