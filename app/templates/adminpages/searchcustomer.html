@@ -330,7 +330,7 @@
     function applypromo(){
         var promo = document.getElementById('promocode').value;
         var amount = {{ taxamount|safe }};
-        var url = 'http://127.0.0.1:8000/applypromocode/?amount=';
+        var url = 'http://srd.pythonanywhere.com/applypromocode/?amount=';
         var url = url.concat(amount);
         var finalurl = url.concat('&promo=');
         //alert();
