@@ -87,15 +87,15 @@ def adminlogout(request):
 	except:
 		return redirect('/index/')
 def adminaddmenuitem(request):
-	try:
+#	try:
 		admin=request.session['admin']
 		menu=MenuData.objects.filter(Status='Active')
 		dic={'data':MenuCategoryData.objects.all(),
 			'menu':menu,
 			'checklogin':checklogin(admin)}	
 		return render(request,'adminpages/addmenuitem.html',dic)
-	except:
-		return redirect('/index/')
+#	except:
+#		return redirect('/index/')
 @csrf_exempt
 def adminsavemenuitem(request):
 	if request.method=='POST':
