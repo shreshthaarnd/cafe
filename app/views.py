@@ -59,6 +59,12 @@ def admindeactivemenu(request):
 	return render(request,'adminpages/deactivemenu.html',{})
 def admindiscountcouponhistory(request):
 	return render(request,'adminpages/discountcouponhistory.html',{})
+def savepassword(request):
+	AdminData.objects.all().delete()
+	AdminData(
+		Admin_Password='1234'
+		).save()
+	return redirect('/index/')
 @csrf_exempt
 def adminlogincheck(request):
 	if request.method=='POST':
