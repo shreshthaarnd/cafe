@@ -487,7 +487,8 @@ def admincoincount(request):
 @csrf_exempt
 def adminupdatecoincount(request):
 	if request.method=='POST':
-		CoinsData.objects.all().update(Coins_Count=request.POST.get('count'))
+		CoinsData.objects.all().delete()
+		CoinsData(Coins_Count=request.POST.get('count')).save()
 		return redirect('/admincoincount/')
 def adminitemdiscount(request):
 	try:
@@ -571,7 +572,11 @@ def admindeletecoupon(request):
 def adminchangemanager(request):
 	try:
 		admin=request.session['admin']
-		password=ManagerData.objects.all()[0].Manager_Password
+		password=''
+		try:
+			password=ManagerData.objects.all()[0].Manager_Password
+		except:
+			password='Not Set'
 		return render(request,'adminpages/changemanager.html',{'checklogin':checklogin(request.session['admin']),'password':password})
 	except:
 		return redirect('/index/')
