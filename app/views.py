@@ -303,7 +303,7 @@ def admincancelorder(request):
 		return redirect('/index/')
 
 def adminsearchcustomer(request):
-	try:
+	#try:
 		admin=request.session['admin']
 		oid=request.GET.get('orderid')
 		request.session['orderid'] = oid
@@ -323,8 +323,8 @@ def adminsearchcustomer(request):
 			'totalamount':str(total),
 			'taxamount':amountwithtax,'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/searchcustomer.html',dic)
-	except:
-		return redirect('/index/')
+	#except:
+	#	return redirect('/index/')
 
 def admincustomersearchresult(request):
 	try:
@@ -472,8 +472,11 @@ def admintax(request):
 @csrf_exempt
 def adminupdatetax(request):
 	if request.method=='POST':
-		TaxData.objects.all().update(Tax=request.POST.get('tax'))
+		TaxData.objects.all().delete()
+		TaxData(Tax=request.POST.get('tax')).save()
 		return redirect('/admintax/')
+	else:
+		return redirect('/index/')
 def admincoincount(request):
 	try:
 		admin=request.session['admin']

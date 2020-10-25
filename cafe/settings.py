@@ -130,9 +130,10 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 AWS_LOCATION = 'media'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+AWS_PUBLIC_MEDIA_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'cafe.storage_backends.PublicMediaStorage'
 
 EMAIL_USE_TLS=True
 EMAIL_HOST='smtp.gmail.com'
