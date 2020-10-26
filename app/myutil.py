@@ -53,29 +53,56 @@ def SavePayData(request, orderid, tax, amount, amountwithtax, taxamount, amountp
 	for x in OrderData.objects.filter(Order_ID=orderid):
 		cusid=x.Customer_ID
 		if not mode=='Cash':
-			obj=PaymentData(
-				Pay_ID=oid,
-				Order_ID=orderid,
-				Customer_ID=x.Customer_ID,
-				PayMode=mode,
-				Receipt_Number=transid,
-				Amount=amount,
-				AmountwithTax=amountwithtax,
-				AmountPaid=amountpaid
-			)
-			obj.save()
+			if promo == '':
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Receipt_Number=transid,
+					Amount=amount,
+					AmountwithTax=amountwithtax,
+					AmountPaid=amountpaid
+				)
+				obj.save()
+			else:
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Receipt_Number=transid,
+					Amount=amount,
+					Promocode=promo,
+					AmountwithTax=amountwithtax,
+					AmountPaid=amountpaid
+				)
+				obj.save()
 			OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
 		else:
-			obj=PaymentData(
-				Pay_ID=oid,
-				Order_ID=orderid,
-				Customer_ID=x.Customer_ID,
-				PayMode=mode,
-				Amount=amount,
-				AmountwithTax=amountwithtax,
-				AmountPaid=amountpaid
-			)
-			obj.save()
+			if promo == '':
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Amount=amount,
+					AmountwithTax=amountwithtax,
+					AmountPaid=amountpaid
+				)
+				obj.save()
+			else:
+				obj=PaymentData(
+					Pay_ID=oid,
+					Order_ID=orderid,
+					Customer_ID=x.Customer_ID,
+					PayMode=mode,
+					Amount=amount,
+					AmountwithTax=amountwithtax,
+					Promocode=promo,
+					AmountPaid=amountpaid
+				)
+				obj.save()
 			OrderData.objects.filter(Order_ID=orderid).update(Status='Paid',Pay_ID=oid)
 	customer = CustomerData.objects.filter(Customer_ID=cusid)
 	customer.update(Coins_Wallet=(str(int(customer[0].Coins_Wallet)+round(int(amountwithtax)/100)*int(CoinsData.objects.all()[0].Coins_Count))))

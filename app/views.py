@@ -313,9 +313,7 @@ def adminsearchcustomer(request):
 				price=applyitemdiscount(y.Item_ID)
 				total=total+(price*int(x.Quantity))
 		
-		tax=''
-		for x in TaxData.objects.all():
-			tax=x.Tax
+		tax=TaxData.objects.all()[0].Tax
 		taxamount=(int(total)/100)*int(tax)
 		amountwithtax=taxamount+int(total)
 		dic={'customers':CustomerData.objects.all(),
@@ -333,16 +331,16 @@ def admincustomersearchresult(request):
 		result=CustomerData.objects.filter(Mobile=cmobile)
 		oid=request.session['orderid']
 		total=0
-		if CustomerData.objects.filter(Mobile=cmobile).exists():
-			for x in CustomerData.objects.filter(Mobile=cmobile):
-				OrderData.objects.filter(Order_ID=oid).update(Customer_ID=x.Customer_ID)
+		if result.exists():
+			cust=CustomerData.objects.filter(Mobile=cmobile)[0]
+			OrderData.objects.filter(Order_ID=oid).update(Customer_ID=cust.Customer_ID)
+
 			for x in OrderMenuData.objects.filter(Order_ID=oid):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
 					price=applyitemdiscount(y.Item_ID)
 					total=total+(price*int(x.Quantity))
-			tax=''
-			for x in TaxData.objects.all():
-				tax=x.Tax
+			
+			tax=TaxData.objects.all()[0].Tax
 			taxamount=(int(total)/100)*int(tax)
 			amountwithtax=taxamount+int(total)
 			dic={'customers':CustomerData.objects.all(),
@@ -357,11 +355,11 @@ def admincustomersearchresult(request):
 				for y in MenuData.objects.filter(Item_ID=x.Item_ID):
 					price=applyitemdiscount(y.Item_ID)
 					total=total+(price*int(x.Quantity))
-			tax=''
-			for x in TaxData.objects.all():
-				tax=x.Tax
+			
+			tax=TaxData.objects.all()[0].Tax
 			taxamount=(int(total)/100)*int(tax)
 			amountwithtax=taxamount+int(total)
+			
 			dic={'customers':CustomerData.objects.all(),
 				'cmobile':cmobile,
 				'orderid':oid,
@@ -379,9 +377,14 @@ def Apply_Promocode(request):
 	promo=request.GET.get('promo')
 	amount=float(amount)
 	applied_amount = applypromocode(promo, amount)
-	dic = {'Response':'Success','amount':applied_amount, 'promo':promo}
-	response_ = Response(dic)
-	return response_
+	if not amount == applied_amount:
+		dic = {'Response':'Success','amount':applied_amount, 'promo':promo}
+		response_ = Response(dic)
+		return response_
+	else:
+		dic = {'Response':'Failed'}
+		response_ = Response(dic)
+		return response_
 
 @csrf_exempt
 def admincompletepayment(request):
@@ -400,12 +403,14 @@ def admincompletepayment(request):
 		
 		promo=request.POST.get('promo')
 		transid=request.POST.get('transid')
-		
 		tax=TaxData.objects.all()[0].Tax
 		taxamount=(int(amount[0:len(amount)-3])/100)*int(tax)
 		amountwithtax=taxamount+int(amount[0:len(amount)-3])
-		
+
 		if CustomerData.objects.filter(Mobile=mobile).exists():
+			CustomerData.objects.filter(Mobile=mobile).update(
+				Name=name,Email=email,Address=address,City=city,State=state
+				)
 			dic=SavePayData(request, oid, tax, amount, amountwithtax, taxamount, amountpaid, transid, paymode, promo)
 			dic.update({'checklogin':checklogin(request.session['admin'])})
 			return render(request,'adminpages/bilinginvoice.html',dic)

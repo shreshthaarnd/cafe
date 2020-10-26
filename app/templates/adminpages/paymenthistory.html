@@ -142,7 +142,7 @@
                             <div class="card-header">
                                 <strong class="card-title">Payment History</strong>
                             </div>
-                            <div style="width:875px;overflow-x:auto;"class="card-body">
+                            <div style="width:930px;overflow-x:auto;"class="card-body">
                                 <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -154,6 +154,8 @@
                                             <th>Receipt Number</th>
                                             <th>Amount</th>
                                             <th>Amount Including Tax</th>
+                                            <th>Promocode</th>
+                                            <th>Amount Paid</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -167,6 +169,8 @@
                                           <td>{{ x.Receipt_Number|safe }}</td> 
                                           <td><i class="fa fa-inr"></i> {{ x.Amount|safe }}</td>
                                           <td><i class="fa fa-inr"></i> {{ x.AmountwithTax|safe }}</td>
+                                          <td>{{ x.Promocode|safe }}</td>
+                                          <td><i class="fa fa-inr"></i> {{ x.AmountPaid|safe }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

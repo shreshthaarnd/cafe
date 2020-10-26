@@ -255,7 +255,7 @@
                                         {% endif %}
                                         <div class="form-group has-success">
                                             <input id="promocode" name="promo" type="text" class="form-control" style="float:left;width:50%;"placeholder="Enter Promocode">
-                                            <a class="btn btn-success" style="float:right;width:50%;cursor:pointer;" onclick="applypromo();" id="applypromobutton">Apply Promocode</a>
+                                            <a class="btn btn-success" style="float:right;width:50%;cursor:pointer;color:white;" onclick="applypromo();" id="applypromobutton">Apply Promocode</a>
                                         </div>
                                         <div class="form-group has-success" style="width:100%;padding:14px;">
                                             <select onchange="document.getElementById('payment-button').disabled=false;acttransid();"data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" id="paymode" name="paymode">
@@ -328,6 +328,7 @@
     }
 
     function applypromo(){
+        //http://cafe-env.eba-pcmapfmm.ap-south-1.elasticbeanstalk.com/
         var promo = document.getElementById('promocode').value;
         var amount = {{ taxamount|safe }};
         var url = 'http://cafe-env.eba-pcmapfmm.ap-south-1.elasticbeanstalk.com/applypromocode/?amount=';
@@ -338,10 +339,17 @@
         async function apply(finalurl){
             const response = await fetch(finalurl);
             var data = await response.json();
-            document.getElementById('amounttopay').value = data.amount;
-            var str = 'Pay ';
-            document.getElementById('payment-button-amount').innerHTML = str.concat(data.amount);
-            document.getElementById('applypromobutton').innerHTML = 'Applied!';
+            if(data['Response']=='Success'){
+                document.getElementById('amounttopay').value = data.amount;
+                var str = 'Pay ';
+                document.getElementById('payment-button-amount').innerHTML = str.concat(data.amount);
+                document.getElementById('applypromobutton').innerHTML = 'Applied!';
+            }
+            else{
+                document.getElementById('applypromobutton').innerHTML = 'Incorrect Promocode';
+                document.getElementById('promocode').value = '';
+            }
+            
             //alert(data);
         }
         apply(finalurl.concat(promo));
