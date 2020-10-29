@@ -187,8 +187,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="cc-payment" class="control-label mb-1">Payment amount</label>
-                                        <input id="amounttopay" name="finalamount" type="text" class="form-control" value="{{ taxamount|safe }}0">
-                                        <input id="cc-pament" name="amount" type="hidden" class="form-control" value="{{ totalamount|safe }}.00">
+                                        <input id="amounttopay" name="finalamount" type="text" class="form-control" value="{{ taxamount|safe }}">
+                                        <input id="cc-pament" name="amount" type="hidden" class="form-control" value="{{ totalamount|safe }}">
                                     </div>
                                     {% if result %}
                                     {% for x in result %}
@@ -275,7 +275,7 @@
                                     <div>
                                         <button disabled id="payment-button" type="submit" class="btn btn-lg btn-info btn-block" onclick="activeback();">
                                         <i class="fa fa-lock fa-lg"></i>&nbsp;
-                                        <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ taxamount|safe }}0</span>
+                                        <span id="payment-button-amount">Pay <i class="fa fa-inr"></i>{{ taxamount|safe }}</span>
                                         <span id="payment-button-sending" style="display:none;">Sending…</span>
                                         </button>
                                         

@@ -15,20 +15,22 @@ def GetOrderMenuList(orderid):
 				'rate':str(applyitemdiscount(y.Item_ID)),
 				'quantity':x.Quantity,
 				'discount':y.Discount,
-				'total':int(x.Quantity)*int(applyitemdiscount(y.Item_ID))}
+				'total':float(x.Quantity)*float(applyitemdiscount(y.Item_ID))}
 		lt.append(dic)
 	return lt
+
 def applyitemdiscount(itemid):
 	item=MenuData.objects.filter(Item_ID=itemid)[0]
-	price=int(item.Item_Price)
-	discountpercent=int(item.Discount)
+	price=float(item.Item_Price)
+	discountpercent=float(item.Discount)
 	discount=(price/100)*discountpercent
-	return int(price-discount)
+	return round(float(price-discount), 2)
+
 def applypromocode(code, amount):
 	if DiscountCouponData.objects.filter(Coupon_Code=code).exists():
 		discount=DiscountCouponData.objects.filter(Coupon_Code=code)[0].Discount_Percentage
 		disamount=(float(amount)/100)*int(discount)
-		return float(amount)-disamount
+		return round(float(amount)-disamount, 2)
 	else:
 		return amount
 
@@ -133,8 +135,8 @@ def SavePayData(request, orderid, tax, amount, amountwithtax, taxamount, amountp
 	if promo=='':
 		promo=None
 	dic={'orderid':orderid,
-			'gst':taxamount/2,
-			'tax':int(tax)/2,
+			'gst':round(taxamount/2, 2),
+			'tax':round(float(tax)/2, 2),
 			'date':datetime.date.today(),
 			'amount':amount,
 			'taxamount':amountwithtax,

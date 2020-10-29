@@ -314,12 +314,12 @@ def adminsearchcustomer(request):
 				total=total+(price*int(x.Quantity))
 		
 		tax=TaxData.objects.all()[0].Tax
-		taxamount=(int(total)/100)*int(tax)
-		amountwithtax=taxamount+int(total)
+		taxamount=(float(total)/100)*float(tax)
+		amountwithtax=taxamount+float(total)
 		dic={'customers':CustomerData.objects.all(),
 			'orderid':oid,
-			'totalamount':str(total),
-			'taxamount':amountwithtax,'checklogin':checklogin(request.session['admin'])}
+			'totalamount':str(round(total, 2)),
+			'taxamount':round(amountwithtax, 2),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/searchcustomer.html',dic)
 	#except:
 	#	return redirect('/index/')
@@ -341,13 +341,13 @@ def admincustomersearchresult(request):
 					total=total+(price*int(x.Quantity))
 			
 			tax=TaxData.objects.all()[0].Tax
-			taxamount=(int(total)/100)*int(tax)
-			amountwithtax=taxamount+int(total)
+			taxamount=(float(total)/100)*float(tax)
+			amountwithtax=taxamount+float(total)
 			dic={'customers':CustomerData.objects.all(),
 				'result':result,
 				'orderid':oid,
-				'taxamount':amountwithtax,
-				'totalamount':str(total),
+				'taxamount':round(amountwithtax, 2),
+				'totalamount':str(round(total, 2)),
 				'checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/searchcustomer.html',dic)
 		else:
@@ -357,15 +357,15 @@ def admincustomersearchresult(request):
 					total=total+(price*int(x.Quantity))
 			
 			tax=TaxData.objects.all()[0].Tax
-			taxamount=(int(total)/100)*int(tax)
-			amountwithtax=taxamount+int(total)
+			taxamount=(float(total)/100)*float(tax)
+			amountwithtax=taxamount+float(total)
 			
 			dic={'customers':CustomerData.objects.all(),
 				'cmobile':cmobile,
 				'orderid':oid,
-				'taxamount':amountwithtax,
+				'taxamount':round(amountwithtax, 2),
 				'msg':'No Customer Record Found, Add Customer Detail Below.',
-				'totalamount':str(total),
+				'totalamount':str(round(total, 2)),
 				'checklogin':checklogin(request.session['admin'])}
 			return render(request,'adminpages/searchcustomer.html',dic)
 	except:
@@ -403,9 +403,10 @@ def admincompletepayment(request):
 		
 		promo=request.POST.get('promo')
 		transid=request.POST.get('transid')
+		
 		tax=TaxData.objects.all()[0].Tax
-		taxamount=(int(amount[0:len(amount)-3])/100)*int(tax)
-		amountwithtax=taxamount+int(amount[0:len(amount)-3])
+		taxamount=(float(amount)/100)*float(tax)
+		amountwithtax=taxamount+float(amount)
 
 		if CustomerData.objects.filter(Mobile=mobile).exists():
 			CustomerData.objects.filter(Mobile=mobile).update(
@@ -422,7 +423,7 @@ def admincompletepayment(request):
 				x=x+1
 				cid=c+str(x)
 			x=int(x)
-			if not name == '' and email == '' and address == '' and city == '' and state == '':
+			if not name == '' or email == '' or address == '' or city == '' or state == '':
 				obj=CustomerData(
 					Customer_ID=cid,
 					Name=name,
