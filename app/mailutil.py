@@ -27,7 +27,7 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 </head>
 <body>
 	<div style="text-align:center;">
-		<img style="width:100px;" src="http://srd.pythonanywhere.com/static/img/orange%20logo.jpg">
+		<img style="width:100px;border-radius:10px;" src="http://cafe-env.eba-pcmapfmm.ap-south-1.elasticbeanstalk.com/static/img/orange%20logo.jpg">
 		<h1>Billing Invoice</h1>
 	</div>
 	<div style="width:100%;padding:10px;float:left;">
