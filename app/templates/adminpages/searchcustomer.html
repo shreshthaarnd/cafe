@@ -256,6 +256,7 @@
                                         <div class="form-group has-success">
                                             <input id="promocode" name="promo" type="text" class="form-control" style="float:left;width:50%;"placeholder="Enter Promocode">
                                             <a class="btn btn-success" style="float:right;width:50%;cursor:pointer;color:white;" onclick="applypromo();" id="applypromobutton">Apply Promocode</a>
+                                            <a style="cursor:pointer;display:none;" id="promoremove" onclick="removepromocode();">Remove</a>
                                         </div>
                                         <div class="form-group has-success" style="width:100%;padding:14px;">
                                             <select onchange="document.getElementById('payment-button').disabled=false;acttransid();"data-placeholder="Select Payment Mode" class="standardSelect" tabindex="1" id="paymode" name="paymode">
@@ -343,16 +344,29 @@
                 document.getElementById('amounttopay').value = data.amount;
                 var str = 'Pay ';
                 document.getElementById('payment-button-amount').innerHTML = str.concat(data.amount);
+                document.getElementById('promoremove').style.display='block';
                 document.getElementById('applypromobutton').innerHTML = 'Applied!';
             }
             else{
+                document.getElementById('amounttopay').value = {{ taxamount|safe }};
+                var str = 'Pay ';
+                document.getElementById('payment-button-amount').innerHTML = str.concat({{ taxamount|safe }});
                 document.getElementById('applypromobutton').innerHTML = 'Incorrect Promocode';
                 document.getElementById('promocode').value = '';
+                document.getElementById('promoremove').style.display='none';
             }
             
             //alert(data);
         }
         apply(finalurl.concat(promo));
+    }
+    function removepromocode(){
+        document.getElementById('amounttopay').value = {{ taxamount|safe }};
+        var str = 'Pay ';
+        document.getElementById('payment-button-amount').innerHTML = str.concat({{ taxamount|safe }});
+        document.getElementById('applypromobutton').innerHTML = 'Apply Promocode';
+        document.getElementById('promocode').value = '';
+        document.getElementById('promoremove').style.display='none';
     }
 </script>
 <script>
