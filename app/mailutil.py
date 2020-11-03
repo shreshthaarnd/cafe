@@ -34,9 +34,8 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 		<p style="font-size:15px;">
 			<span style="font-weight:bold;font-size:20px;">'''+customerobj[0].Name+'''</span><br>
 			<span>'''+customerobj[0].Address+'''</span><br>
-			<span>'''+customerobj[0].City+''', '''+customerobj[0].State+'''</span><br>
-			<span>+91-'''+customerobj[0].Mobile+''', '''+customerobj[0].Email+'''</span>
-			
+			<span>'''+customerobj[0].City+''' '''+customerobj[0].State+'''</span><br>
+			<span>+91-'''+customerobj[0].Mobile+'''<br>'''+customerobj[0].Email+'''</span>
 		</p>
 	</div>
 	<div style="text-align:center;padding:10px;">
@@ -61,16 +60,16 @@ def billhtml(customerobj, orderid, payid, paymode, date, menuitems, taxamount, t
 				<td><i class="fa fa-inr"></i>'''+amount+'''</td>
 			</tr>
 			<tr>
-				<td>CGST '''+tax+'''% :</td>
-				<td><i class="fa fa-inr"></i>'''+taxamount+'''</td>
+				<td>CGST '''+str(round(float(tax), 2))+'''% :</td>
+				<td><i class="fa fa-inr"></i>'''+str(round(float(taxamount), 2))+'''</td>
 			</tr>
 			<tr>
-				<td>SGST '''+tax+'''% :</td>
-				<td><i class="fa fa-inr"></i>'''+taxamount+'''</td>
+				<td>SGST '''+str(round(float(tax), 2))+'''% :</td>
+				<td><i class="fa fa-inr"></i>'''+str(round(float(taxamount), 2))+'''</td>
 			</tr>
 			<tr>
 				<td>Total Including Tax :</td>
-				<td><i class="fa fa-inr"></i>'''+str(totalamount)+'''</td>
+				<td><i class="fa fa-inr"></i>'''+str(round(float(totalamount), 2))+'''</td>
 			</tr>
 		</table>
 	</div>
