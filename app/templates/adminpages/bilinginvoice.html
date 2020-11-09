@@ -35,30 +35,24 @@
 <body>
     <div class="content mt-3" style="width:750px;margin:auto;">
         <div class="card">
-            <div class="card-header">
-                <strong>Biling Invoice</strong><small> For {{ orderid|safe }}</small>
-                <button style="float:right;" onclick="window.print();"class="btn btn-primary">Print</button>
-            </div>
-            <div class="card-body card-block">
-               <div style="padding:20px;"class="row">
-                <div style="padding:20px;width:50%;"class="column"><img style="width:100px;border-radius:10px;"src="{% static 'img/orange logo.jpg' %}">
-                </div>
+            <div>
+               <div style=""class="row">
                 <div style="width:50%;padding:20px;"class="column">
-                    <h1 style="float:right;font-weight:bold;">INVOICE</h1>
+                    <h2 style="float:center;font-weight:bold;">Cafe Liant<br>Invoice</h2>
                 </div>
                </div> 
-               <div style="padding-right:20px;padding-left:20px;"class="row">
-                    <div style="padding:20px;width:50%;"class="column">
+               <div style="">
+                    <div>
                         <p style="color:black;">
                             {% for x in customerdata %}
-                            <span style="font-size:25px;font-weight:bold;">{{ x.Name|safe }}</span><br>
-                            <span style="font-size:18px;">{{ x.Email|safe }}, +91-{{ x.Mobile|safe }}</span><br><span style="font-size:18px;">{{ x.Address|safe }}</span><br>
-                            <span style="font-size:18px;">{{ x.City|safe }}, {{ x.State|safe }}</span>
+                            <span style="font-size:20px;font-weight:bold;">{{ x.Name|safe }}</span><br>
+                            <span style="font-size:15px;">{{ x.Email|safe }},<br>+91-{{ x.Mobile|safe }}</span><br><span style="font-size:15px;">{{ x.Address|safe }}</span><br>
+                            <span style="font-size:15px;">{{ x.City|safe }}, {{ x.State|safe }}</span>
                             {% endfor %}
                         </p>
                     </div>
-                    <div style="padding:20px;width:50%;"class="column">
-                        <table style="width:250px;float:right;font-size:18px;">
+                    <div>
+                        <table style="width:220px;font-size:15px;">
                             <tr>
                                 <td>Date</td>
                                 <td style="font-weight:bold;">: {{ date|safe }}</td>
@@ -78,39 +72,26 @@
                         </table>
                     </div>
                </div>
-               <div style="padding:20px;"class="row">
-                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">SR No.</th>
-                                            <th scope="col">Item Name</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Rate</th>
-                                            <th scope="col">Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for x in items %}
-                                        <tr>
-                                            <th scope="row">{{ x.sr|safe }}</th>
-                                            <td>{% if not x.discount == '0' %}
-                                                {{ x.name|safe }} 
-                                                with {{ x.discount|safe }}% Discount
-                                                {% else %}
-                                                {{ x.name|safe }}
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ x.quantity|safe }}</td>
-                                            <td><i class="fa fa-inr"></i>{{ x.rate|safe }}</td>
-                                            <td><i class="fa fa-inr"></i>{{ x.total|safe }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+               
+               <div style="padding:10px;">
+                <h4>Ordered Items</h4> 
+                {% for x in items %}
+                <p>
+                    {{ x.sr|safe }}) 
+                    {% if not x.discount == '0' %}
+                    {{ x.name|safe }} with {{ x.discount|safe }}% Discount
+                    {% else %}
+                    {{ x.name|safe }}
+                    {% endif %}<br>
+                    {{ x.quantity|safe }} x 
+                    <i class="fa fa-inr"></i>{{ x.rate|safe }} => 
+                    <i class="fa fa-inr"></i>{{ x.total|safe }}
+                </p>
+                {% endfor %}
                </div>
-               <div style="padding:20px;"class="row">
+               <div style="padding:10px;"class="row">
                     <div style="width:100%;"class="column">
-                        <table style="margin-right:10px;width:500px;font-size:18px;float:right;">
+                        <table style="width:250px;font-size:12px;">
                             <tr>
                                 <td style="font-weight:bold;">TOTAL</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amount|safe }}</td>
@@ -124,28 +105,25 @@
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ gst|safe }}</td>
                             </tr>
                             {% if not promo == None %}
-                            <tr style="font-size:20px;">
+                            <tr style="font-size:14px;">
                                 <td style="font-weight:bold;">TOTAL AMOUNT WITH TAX</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ taxamount|safe }}</td>
                             </tr>
-                            <tr style="font-size:25px;">
+                            <tr style="font-size:16px;">
                                 <td style="font-weight:bold;">TOTAL AMOUNT TO PAY</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amountpaid|safe }}</td>
                             </tr>
                             <tr>
-                                <td><span style="font-size:15px;">{{ promo|safe }} PROMOCODE APPLIED</span></td>
+                                <td><span style="font-size:10px;">{{ promo|safe }} PROMOCODE APPLIED</span></td>
                             </tr>
                             {% else %}
-                            <tr style="font-size:25px;">
+                            <tr style="font-size:18px;">
                                 <td style="font-weight:bold;">TOTAL AMOUNT</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ taxamount|safe }}</td>
                             </tr>
                             {% endif %}
                         </table>
                     </div>
-               </div>
-               <div style="padding:20px;"class="row">
-                  <p style="font-size:18px;"><span style="font-weight:bold;">Note :</span> </p>
                </div>
             </div>
         </div>

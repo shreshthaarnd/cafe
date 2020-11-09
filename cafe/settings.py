@@ -122,9 +122,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
-AWS_ACCESS_KEY_ID = 'xxxxxxxxxxxxxxxxx'
-AWS_SECRET_ACCESS_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
-AWS_STORAGE_BUCKET_NAME = 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
+AWS_ACCESS_KEY_ID = 'AKIAIOR4RLYEEBOBREMA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'cafemedia'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',

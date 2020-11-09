@@ -332,7 +332,7 @@
         //http://cafe-env.eba-pcmapfmm.ap-south-1.elasticbeanstalk.com/
         var promo = document.getElementById('promocode').value;
         var amount = {{ taxamount|safe }};
-        var url = 'http://cafe-env.eba-pcmapfmm.ap-south-1.elasticbeanstalk.com/applypromocode/?amount=';
+        var url = 'http://127.0.0.1:8000/applypromocode/?amount=';
         var url = url.concat(amount);
         var finalurl = url.concat('&promo=');
         //alert();
