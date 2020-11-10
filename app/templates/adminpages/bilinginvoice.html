@@ -29,28 +29,28 @@
     <link rel="stylesheet" href="{% static 'adminpages/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'w3.css' %}">
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="" rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        @font-face{
+            font-family:"Fake Receipt W05 Regular";
+            src:url("/static/Fonts/5104377/14dff8d1-0f99-4bbb-9849-c39cdf00967d.woff2") format("woff2"),url("/static/Fonts/5104377/f260fbce-c4f8-4bd7-88eb-49b8d1bbc9b5.woff") format("woff");
+        }
+        body {
+          font-family: 'Fake Receipt W05 Regular', sans-serif;
+        }
+    </style>
 </head>
 
-<body>
+<body style="font-weight:bold;">
     <div class="content mt-3" style="width:750px;margin:auto;">
         <div class="card">
             <div>
                <div style=""class="row">
-                <div style="width:50%;padding:20px;"class="column">
-                    <h2 style="float:center;font-weight:bold;">Cafe Liant<br>Invoice</h2>
+                <div style="padding:20px;"class="column">
+                    <h2 style="text-align:center;font-weight:bold;">Cafe Liant<br>Invoice</h2>
                 </div>
                </div> 
                <div style="">
-                    <div>
-                        <p style="color:black;">
-                            {% for x in customerdata %}
-                            <span style="font-size:20px;font-weight:bold;">{{ x.Name|safe }}</span><br>
-                            <span style="font-size:15px;">{{ x.Email|safe }},<br>+91-{{ x.Mobile|safe }}</span><br><span style="font-size:15px;">{{ x.Address|safe }}</span><br>
-                            <span style="font-size:15px;">{{ x.City|safe }}, {{ x.State|safe }}</span>
-                            {% endfor %}
-                        </p>
-                    </div>
                     <div>
                         <table style="width:220px;font-size:15px;">
                             <tr>
@@ -73,10 +73,10 @@
                     </div>
                </div>
                
-               <div style="padding:10px;">
-                <h4>Ordered Items</h4> 
+               <div style="padding-top:12px;">
+                <h3 style="font-weight:bold;">Ordered Items</h3>
                 {% for x in items %}
-                <p>
+                <p style="font-weight:bold;font-size:18px;">
                     {{ x.sr|safe }}) 
                     {% if not x.discount == '0' %}
                     {{ x.name|safe }} with {{ x.discount|safe }}% Discount
@@ -91,7 +91,7 @@
                </div>
                <div style="padding:10px;"class="row">
                     <div style="width:100%;"class="column">
-                        <table style="width:250px;font-size:12px;">
+                        <table style="width:250px;font-size:18px;">
                             <tr>
                                 <td style="font-weight:bold;">TOTAL</td>
                                 <td style="font-weight:bold;">: <i class="fa fa-inr"></i>{{ amount|safe }}</td>

@@ -111,10 +111,10 @@ def SavePayData(request, orderid, tax, amount, amountwithtax, taxamount, amountp
 	coins = str(round(float(amountpaid)/100)*int(CoinsData.objects.all()[0].Coins_Count))
 	totalcoins = (str(int(customer[0].Coins_Wallet)+round(float(amountpaid)/100)*int(CoinsData.objects.all()[0].Coins_Count)))
 	
-	'''try:
-					sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountpaid, coins, str(totalcoins))
-				except:
-					print('SMTPRecipientsRefused')'''
+	try:
+		sendbillemail(customer, orderid, oid, mode, str(datetime.date.today()), GetOrderMenuList(orderid), str(taxamount/2), str(int(tax)/2), amount, amountpaid, coins, str(totalcoins))
+	except:
+		print('SMTPRecipientsRefused')
 	
 	#sendBillSMS(customer[0].Mobile, str(amountpaid), orderid, oid, coins)
 	
