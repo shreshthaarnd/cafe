@@ -448,6 +448,7 @@ def admincompletepayment(request):
 def adminorderhistory(request):
 	try:
 		admin=request.session['admin']
+		print(OrderData.objects.filter(Status='Paid'))
 		dic={'data':OrderData.objects.filter(Status='Paid'),'checklogin':checklogin(request.session['admin'])}
 		return render(request,'adminpages/orderhistory.html',dic)
 	except:
@@ -515,24 +516,27 @@ def printinvoice(request):
 	try:
 		admin=request.session['admin']
 		orderid=request.GET.get('orderid')
-		orderdata=InvoiceData.objects.filter(Order_ID=orderid)[0]
-		dic={'orderid':orderid,
-			'gst':orderdata.TaxAmount,
-			'tax':orderdata.Tax,
-			'date':orderdata.Date,
-			'amount':orderdata.Amount,
-			'taxamount':orderdata.AmountwithTax,
-			'payid':orderdata.Pay_ID,
-			'promo':orderdata.Promocode,
-			'amountpaid':orderdata.AmountPaid,
-			'paymode':orderdata.PayMode,
+		invoice=InvoiceData.objects.filter(Order_ID=orderid)[0]
+		dic={'orderid':invoice.Order_ID,
+			'gst':invoice.TaxAmount,
+			'tax':invoice.Tax,
+			'date':invoice.Date,
+			'amount':invoice.Amount,
+			'taxamount':invoice.AmountwithTax,
+			'amountpaid':invoice.AmountPaid,
+			'promo':invoice.Promocode,
+			'payid':invoice.Pay_ID,
+			'paymode':invoice.PayMode,
+			'checklogin':checklogin(request.session['admin']),
 			'menu':OrderMenuData.objects.filter(Order_ID=orderid),
 			'items':GetOrderMenuList(orderid),
-			'checklogin':checklogin(request.session['admin']),
-			'customerdata':CustomerData.objects.filter(Customer_ID=orderdata.Customer_ID)}
+			'customerdata':CustomerData.objects.filter(Customer_ID=invoice.Customer_ID),
+			'duplicate':True}
+		if dic['promo']=='':
+			dic['promo']=None
 		return render(request,'adminpages/bilinginvoice.html',dic)
 	except:
-		return redirect('/index/')
+		return HttpResponse('Error : Data is not present for the particular Invoice or Something went Wrong.')
 @csrf_exempt
 def adminsettable(request):
 	if request.method=='POST':

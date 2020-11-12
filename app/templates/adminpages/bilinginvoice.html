@@ -42,11 +42,14 @@
 </head>
 
 <body style="font-weight:bold;">
-    <div class="content mt-3" style="width:750px;margin:auto;">
+    <div class="content mt-3" style="width:315px;margin:auto;">
         <div class="card">
             <div>
-               <div style=""class="row">
+               <div class="row" style="margin:auto;">
                 <div style="padding:20px;"class="column">
+                    {% if duplicate %}
+                    <h4>DUPLICATE COPY</h4>
+                    {% endif %}
                     <h2 style="text-align:center;font-weight:bold;">Cafe Liant<br>Invoice</h2>
                 </div>
                </div> 
